@@ -1,8 +1,4 @@
 ---
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see   
-
 layout: default
+title: 100 year zapper 
 ---
-
-<h1>what do you expect</h1>

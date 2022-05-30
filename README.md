@@ -48,6 +48,7 @@ Install Ruby and bundle. Site is built with [Github Pages](https://docs.github.c
 bundle init
 bundle add jekyll
 bundle exec jekyll new --force --skip-bundle .
+bundle install
 bundle exec jekyll serve --livereload
 ```
 

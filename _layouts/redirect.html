@@ -1,0 +1,17 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ page.title }}</title>
+    <meta name="description" content="{{ page.description }}" />
+  </head>
+
+  <script>
+    const waitJustABit = 0;
+    const goToRedirect = () =>
+      window.location.replace("{{ page.redirect_url }}");
+
+    window.setTimeout(goToRedirect, waitJustABit);
+  </script>
+</html>

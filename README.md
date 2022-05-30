@@ -4,15 +4,31 @@
 
 landing-page-v1
 
---
-
-# Adding New Landing Page
-
-You need to add two files and you can do this right from the github interface
 
 
+# Redirects
 
-### `.md`
+> You can do this from the github.com web interface
+
+
+Create new file `_redirects/example/md`
+
+```
+---
+layout: redirect
+permalink: /example
+title: Example Title
+description: Example Description
+redirect_url: https://www.example.com
+preview_image: /assets/example.png
+mixpanel_eventname: Example
+---
+```
+
+# 3D Models
+
+> You can do this from the github.com web interface
+
 
 Add a markdown file. in the top click **add file**  `>` **create new file** name your file something like: `invite-for-new-kids.md` with content like this:
 
@@ -30,8 +46,6 @@ discord_url: https://discord.gg/hUYwd6sJ
 ```
 
 Click Commit. *Your new url is now live!* Check and make sure. argg.gg/kids should render, but without a model. Lets fix that.
-
-### `.glb`
 
 you can use a local url or an external link. types other than glb should work but haven't been tested. If you choose internal (link in the example) you now have to upload it here the same way you created this markdown file, except do it in the assets directory.
 

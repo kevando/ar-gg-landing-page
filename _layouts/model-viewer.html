@@ -1,95 +1,86 @@
+<!-- @format -->
+
 {% assign cachedz = site.time | date: '%M%S' %}
 
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+<html>
+  <head>
+    <!-- Track Visit -->
+    {%- include mixpanel.html -%}
 
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<title>AR.GG</title>
-		<!-- <meta name="description" content="where you want to be" /> -->
+    <title>AR.GG</title>
+    <!-- <meta name="description" content="where you want to be" /> -->
 
-		<link rel="canonical" href="http://localhost:4000/" />
-		<link rel="icon" type="image/png" href="/assets/favicon.png" />
+    <link rel="icon" type="image/png" href="/assets/favicon.png" />
 
+    <!-- Facebook -->
+    <meta property="og:title" content="{{ page.title }}" />
+    <!-- <meta property="og:description" content="where you want to be" /> -->
+    <meta property="og:url" content="https://argg.gg/" />
+    <meta property="og:site_name" content="AR.GG" />
+    <!-- <meta property="og:image" content="https://argg.gg/assets/favicon.png" /> -->
+    <meta property="og:type" content="website" />
 
-		<!-- Facebook -->
-		<meta property="og:title" content="{{ page.title }}" />
-		<!-- <meta property="og:description" content="where you want to be" /> -->
-		<meta property="og:url" content="https://argg.gg/" />
-		<meta property="og:site_name" content="AR.GG" />
-		<!-- <meta property="og:image" content="https://argg.gg/assets/favicon.png" /> -->
-		<meta property="og:type" content="website" />
-		
-		<!-- Twitter -->
-		<!-- <meta name="twitter:card" content="summary_large_image" /> -->
-		<!-- <meta property="twitter:image" content="https://argg.gg/assets/favicon.png" /> -->
-		<!-- <meta name="twitter:image:alt" content="AR.GG Zapper" /> -->
-		<!-- <meta property="twitter:title" content="100 year zapper" /> -->
+    <!-- Twitter -->
+    <!-- <meta name="twitter:card" content="summary_large_image" /> -->
+    <!-- <meta property="twitter:image" content="https://argg.gg/assets/favicon.png" /> -->
+    <!-- <meta name="twitter:image:alt" content="AR.GG Zapper" /> -->
+    <!-- <meta property="twitter:title" content="100 year zapper" /> -->
 
-		<link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+    <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
 
-		
-	<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-	<script type="module" src="/assets/argg.js?cachedz={{ cachedz }}"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script type="module" src="/assets/argg.js?cachedz={{ cachedz }}"></script>
 
-		{%- if jekyll.environment == 'production' and site.google_analytics -%}
-		  {%- include google-analytics.html -%}
-		{%- endif -%}
-	  </head>
-	  
+    {%- if jekyll.environment == 'production' and site.google_analytics -%} {%- include google-analytics.html -%} {%-
+    endif -%}
+  </head>
+
   <body>
-        
-	
-<style>
-    model-viewer#reveal {
+    <style>
+      model-viewer#reveal {
         --poster-color: transparent;
-    }
-</style>
+      }
+    </style>
 
-<img class="logo" src="/assets/icon-256.png" />
+    <img class="logo" src="/assets/icon-256.png" />
 
+    <model-viewer
+      class="zapper"
+      bounds="tight"
+      orientation="0deg -10deg 50deg"
+      disable-zoom
+      src="{{ page.model_url }}"
+      ar-modes="none"
+      camera-controls
+      environment-image="/assets/pillars_1k.hdr"
+      shadow-intensity="1.47"
+      shadow-softness="1"
+      touch-action="none"
+    >
+    </model-viewer>
 
-<model-viewer
-    class="zapper"
-    bounds="tight"
-    orientation="0deg -10deg 50deg"
-    disable-zoom
-    src="{{ page.model_url }}"
-    ar-modes="none"
-    camera-controls
-    environment-image="/assets/pillars_1k.hdr"
-    shadow-intensity="1.47"
-    shadow-softness="1"
-    touch-action="none"
->
-</model-viewer>
-
-<div class="loading-container">
-    <p id="Loading">{{ page.loading_text }}...</p>
-</div>
-
-<div class="spotlight-container">
-    <img src="/assets/spotlight.png" class="spotlight hide" />
-</div>
-
-<div class="forging-container">
-    <div class="progress-bar">
-        <div class="update-bar"></div>
+    <div class="loading-container">
+      <p id="Loading">{{ page.loading_text }}...</p>
     </div>
-</div>
 
-<div class="btn-container hide">
-    <button class="btn" id="DiscordBtn" data-url="{{ page.discord_url }}">{{ page.button_text }}</button>
-	<p><img src="/assets/discord.svg" /> argg is a discord community for AR games</p>
-</div>
+    <div class="spotlight-container">
+      <img src="/assets/spotlight.png" class="spotlight hide" />
+    </div>
 
-	
-	
+    <div class="forging-container">
+      <div class="progress-bar">
+        <div class="update-bar"></div>
+      </div>
+    </div>
+
+    <div class="btn-container hide">
+      <button class="btn" id="DiscordBtn" data-url="{{ page.discord_url }}">{{ page.button_text }}</button>
+      <p><img src="/assets/discord.svg" /> argg is a discord community for AR games</p>
+    </div>
   </body>
-
-
-
 </html>

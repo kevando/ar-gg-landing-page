@@ -3,15 +3,33 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Track Visit -->
+    {%- include mixpanel.html -%}
+
+    <!-- Basic Metadata -->
     <title>{{ page.title }}</title>
     <meta name="description" content="{{ page.description }}" />
+    <link rel="icon" type="image/png" href="{{ site.url }}/assets/favicon.png" />
+
+    <!-- Facebook Metadata -->
+    <meta property="og:title" content="{{ page.title }}" />
+    <meta property="og:description" content="{{ page.description }}" />
+    <meta property="og:image" content="{{ site.url }}{{ page.preview_image }}" />
+
+    <!-- Twitter Metadata -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@ar___gg" />
+    <meta name="twitter:title" content="{{ page.title }}" />
+    <meta name="twitter:description" content="{{ page.description }}" />
+    <meta name="twitter:image" content="{{ site.url }}{{ page.preview_image }}" />
   </head>
 
   <script>
-    const waitJustABit = 0;
-    const goToRedirect = () =>
-      window.location.replace("{{ page.redirect_url }}");
+    // Redirect Visitor
+    const waitJustABit = 200;
 
-    window.setTimeout(goToRedirect, waitJustABit);
+    window.setTimeout(function () {
+      window.location.replace("{{ page.redirect_url }}");
+    }, waitJustABit);
   </script>
 </html>

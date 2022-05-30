@@ -69,3 +69,9 @@ bundle exec jekyll serve --livereload
 Pushing to main branch updates live site 🙂
 
 
+# Changelog
+
+
+> 2022-05-30
+
+added cors config to gs bucket

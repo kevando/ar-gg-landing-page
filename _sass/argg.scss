@@ -1,61 +1,61 @@
 /** @format */
 
 :not(:defined) > * {
-	display: none;
+  display: none;
 }
 
 *:focus {
-	outline: 0;
+  outline: 0;
 }
 
 * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* background-color: #2F3135; dark gray */
 /* light grey #B9BBBD */
 
 body {
-	margin: 0;
-	padding: 0;
-	width: 100vw;
-	height: 100vh;
-	background-color: #36393e;
-	overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #36393e;
+  overflow: hidden;
 }
 
 .logo {
-	position: absolute;
-	top: 20%;
-	left: 50%;
-	width: 256px;
-	margin-left: -128px;
-	&.claimed {
-		top: 29%;
-		left: 50%;
-		width: 256px;
-		margin-left: -128px;
-	}
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 256px;
+  margin-left: -128px;
+  &.claimed {
+    top: 29%;
+    left: 50%;
+    width: 256px;
+    margin-left: -128px;
+  }
 }
 
 .zapper {
-	z-index: 900;
-	/* border: solid 10px red; */
-	width: 100%;
-	height: 80%;
-	top: 0%;
-	left: 0%;
-	position: absolute;
-	transform: scale(0, 0);
-	-webkit-animation-fill-mode: forwards;
-	animation-fill-mode: forwards; /* Add this so that your modal doesn't 
+  z-index: 900;
+  /* border: solid 10px red; */
+  width: 100%;
+  height: 80%;
+  top: 0%;
+  left: 0%;
+  position: absolute;
+  transform: scale(0, 0);
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards; /* Add this so that your modal doesn't 
 								   close after the animation completes */
 }
 
 .zapper.loaded {
-	animation: bummer 500ms 200ms ease-in-out;
-	-webkit-animation-fill-mode: forwards;
-	animation-fill-mode: forwards; /* Add this so that your modal doesn't 
+  animation: bummer 500ms 200ms ease-in-out;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards; /* Add this so that your modal doesn't 
 								  close after the animation completes */
 }
 
@@ -65,124 +65,123 @@ body {
 } */
 
 @keyframes bummer {
-	0% {
-		transform: scale(3, 3);
-	}
+  0% {
+    transform: scale(3, 3);
+  }
 }
 
 @keyframes bummer {
-	100% {
-		transform: scale(1, 1);
-	}
+  100% {
+    transform: scale(1, 1);
+  }
 }
 
 .loading-container {
-	width: 100%;
-	height: 50px;
-	bottom: 10%;
-	text-align: center;
-	position: absolute;
-	color: rgba(255, 255, 255, 0.62);
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1.5em;
-	&.hide {
-		visibility: hidden;
-	}
+  width: 100%;
+  height: 50px;
+  bottom: 10%;
+  text-align: center;
+  position: absolute;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.5em;
+  &.hide {
+    visibility: hidden;
+  }
 }
 
 // ---- Button ----
 
 .btn-container {
-	z-index: 901;
-	width: 100%;
-	height: 20%;
-	bottom: 0%;
-	position: absolute;
-	/* border: solid 5px red; */
-	padding: 0 2rem;
+  z-index: 901;
+  width: 100%;
+  height: 20%;
+  bottom: 10%;
+  position: absolute;
+  /* border: solid 5px red; */
+  padding: 0 2rem;
 
-	&.hide {
-		visibility: hidden;
-	}
-	p {
-		color: white;
-		font-size: 14px;
-		font-family: Arial, Helvetica, sans-serif;
-		text-align: center;
-		text-shadow: 2px 2px 0px #000;
-		opacity: 0.8;
-		img {
-			margin: 0 2px -3px 0;
-			width: 19px;
-			opacity: 1;
-		}
-	}
+  &.hide {
+    visibility: hidden;
+  }
+  p {
+    color: white;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    text-shadow: 2px 2px 0px #000;
+    opacity: 0.8;
+    img {
+      margin: 0 2px -3px 0;
+      width: 19px;
+      opacity: 1;
+    }
+  }
 }
 
 .btn {
-	background-color: #576aea;
-	width: 100%;
-	height: 60px;
-	font-size: 22px;
-	color: white;
-	font-family: Arial, Helvetica, sans-serif;
-	opacity: 0.9;
-	border: none;
+  background-color: #576aea;
+  width: 100%;
+  height: 60px;
+  font-size: 22px;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  opacity: 0.9;
+  border: none;
 }
 
 .forging-container {
-	width: 100%;
-	height: 20%;
-	top: 60%;
-	position: absolute;
-	padding: 0 2rem;
+  width: 100%;
+  height: 20%;
+  top: 60%;
+  position: absolute;
+  padding: 0 2rem;
 
-	&.hide {
-		visibility: hidden;
-	}
+  &.hide {
+    visibility: hidden;
+  }
 }
 
 .progress-bar {
-	display: block;
-	width: 50%;
-	height: 20%;
-	max-height: 20%;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate3d(-50%, -50%, 0);
-	border-radius: 25px;
-	box-shadow: 0px 3px 10px 3px rgba(0, 0, 0, 0.5),
-		0px 0px 5px 1px rgba(0, 0, 0, 0.6);
-	border: 1px solid rgba(255, 255, 255, 0.9);
-	background-color: rgba(0, 0, 0, 0.5);
+  display: block;
+  width: 50%;
+  height: 20%;
+  max-height: 20%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  border-radius: 25px;
+  box-shadow: 0px 3px 10px 3px rgba(0, 0, 0, 0.5), 0px 0px 5px 1px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .spotlight.hide {
-	visibility: hidden;
+  visibility: hidden;
 }
 
 .update-bar {
-	background-color: #576aea;
-	width: 20%;
-	height: 100%;
-	border-radius: 15px;
-	float: left;
-	transition: width 5s;
+  background-color: #576aea;
+  width: 20%;
+  height: 100%;
+  border-radius: 15px;
+  float: left;
+  transition: width 5s;
 }
 .update-bar.loaded {
-	width: 100%;
+  width: 100%;
 }
 
 .spotlight-container {
-	width: 100%;
-	height: 80%;
-	top: 0%;
-	position: absolute;
-	padding: 0;
+  width: 100%;
+  height: 80%;
+  top: 0%;
+  position: absolute;
+  padding: 0;
 }
 
 .spotlight {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }

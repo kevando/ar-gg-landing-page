@@ -1,0 +1,66 @@
+
+// =========================
+//      Media Queries
+// =========================
+
+@mixin for-phone($size: all) {
+	@if $size==all {
+		@media only screen and (min-device-width: 375px) and (max-device-width: 768px) {
+			@content;
+		}
+	}
+	@if $size==small {
+		@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
+			@content;
+		}
+	}
+	@if $size==large {
+		@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-min-device-pixel-ratio: 3) {
+			@content;
+		}
+	}
+}
+
+@mixin for-tablet($orientation: both) {
+	@media only screen and (min-width: 768px) {
+		@content;
+	}
+}
+
+@mixin for-desktop() {
+	@media only screen and (min-width: 992px) {
+		@content;
+	}
+}
+
+// =========================
+//    Fluid Typography
+// =========================
+
+@function strip-unit($value) {
+	@return $value / ($value * 0 + 1);
+}
+
+@mixin fluid-type($min-font-size, $max-font-size, $min-vw: 500px, $max-vw: 1400px, ) {
+	$u1: unit($min-vw);
+	$u2: unit($max-vw);
+	$u3: unit($min-font-size);
+	$u4: unit($max-font-size);
+
+	@if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+		& {
+			font-size: $min-font-size;
+			@media screen and (min-width: $min-vw) {
+				font-size: calc(
+					#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
+						((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)})
+				);
+			}
+
+			@media screen and (min-width: $max-vw) {
+				font-size: $max-font-size;
+			}
+		}
+	}
+}
+

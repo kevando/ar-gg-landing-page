@@ -1,6 +1,5 @@
 <!-- @format -->
 {% assign cachedz = site.time | date: '%M%S' %}
-
 {% assign a = page.name | split: '.' %} {% assign page_name = a[0] %}
 
 <!DOCTYPE html>
@@ -8,7 +7,6 @@
   <head>
    {% include head.html %}
    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
   </head>
   <body>
     {{ content }}
@@ -19,7 +17,7 @@
       }
     </style>
 
-    <!-- <img class="logo" src="/assets/icon-256.png" /> -->
+    <img class="logo" src="/assets/icon-256.png" />
 
     <model-viewer
       class="zapper"
@@ -40,19 +38,19 @@
       <p><span id="Status">{{ page.loading_text }}...</span></p>
     </div>
 
-    <!-- <div class="spotlight-container">
+    <div class="spotlight-container">
       <img src="/assets/spotlight.png" class="spotlight hide" />
-    </div> -->
+    </div>
 
-    <!-- <div class="forging-container">
+    <div class="forging-container">
       <div class="progress-bar">
         <div class="update-bar"></div>
       </div>
-    </div> -->
+    </div>
 
     <div class="btn-container hide">
       <button class="btn" id="DiscordBtn">.,.</button>
-      <!-- <p><img src="/assets/discord.svg" /> argg is a discord community for AR games</p> -->
+      <p><img src="/assets/discord.svg" /> argg is a discord community for AR games</p>
     </div>
 
     <script type="module" src="/scripts/item.js?cachedz={{ cachedz }}"></script>

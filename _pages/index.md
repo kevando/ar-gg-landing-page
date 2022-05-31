@@ -1,7 +1,8 @@
 ---
 permalink: /
-layout: model-viewer
-title: 100 year zapper 
+layout: with-firebase
+title: AR.GG
+item_id: 968656370595422238
 button_text: claim (47 left)
 loading_text: forging zapper
 model_url: /assets/ARGG_Zapper.glb

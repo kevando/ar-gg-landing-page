@@ -1,0 +1,62 @@
+/** @format */
+
+// Reset
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+:focus {
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+// Typography
+
+
+body {
+  * {
+    font-family: "Poppins", sans-serif;
+  }
+  h1 {
+    @include fluid-type(22px, 80px);
+
+  }
+  p {
+    @include fluid-type(22px, 40px);
+    font-weight: 300;
+  }
+}
+
+
+
+// Layout
+
+
+// body {
+//   background-color: yellow;
+// }
+
+// @include for-phone() {
+//   body {
+//     background-color: green;
+//   }
+// }
+
+// @include for-desktop() {
+//   body {
+//     background-color: blue;
+//   }
+// }

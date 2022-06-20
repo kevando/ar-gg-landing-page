@@ -54,8 +54,6 @@ $ios-tabbar-height: 80px;
     width: 100vw;
     height: 70vh;
   }
-  
-  
 
   // VISIBILITY
   &.pre-load {
@@ -111,5 +109,35 @@ $ios-tabbar-height: 80px;
   }
   .bottom {
     background-color: yellow;
+  }
+}
+
+.wobble {
+  animation-name: wobble;
+  animation-duration: 1000ms;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+}
+
+// =========================
+//         Homepage
+// =========================
+
+body.homepage {
+  img {
+    margin-top: 10vh;
+    @extend .wobble;
+  }
+}
+
+@keyframes wobble {
+  from {
+    transform: translateY(0px, 0px, 0px);
+  }
+
+  to {
+    transform: translate3d(-1px, 3px, 0px);
   }
 }

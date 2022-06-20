@@ -57,16 +57,6 @@
       <div class="tabbar-spacing"></div>
     </div>
 
-    <script type="module">
-      import { renderItemByInviteId } from "/scripts/ARGG/claim-item.js?cachedz=2";
-
-      // Grab params from URL
-      const [urlPath, inviteId] = window.location.pathname.slice(1).split("/");
-      if (urlPath === "i" && typeof inviteId === "string") {
-        renderItemByInviteId(inviteId);
-      } else {
-        console.log("ERROR: What are you doing here?");
-      }
-    </script>
+    <script type="module" src="/scripts/ARGG/claim-item.js?cachedz=2"></script>
   </body>
 </html>

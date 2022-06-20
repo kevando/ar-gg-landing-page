@@ -1,32 +1,6 @@
+import {getQueryParam} from "../urls.js";
 import {getInviteData} from '/scripts/ARGG/firebase-db.js';
-
-
-var UI = {
-  wrapper: document.querySelector('.claim-item'),
-  button: document.querySelector('.btn'),
-  modelViewer: document.querySelector('.model-viewer'),
-
-  init: function() {
-    UI.wrapper.classList.remove("pre-load");
-    UI.wrapper.classList.add("loading");
-  },
-  loaded: function() {
-    UI.wrapper.classList.remove("loading");
-    UI.wrapper.classList.add("loaded");
-  },
-
-  showError: function(msg) {
-    document.querySelector('.error-message p').innerHTML = msg;
-    document.querySelector('.error-message').style.display = "block";
-  }
-};
-
-
-UI.init()
-
-setTimeout(() => {
-  document.querySelector('.update-bar').classList.add("loaded");
-}, 50);
+import UI from '../ui.js';
 
 
 UI.modelViewer.addEventListener('model-visibility', (event) => {
@@ -38,11 +12,16 @@ UI.modelViewer.addEventListener('model-visibility', (event) => {
 });
 
 
-export const renderItemByInviteId = async function(inviteId) {
+const render = async function() {
 
   try {
 
+    const inviteId = getQueryParam('id')
+    console.log(inviteId)
+
     const res = await getInviteData(inviteId);
+
+    UI.init();
 
     console.log("data back from firebase looks good...");
     console.log("now load the model");
@@ -85,6 +64,11 @@ export const renderItemByInviteId = async function(inviteId) {
     UI.showError(err.message);
   }
 
-
-
 };
+
+
+
+
+
+render();
+

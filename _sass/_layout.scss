@@ -63,6 +63,9 @@ $ios-tabbar-height: 80px;
     .item-wrapper {
       display: none;
     }
+    .loading-wrapper {
+      visibility: hidden;
+    }
   }
   &.loading {
     .loading-wrapper {

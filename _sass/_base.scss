@@ -23,6 +23,27 @@ img {
   max-width: 100%;
 }
 
+:not(:defined) > * {
+  display: none;
+}
+
+*:focus {
+  outline: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #36393e;
+  overflow: hidden;
+}
+
 // Typography
 
 
@@ -35,28 +56,9 @@ body {
 
   }
   p {
-    @include fluid-type(22px, 40px);
+    @include fluid-type(16px, 40px);
     font-weight: 300;
   }
 }
 
 
-
-// Layout
-
-
-// body {
-//   background-color: yellow;
-// }
-
-// @include for-phone() {
-//   body {
-//     background-color: green;
-//   }
-// }
-
-// @include for-desktop() {
-//   body {
-//     background-color: blue;
-//   }
-// }

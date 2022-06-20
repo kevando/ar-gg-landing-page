@@ -1,5 +1,5 @@
 import {getStorage, getDownloadURL, ref} from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
-import {app} from '/scripts/firebase-init.js';
+import {app} from '/scripts/ARGG/firebase-init.js';
 
 const storage = getStorage(app);
 

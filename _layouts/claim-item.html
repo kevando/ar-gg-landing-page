@@ -1,0 +1,72 @@
+<!-- @format -->
+{% assign cachedz = site.time | date: '%M%S' %} {% assign a = page.name | split: '.' %} {% assign page_name = a[0] %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include head.html %}
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  </head>
+  <body>
+    <style>
+      model-viewer {
+        --poster-color: transparent;
+      }
+    </style>
+
+    <div class="error-message" style="display: none">
+      <p></p>
+    </div>
+
+    <div class="claim-item flex-layout pre-load">
+      <!-- TOP -->
+      <div class="top">
+        <!-- LOADING -->
+
+        <div class="loading-wrapper">
+          <p class="loading"><span id="Status">Loading...</span></p>
+          <div class="progress-bar loading">
+            <div class="update-bar"></div>
+          </div>
+        </div>
+
+        <!-- 3D ASSET (aka the item) -->
+        <div class="item-wrapper">
+          <model-viewer
+            class="model-viewer"
+            bounds="tight"
+            loading="eager"
+            orientation="0deg -10deg 50deg"
+            disable-zoom
+            ar-modes="none"
+            camera-controls
+            shadow-intensity="1.47"
+            shadow-softness="1"
+            touch-action="none"
+            cors="false"
+          >
+          </model-viewer>
+        </div>
+      </div>
+
+      <!-- BOTTOM -->
+      <div class="bottom btn-container">
+        <button class="btn" id="DiscordBtn" disabled>Nothing to claim</button>
+        <p class="info"><img src="/assets/discord.svg" /> argg is a discord community for AR games</p>
+      </div>
+      <div class="tabbar-spacing"></div>
+    </div>
+
+    <script type="module">
+      import { renderItemByInviteId } from "/scripts/ARGG/claim-item.js?cachedz=2";
+
+      // Grab params from URL
+      const [urlPath, inviteId] = window.location.pathname.slice(1).split("/");
+      if (urlPath === "i" && typeof inviteId === "string") {
+        renderItemByInviteId(inviteId);
+      } else {
+        console.log("ERROR: What are you doing here?");
+      }
+    </script>
+  </body>
+</html>

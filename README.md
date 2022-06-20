@@ -54,9 +54,9 @@ you can use a local url or an external link. types other than glb should work bu
 --
 
 
-# Running Site Locally
+# Local Development
 
-Install Ruby and bundle. Site is built with [Github Pages](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll)
+
 
 ```
 bundle init
@@ -65,6 +65,8 @@ bundle exec jekyll new --force --skip-bundle .
 bundle install
 bundle exec jekyll serve --livereload
 ```
+
+Site is built with [Github Pages](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll)
 
 Pushing to main branch updates live site 🙂
 

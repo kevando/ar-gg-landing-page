@@ -1,6 +1,6 @@
 ---
 permalink: /
-layout: with-firebase
+layout: default
 title: AR.GG
 item_id: 968656370595422238
 button_text: claim (47 left)

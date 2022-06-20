@@ -1,0 +1,115 @@
+/** @format */
+
+$ios-tabbar-height: 80px;
+
+.claim-item.flex-layout {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+  height: 100vh;
+
+  .top {
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    // loading
+    .loading-wrapper {
+      border: solid 0px yellow;
+      p {
+        color: white;
+      }
+    }
+
+    // item
+    .item-wrapper {
+      border: solid 0px red;
+    }
+  }
+  .bottom {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &.btn-container {
+      padding: 0 1rem; // sets btn width
+      .btn {
+        width: 90%;
+      }
+    }
+  }
+  .tabbar-spacing {
+    height: $ios-tabbar-height;
+  }
+
+  .model-viewer {
+    z-index: 900;
+    width: 100vw;
+    height: 70vh;
+  }
+  
+  
+
+  // VISIBILITY
+  &.pre-load {
+    .loading-wrapper {
+      display: none;
+    }
+    .item-wrapper {
+      display: none;
+    }
+  }
+  &.loading {
+    .loading-wrapper {
+      display: block;
+    }
+    .item-wrapper {
+      visibility: hidden;
+      height: 0;
+    }
+  }
+  &.loaded {
+    .loading-wrapper {
+      display: none;
+    }
+    .item-wrapper {
+      display: block;
+
+      animation-name: zoomIn;
+      animation-duration: 600ms;
+      animation-timing-function: ease-in-out;
+      animation-delay: 0s;
+      animation-fill-mode: forwards;
+    }
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0);
+  }
+
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.claim-item-layout {
+  background-color: green;
+  .top {
+    background-color: purple;
+  }
+  .bottom {
+    background-color: yellow;
+  }
+}

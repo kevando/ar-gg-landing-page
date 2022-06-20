@@ -8,7 +8,7 @@ url: "https://argg.gg"
 theme: minima
 plugins:
   - jekyll-feed
-include: ['_pages','_redirects']
+include: ['_pages']
 
 # Exclude from processing.
 # The following items will not be processed, by default.

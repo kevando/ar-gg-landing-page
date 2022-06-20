@@ -34,7 +34,7 @@
 }
 
 // =========================
-//    Fluid Typography
+//     Fluid Typography
 // =========================
 
 @function strip-unit($value) {
@@ -64,3 +64,19 @@
 	}
 }
 
+
+
+
+
+/* Keyword values */
+// animation-timing-function: ease;
+// animation-timing-function: ease-in;
+// animation-timing-function: ease-out;
+// animation-timing-function: ease-in-out;
+// animation-timing-function: linear;
+// animation-timing-function: step-start;
+// animation-timing-function: step-end;
+
+/* Function values */
+// animation-timing-function: cubic-bezier(0.1, 0.7, 1.0, 0.1);
+// animation-timing-function: steps(4, end);

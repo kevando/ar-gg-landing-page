@@ -6,7 +6,7 @@ title: Natasha
 
 <br><br>
 
-## Unique aesthetic AR experiences & Creative Consulting
+## Unique aesthetic VR experiences & Creative Consulting
 
 Hi, I'm Natasha and I'm Digital and IRL Creative with diverse skills, experience in Product design/Front-end, and a degree in Advertisement Management.
 

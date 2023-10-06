@@ -1,8 +1,7 @@
 # Website Settings
 title: AR.GG
 description: Make Games Real
-baseurl: "/" 
-url: "https://argg.gg" 
+baseurl: "/ar-gg-landing-page"
 
 # Build Settings
 theme: minima

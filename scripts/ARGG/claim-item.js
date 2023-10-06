@@ -1,5 +1,5 @@
 import {getQueryParam} from "../urls.js";
-import {getInviteData} from '/scripts/ARGG/firebase-db.js';
+import {getInviteData} from './firebase-db.js';
 import UI from '../ui.js';
 
 

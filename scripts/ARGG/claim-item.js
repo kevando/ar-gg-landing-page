@@ -60,10 +60,13 @@ const render = async function() {
         }
         if(UI.button && UI.button.style) {
           UI.button.style.visibility = "hidden";
+          
         }
 
         
         // showClaimedState();
+
+        window.open("https://discord.gg/VF6k4AGg")
       }, 500);
     });
 

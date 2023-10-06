@@ -47,8 +47,14 @@ const render = async function() {
 
         // SHOW CLAIMED STATE
         UI.modelViewer.style.visibility = "hidden";
-        document.querySelector(".loading-container").style.visibility = "hidden";
+        
         document.querySelector(".logo").style.visibility = "visible";
+
+        // apperantly this container is no longer there. adding check
+        // so it doesnt block the redirect to discord kevo octover  6 2023
+        if(document.querySelector(".loading-container") {
+          document.querySelector(".loading-container").style.visibility = "hidden";
+        }
 
         UI.button.style.visibility = "hidden";
         showClaimedState();

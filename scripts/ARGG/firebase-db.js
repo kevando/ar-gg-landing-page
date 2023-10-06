@@ -1,6 +1,6 @@
 import {ref, get, child, getDatabase} from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
-import {app} from '/scripts/ARGG/firebase-init.js';
-import {getAssetURLFromFirebase} from '/scripts/ARGG/firebase-storage.js';
+import {app} from './firebase-init.js';
+import {getAssetURLFromFirebase} from './firebase-storage.js';
 
 
 const dbRef = ref(getDatabase(app));

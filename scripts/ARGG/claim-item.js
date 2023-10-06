@@ -63,7 +63,7 @@ const render = async function() {
         }
 
         
-        showClaimedState();
+        // showClaimedState();
       }, 500);
     });
 

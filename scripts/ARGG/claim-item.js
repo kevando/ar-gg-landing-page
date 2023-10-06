@@ -52,7 +52,7 @@ const render = async function() {
 
         // apperantly this container is no longer there. adding check
         // so it doesnt block the redirect to discord kevo octover  6 2023
-        if(document.querySelector(".loading-container") {
+        if(document.querySelector(".loading-container")) {
           document.querySelector(".loading-container").style.visibility = "hidden";
         }
 

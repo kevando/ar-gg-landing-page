@@ -7,3 +7,5 @@ vendor
 Gemfile.lock
 /assets/export*
 /assets/cors.json
+
+.DS_Store

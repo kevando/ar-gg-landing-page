@@ -1,13 +1,18 @@
 
 ### Local Development
 
-
 ```
 bundle init
 bundle add jekyll
 bundle exec jekyll new --force --skip-bundle .
 bundle install
 bundle exec jekyll serve --livereload
+```
+
+Once you have it up and running, you can boot up the local sever with a bash script I made because I never remember that bundle start command
+
+```
+./start.sh
 ```
 
 

@@ -7,12 +7,23 @@
     {% include head.html %}
   </head>
   <body class="waitlist">
+    <p>The World is a Game</p>
     <h1>GG</h1>
+    
 
     <form id="EmailCapture">
-      <input value="asdf@fsd.com" type="email" placeholder="luke@skywalker.com" id="Email" name="email" />
-      <button value="Join" type="submit">Join</button>
+      <input value="asdf@fsd.com" type="email" placeholder="luke@skywalker.com" id="EmailInput" name="email" />
+
+      <button value="Join" type="submit" id="JoinButton">Join Waitlist</button>
+
+      <br>      <br>
+
+      <!-- <input type="radio" name="phoneOS" value="iPhone"/>iPhone&nbsp;&nbsp; -->
+      <!-- <input type="radio" name="phoneOS" value="Android"/>Android -->
+
     </form>
+
+    <h5 id="UserPositionInLine" style="color: green"></h5>
 
     <script type="module" src="{{site.baseurl}}/scripts/ARGG/waitlist.js?cachedz={{ cachedz }}"></script>
   </body>

@@ -9,22 +9,17 @@ const waitlistRef = collection(db, "gg-waitlist");
 
 // ------------  ADD USER TO WAITLIST ------------
 
-async function addUserToWaitlist(emailAddress) {
+async function addUserToWaitlist(userProperties) {
   var waitlistUserCount = await getWaitlistCounter();
 
   const waitlistUserData = {
-    name: "No Name Yet",
-    emailAddress: emailAddress,
+    ...userProperties,
     rank: waitlistUserCount,
   };
 
   await addDoc(waitlistRef, waitlistUserData);
-  console.log("1");
+
   await incrementWaitlistCounter(waitlistUserCount);
-
-  console.log("4");
-
-  console.log(waitlistUserCount);
 
   return waitlistUserCount;
 }
@@ -42,7 +37,6 @@ async function incrementWaitlistCounter(prevVal) {
   await updateDoc(statsRef, {
     userCount: newVal,
   });
-
 
   return newVal;
 }

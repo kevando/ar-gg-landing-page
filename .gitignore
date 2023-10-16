@@ -9,3 +9,4 @@ Gemfile.lock
 /assets/cors.json
 
 .DS_Store
+*.code-workspace

@@ -1,0 +1,19 @@
+<!-- Generate a unique number to append to the js URLs so they dont get cached during development -->
+{% assign cachedz = site.time | date: '%M%S' %} {% assign a = page.name | split: '.' %} {% assign page_name = a[0] %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include head.html %}
+  </head>
+  <body class="waitlist">
+    <h1>GG</h1>
+
+    <form id="EmailCapture">
+      <input value="asdf@fsd.com" type="email" placeholder="luke@skywalker.com" id="Email" name="email" />
+      <button value="Join" type="submit">Join</button>
+    </form>
+
+    <script type="module" src="{{site.baseurl}}/scripts/ARGG/waitlist.js?cachedz={{ cachedz }}"></script>
+  </body>
+</html>

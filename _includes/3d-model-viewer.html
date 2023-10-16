@@ -1,0 +1,41 @@
+<!-- Model View Library for rendering 3D objects in the web -->
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+<style>
+  model-viewer {
+    --poster-color: transparent;
+  }
+</style>
+
+<div class="error-message" style="display: none">
+  <p></p>
+</div>
+
+<div class="claim-item flex-layout pre-load">
+  <!-- TOP -->
+  <div class="top">
+    <!-- LOADING -->
+    <div class="loading-wrapper">
+      <p class="loading"><span id="Status">Loading...</span></p>
+      <div class="progress-bar loading">
+        <div class="update-bar"></div>
+      </div>
+    </div>
+
+    <!-- 3D MODEL VIEWER -->
+    <div class="item-wrapper">
+      <div>
+        <model-viewer class="model-viewer" bounds="tight" loading="eager" orientation="0deg -10deg 50deg" disable-zoom ar-modes="none" camera-controls shadow-intensity="1.47" shadow-softness="1" touch-action="none" cors="false"> </model-viewer>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="bottom btn-container">
+    <button class="btn" id="DiscordBtn" disabled>Nothing to claim</button>
+    <p class="info"><img src="{{site.baseurl}}/assets/discord.svg" /> argg is a discord community for AR games</p>
+  </div>
+  <div class="tabbar-spacing"></div>
+</div>
+
+<script type="module" src="{{site.baseurl}}/scripts/ARGG/model-viewer.js?cachedz=6"></script>

@@ -1,19 +1,15 @@
-import {getStorage, getDownloadURL, ref} from "https://www.gstatic.com/firebasejs/9.8.2/firebase-storage.js";
-import {app} from './firebase-init.js';
+import { getStorage, getDownloadURL, ref } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-storage.js";
+import firebaseApp from "./firebase-init.js";
 
-const storage = getStorage(app);
+const storage = getStorage(firebaseApp);
 
 const getAssetURLFromFirebase = async (assetPath) => {
   // console.log("Looking for: " + assetPath);
   const storageRef = ref(storage, assetPath);
-  return getDownloadURL(storageRef)
-    .then((url) => {
-      // Potentially start loading it here...
-      return url;
-    });
+  return getDownloadURL(storageRef).then((url) => {
+    // Potentially start loading it here...
+    return url;
+  });
 };
 
-
-export {
-  getAssetURLFromFirebase
-};
+export { getAssetURLFromFirebase };

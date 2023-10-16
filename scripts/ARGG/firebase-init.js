@@ -1,4 +1,4 @@
-import {initializeApp} from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
 
 var firebaseConfig = {
   apiKey: "AIzaSyDjhqfSDix_SRJhByCqjRTWHC8iH5j-5Q0",
@@ -8,4 +8,4 @@ var firebaseConfig = {
   storageBucket: "ar-gg-af27b.appspot.com",
 };
 
-export const app = initializeApp(firebaseConfig);
+export default initializeApp(firebaseConfig);

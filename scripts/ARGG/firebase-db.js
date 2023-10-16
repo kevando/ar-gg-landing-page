@@ -1,23 +1,21 @@
-import {ref, get, child, getDatabase} from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
-import {app} from './firebase-init.js';
-import {getAssetURLFromFirebase} from './firebase-storage.js';
+import { ref, get, child, getDatabase } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
 
+import firebaseApp from "./firebase-init.js";
+import { getAssetURLFromFirebase } from "./firebase-storage.js";
 
-const dbRef = ref(getDatabase(app));
+const dbRef = ref(getDatabase(firebaseApp));
 
 const getItemDataFromFirebase = async (itemId) => {
-  return get(child(dbRef, `items/${itemId}`))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        return snapshot.val();
-      } else {
-        throw new Error("No data available");
-      }
-    });
+  return get(child(dbRef, `items/${itemId}`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      throw new Error("No data available");
+    }
+  });
 };
 
 const getInviteData = async (inviteId) => {
-
   const SOME_ID = "953019908948635708";
 
   const inviteSnapshot = await get(child(dbRef, `invites/${SOME_ID}/${inviteId}`));
@@ -40,20 +38,15 @@ const getInviteData = async (inviteId) => {
 
   const assetURL = await getAssetURLFromFirebase(itemData.asset);
 
-
   // console.log(itemData);
-
 
   return {
     ...inviteData,
     itemData: itemData,
-    assetURL: assetURL
-  }
-
+    assetURL: assetURL,
+  };
 };
 
+// Add email address to the waitist
 
-export {
-  getInviteData,
-  getItemDataFromFirebase
-};
+export { getInviteData, getItemDataFromFirebase };

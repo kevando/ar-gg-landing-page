@@ -1,5 +1,5 @@
 ---
-permalink: /i
-layout: claim-item
-title: Invitation
+# permalink: /i
+# layout: claim-item
+# title: Invitation
 ---

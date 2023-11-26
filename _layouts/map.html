@@ -1,0 +1,215 @@
+{% assign a = page.name | split: '.' %} {% assign page_name = a[0] %}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    {% include head.html %}
+
+    <meta charset="utf-8">
+    <title>Display a popup on click</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .marker {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="{{ page.class_name | default: 'default' }}">
+    {{ content }}
+
+    <style>
+        .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+    </style>
+    <div id="map"></div>
+    <script type="module">
+
+
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
+        import { getStorage, getDownloadURL, ref as ref_storage } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
+        import { ref, get, child, getDatabase } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDbI1AIPDDLWacKolaEfTJZBJn-lvHgaWg",
+            authDomain: "gotcha-9fa1d.firebaseapp.com",
+            databaseURL: "https://gotcha-9fa1d-default-rtdb.firebaseio.com",
+            projectId: "gotcha-9fa1d",
+            storageBucket: "gotcha-9fa1d.appspot.com",
+            messagingSenderId: "483061527883",
+            appId: "1:483061527883:web:8d4cb7d550235fdd4c24ce",
+            measurementId: "G-GRGPMJHES5"
+        };
+
+        // // Initialize Firebase
+        const firebaseApp = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(firebaseApp);
+        const dbRef = ref(getDatabase(firebaseApp));
+        const storage = getStorage(firebaseApp);
+
+
+        // let myData;
+
+        mapboxgl.accessToken = 'pk.eyJ1Ijoia2V2YW5kbyIsImEiOiJjaXphYnRnM3owMm1vMnFvOHFiYm5ibm5jIn0.sY29SXbpr7W9eQHiwpqAwg';
+
+        const LOGLAT_LILL = [-88.1380655018482, 42.147436111279276]
+        const LNGLAT_SANTAMONICA = [-118.52117896492756, 34.01321393735]
+
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/outdoors-v12',
+            center: LNGLAT_SANTAMONICA,
+            zoom: 11
+        });
+
+        let featuresArray = [];
+
+
+        // LOAD MAP
+        async function loadMap() {
+
+            const geojson = {
+                'type': 'FeatureCollection',
+                'features': featuresArray
+            };
+
+            // Add markers to the map.
+            for (const marker of geojson.features) {
+
+
+                // // console.log("Looking for: " + assetPath);
+                const storageRef = ref_storage(storage, marker.properties.assetPath);
+                const iconUrl = await getDownloadURL(storageRef);
+
+
+
+                // Create a DOM element for each marker.
+                const el = document.createElement('div');
+                const width = marker.properties.iconSize[0];
+                const height = marker.properties.iconSize[1];
+
+                el.className = 'marker';
+                el.style.backgroundImage = `url(${iconUrl})`;
+                el.style.width = `${width}px`;
+                el.style.height = `${height}px`;
+                el.style.backgroundSize = '100%';
+
+                el.addEventListener('click', () => {
+                    window.alert(marker.properties.message);
+                });
+
+
+                // Create a popup, but don't add it to the map yet.
+                const popup = new mapboxgl.Popup({
+                    closeButton: false,
+                    closeOnClick: false,
+                    offset: 35,
+                });
+
+                el.addEventListener('mouseenter', (e) => {
+                    // Change the cursor style as a UI indicator.
+
+                    map.getCanvas().style.cursor = 'pointer';
+
+                    const coordinates = marker.geometry.coordinates.slice();
+                    const description = marker.properties.description;
+
+                    popup.setLngLat(coordinates).setHTML(description).addTo(map);
+                });
+                el.addEventListener('mouseleave', () => {
+                    map.getCanvas().style.cursor = '';
+                    popup.remove();
+                });
+
+                // Add markers to the map.
+                new mapboxgl.Marker(el)
+                    .setLngLat(marker.geometry.coordinates)
+                    .addTo(map);
+            }
+
+
+
+        } // loadMap
+
+        // FETCH DATA
+        async function getDataFromFirebase() {
+
+            let pins = []
+
+            return get(child(dbRef, `layers/953019908948635708/pins`)).then((snapshot) => {
+
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const childKey = childSnapshot.key;
+                        const childData = childSnapshot.val();
+                        pins.push(childData);
+                    });
+                } else {
+                    throw new Error("No data available");
+                }
+
+                async function addFeature(pin) {
+
+
+                    var lng = pin.location.longitude;
+                    var lat = pin.location.latitude;
+
+                    if (!lng || !lat) return;
+
+                    lng = parseFloat(lng)
+                    lat = parseFloat(lat)
+
+                    var coordinates = [lng, lat];
+
+                    var assetPath = pin.image
+
+                    featuresArray.push({
+                        'type': 'Feature',
+                        'properties': {
+                            'description':
+                                `<strong>${pin.title}</strong><p>${pin.body}</p>`,
+                            'message': 'Foo',
+                            'iconSize': [60, 60],
+                            'assetPath': assetPath
+                        },
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': coordinates
+                        }
+                    })
+                }
+
+                pins.forEach(addFeature)
+            })
+        }
+
+        // Get Data, and also format it for geojson
+        await getDataFromFirebase();
+        await loadMap();
+
+    </script>
+
+</body>
+
+</html>

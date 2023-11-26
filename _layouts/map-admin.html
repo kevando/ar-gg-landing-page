@@ -46,7 +46,7 @@
     <span id="LoadingMessage"
         style="visibility: hidden; background-color: black;color:white;position:fixed;margin-left:47%;padding: 5px 30px; bottom:10%">Loading</span>
     <span id="SuccessMessage"
-        style="visibility: hidden;background-color: green;color:white;position:fixed;width:100%;padding: 5px 30px; bottom:0;text-align: center;font-family: Arial, Helvetica, sans-serif;font-size: 2em;">Success</span>
+        style="visibility: hidden;background-color: green;color:white;position:fixed;width:100%;padding: 5px 30px; bottom:0;text-align: center;font-family: Arial, Helvetica, sans-serif;font-size: 2em;">Pin Updated</span>
     <span id="ErrorMessage"
         style="visibility: hidden; background-color: red;color:white;position:fixed;margin-left:47%;padding: 5px 30px; bottom:10%">Error</span>
 
@@ -87,7 +87,7 @@
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/outdoors-v12',
-            center: LOGLAT_LILL,
+            center: LNGLAT_SANTAMONICA,
             zoom: 8
         });
 
@@ -95,7 +95,6 @@
         let mapboxMarkers = [];
         let markersIndex = 0;
         let activelyDraggedMarkerIndex = null;
-
         let activelyDraggedPinKey;
 
         // LOAD MAP
@@ -109,12 +108,9 @@
             // Add markers to the map.
             for (const marker of geojson.features) {
 
-
                 // // console.log("Looking for: " + assetPath);
                 const storageRef = ref_storage(storage, marker.properties.assetPath);
                 const iconUrl = await getDownloadURL(storageRef);
-
-
 
                 // Create a DOM element for each marker.
                 const el = document.createElement('div');
@@ -128,14 +124,16 @@
                 el.style.backgroundSize = '100%';
                 el.markersIndex = markersIndex
 
+                // Desktop
                 el.addEventListener('mousedown', () => {
-                    console.log("set active key to: " + marker.properties.firebaseKey)
                     activelyDraggedPinKey = marker.properties.firebaseKey
                     activelyDraggedMarkerIndex = el.markersIndex
                 });
-
-
-
+                // Mobile
+                el.addEventListener('touchstart', () => {
+                    activelyDraggedPinKey = marker.properties.firebaseKey
+                    activelyDraggedMarkerIndex = el.markersIndex
+                });
 
                 // Create a popup, but don't add it to the map yet.
                 const popup = new mapboxgl.Popup({
@@ -144,17 +142,12 @@
                     offset: 35,
                 });
 
-
                 el.addEventListener('mouseleave', () => {
                     map.getCanvas().style.cursor = '';
                     popup.remove();
                 });
 
-                // console.log(el)
 
-
-
-                // console.log("1")
                 // Add markers to the map.
                 mapboxMarkers[markersIndex] = new mapboxgl.Marker(el, { draggable: true })
                     .setLngLat(marker.geometry.coordinates)
@@ -165,61 +158,35 @@
                 var mapboxMarker = mapboxMarkers[markersIndex]
 
                 markersIndex++
+                
                 function onDragEnd(e) {
-
-                    console.log("marker index: " + activelyDraggedMarkerIndex)
 
                     const lngLat = mapboxMarkers[activelyDraggedMarkerIndex].getLngLat();
 
-                    console.log("update: " + activelyDraggedPinKey + " with lat long: " + lngLat)
-
-
-                    // console.log(lngLat)
-
-                    var updatedLocation = {
-                        latitude: lngLat.lat,
-                        longitude: lngLat.lng,
-                        type: "latlng"
-                    }
-
+                    // console.log("marker index: " + activelyDraggedMarkerIndex)
+                    // console.log("update: " + activelyDraggedPinKey + " with lat long: " + lngLat)
 
                     // update DB!!
                     var updates = {
                         hasMoved: true,
-                        location: updatedLocation
+                        location: {
+                            latitude: lngLat.lat,
+                            longitude: lngLat.lng,
+                            type: "latlng"
+                        }
                     }
 
-
-
-
-
-
                     update(child(dbRef, `layers/953019908948635708/pins/${activelyDraggedPinKey}`), updates).then(() => {
-                        console.log("updated")
-
                         document.getElementById("SuccessMessage").style.visibility = "visible"
-
-                        setTimeout(function () {
+                        setTimeout(function hideSuccessMessageAfterDelay () {
                             document.getElementById("SuccessMessage").style.visibility = "hidden"
                         }, 600)
                     })
-
                 }
-
 
                 mapboxMarker.on('dragend', onDragEnd);
 
-
-
-
-
-
-
             }; // for loop
-
-
-
-
         } // loadMap
 
 

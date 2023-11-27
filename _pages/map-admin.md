@@ -1,5 +1,5 @@
 ---
-permalink: /map-admin.html
+permalink: /god
 layout: map-admin
-title: GG Map Admin
+title: Map God
 ---

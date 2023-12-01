@@ -29,18 +29,18 @@
         .marker {
             cursor: pointer;
         }
+
         h1 {
             position: absolute;
             background-color: black;
-            color:white;
-            top:0;
+            color: white;
+            top: 0;
             z-index: 999;
             text-align: center;
             width: 100%;
-            margin:0;
+            margin: 0;
             padding: 10px 0;
         }
-
     </style>
 </head>
 
@@ -61,7 +61,8 @@
     <span id="LoadingMessage"
         style="visibility: hidden; background-color: black;color:white;position:fixed;margin-left:47%;padding: 5px 30px; bottom:10%">Loading</span>
     <span id="SuccessMessage"
-        style="visibility: hidden;background-color: green;color:white;position:fixed;width:100%;padding: 5px 30px; bottom:0;text-align: center;font-family: Arial, Helvetica, sans-serif;font-size: 2em;">Pin Updated</span>
+        style="visibility: hidden;background-color: green;color:white;position:fixed;width:100%;padding: 5px 30px; bottom:0;text-align: center;font-family: Arial, Helvetica, sans-serif;font-size: 2em;">Pin
+        Updated</span>
     <span id="ErrorMessage"
         style="visibility: hidden; background-color: red;color:white;position:fixed;margin-left:47%;padding: 5px 30px; bottom:10%">Error</span>
 
@@ -92,19 +93,33 @@
         const storage = getStorage(firebaseApp);
 
 
-        // let myData;
+
 
         mapboxgl.accessToken = 'pk.eyJ1Ijoia2V2YW5kbyIsImEiOiJjaXphYnRnM3owMm1vMnFvOHFiYm5ibm5jIn0.sY29SXbpr7W9eQHiwpqAwg';
 
         const LOGLAT_LILL = [-88.1380655018482, 42.147436111279276]
         const LNGLAT_SANTAMONICA = [-118.52117896492756, 34.01321393735]
 
+        // the following code includes saving where the user is on the map
+
+
+        const userInfo = JSON.parse(localStorage.getItem("userInfo")) || {}
+
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/outdoors-v12',
-            center: LNGLAT_SANTAMONICA,
-            zoom: 8
+            center: userInfo.center || LNGLAT_SANTAMONICA,
+            zoom: userInfo.zoom || 11
         });
+
+
+        map.on('move', () => {
+            // Code to execute when the map is moved
+            userInfo.center = map.getCenter();
+            userInfo.zoom = map.getZoom();
+            localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        });
+
 
         let featuresArray = [];
         let mapboxMarkers = [];
@@ -137,6 +152,7 @@
                 el.style.width = `${width}px`;
                 el.style.height = `${height}px`;
                 el.style.backgroundSize = '100%';
+                // el.style.backgroundRe
                 el.markersIndex = markersIndex
 
                 // Desktop
@@ -173,8 +189,8 @@
                 var mapboxMarker = mapboxMarkers[markersIndex]
 
                 markersIndex++
-                
-                function onDragEnd(e) {
+
+                mapboxMarker.on('dragend', function onDragEnd(e) {
 
                     const lngLat = mapboxMarkers[activelyDraggedMarkerIndex].getLngLat();
 
@@ -193,13 +209,11 @@
 
                     update(child(dbRef, `layers/953019908948635708/pins/${activelyDraggedPinKey}`), updates).then(() => {
                         document.getElementById("SuccessMessage").style.visibility = "visible"
-                        setTimeout(function hideSuccessMessageAfterDelay () {
+                        setTimeout(function hideSuccessMessageAfterDelay() {
                             document.getElementById("SuccessMessage").style.visibility = "hidden"
                         }, 600)
                     })
-                }
-
-                mapboxMarker.on('dragend', onDragEnd);
+                });
 
             }; // for loop
         } // loadMap
@@ -256,6 +270,40 @@
 
                 pins.forEach(addFeature)
             })
+        }
+
+
+        /*
+            LISTEN FOR DATA
+        */
+
+        async function listenForDataFromFirebase() {
+
+            let pins = []
+
+            const pinsRef = child(dbRef, `layers/953019908948635708/pins`)
+
+            featuresArray = [];
+
+            onValue(pinsRef, (snapshot) => {
+                console.log("data changed")
+                const data = snapshot.val();
+
+                pins.forEach(addFeature)
+
+                console.log("pins each");
+
+                if (isMapLoading) {
+                    console.log("map was loading. do nothing")
+                } else {
+                    loadMap()
+                }
+            });
+
+            console.log("data!");
+
+
+
         }
 
         // Get Data, and also format it for geojson

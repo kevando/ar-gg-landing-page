@@ -4,7 +4,7 @@ description: Make Games Real
 
 # baseurl: "/ar-gg-landing-page" PREVIOUSLY
 
-baseurl: "/"
+baseurl: ""
 
 # Build Settings
 theme: minima

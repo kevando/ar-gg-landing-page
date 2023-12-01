@@ -73,6 +73,7 @@ async function loadMap() {
         el.style.width = `${width}px`;
         el.style.height = `${height}px`;
         el.style.backgroundSize = '100%';
+        el.style.backgroundRepeat = "no-repeat";
 
         el.addEventListener('click', () => {
             // window.alert(marker.properties.message);

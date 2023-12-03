@@ -3,7 +3,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 import { getStorage, getDownloadURL, ref as ref_storage } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
-import { ref, get, child, getDatabase, onValue } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+import { ref, get, child, getDatabase, onValue, set, update } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
 import { firebaseConfig } from './firebase-config.js';
 
@@ -23,6 +23,10 @@ const LNGLAT_SANTAMONICA = [-118.52117896492756, 34.01321393735];
 
 const userInfo = JSON.parse(localStorage.getItem("userInfo")) || {}
 
+if (!userInfo.uuid) {
+    userInfo.uuid = generateUUID();
+}
+
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/outdoors-v12',
@@ -31,11 +35,129 @@ const map = new mapboxgl.Map({
 });
 
 
+// ON MAP MOVE
+
 map.on('move', () => {
     // Code to execute when the map is moved
     userInfo.center = map.getCenter();
     userInfo.zoom = map.getZoom();
+
+    // Update LOCAL
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
+    // Update SERVER
+    const observerRef = child(dbRef, `layers/953019908948635708/observers/${userInfo.uuid}`)
+
+    update(observerRef, {
+        zoom: userInfo.zoom,
+        center: userInfo.center
+    });
+
+});
+
+let observerMarkers = {}
+let observerMarkersArray = []
+
+const observersRef = child(dbRef, `layers/953019908948635708/observers/`)
+
+onValue(observersRef, (snapshot) => {
+
+    const data = snapshot.val();
+    // console.log(data)
+
+    snapshot.forEach((childSnapshot) => {
+
+        const childKey = childSnapshot.key;
+        const childData = childSnapshot.val();
+
+        var lngLat = [childData.center.lng, childData.center.lat]
+
+        if (childKey === userInfo.uuid) {
+            // DO NOT RENDER MAP MARKER FOR SELF
+            return;
+        }
+
+
+
+        if (!observerMarkers[childKey]) {
+            // initialize a new marker
+
+            // OLD WAY
+            // observerMarkers[childKey] = new mapboxgl.Marker()
+            //     .setLngLat([childData.center.lng, childData.center.lat])
+            //     .addTo(map);
+
+
+            // NEW WAY
+
+            const geojson = {
+                'type': 'FeatureCollection',
+                'features': featuresArray
+            };
+
+            // Add markers to the map.
+
+
+
+            var size = (1/childData.zoom) *1500
+
+            console.log("Size",size)
+
+
+
+            // Create a DOM element for each marker.
+            const el = document.createElement('div');
+
+            el.className = 'marker';
+            el.style.backgroundColor = "#ff00ff77"
+            el.style.borderWidth = "1px"
+            el.style.borderColor = "blue"
+            el.style.borderStyle = "solid"
+            el.style.width = `${size}px`;
+            el.style.height = `${size}px`;
+            el.style.borderRadius = "200px"
+
+
+            try {
+      
+                    //  Add markers to the map.
+                    console.log("new")
+                    observerMarkers[childKey] = new mapboxgl.Marker(el)
+                        .setLngLat(lngLat)
+                        .addTo(map);
+                
+
+
+            } catch (e) {
+                console.log("error adding marker")
+                console.log(marker)
+            }
+
+            // console.log("updated")
+
+        } else {
+            // console.log("updated")
+            observerMarkers[childKey].setLngLat(lngLat)
+
+
+            var size = (1/childData.zoom) *1500
+
+            console.log("Size",size)
+
+
+            let el = observerMarkers[childKey].getElement();
+            el.style.backgroundColor = 'blue';
+            el.style.width = `${size}px`;
+            el.style.height = `${size}px`;
+
+            el.style.backgroundColor = "#ff00ffaa"
+            
+        }
+
+
+
+
+    });
 });
 
 
@@ -257,6 +379,22 @@ async function fetchDataAndLoadMap() {
     await getDataFromFirebase();
     await loadMap();
     // listenForDataFromFirebase();
+}
+
+function generateUUID() { // Public Domain/MIT
+    var d = new Date().getTime();//Timestamp
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16;//random number between 0 and 16
+        if (d > 0) {//Use timestamp until depleted
+            r = (d + r) % 16 | 0;
+            d = Math.floor(d / 16);
+        } else {//Use microseconds since page-load if supported
+            r = (d2 + r) % 16 | 0;
+            d2 = Math.floor(d2 / 16);
+        }
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
 }
 
 // Entry point

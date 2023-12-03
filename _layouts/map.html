@@ -58,11 +58,12 @@
         }
 
         @media screen and (min-width: 0px) and (max-width: 640px) {
-            #menu {
+            #menu { 
+                /* hide it on small screens */
                 display: none;
             }
 
-            /* show it on small screens */
+            
         }
     </style>
 </head>
@@ -84,7 +85,7 @@
     </div>
 
     <div id="menu">
-        <input id="satellite-v9" type="radio" name="rtoggle" value="satellite" checked="checked">
+        <input id="satellite-v9" type="radio" name="rtoggle" value="satellite" >
         <label for="satellite-v9">satellite</label>
 
         <input id="light-v11" type="radio" name="rtoggle" value="light">
@@ -93,7 +94,7 @@
         <input id="dark-v11" type="radio" name="rtoggle" value="dark">
         <label for="dark-v11">dark</label>
 
-        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors">
+        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors" checked="checked">
         <label for="outdoors-v12">street</label>
     </div>
 

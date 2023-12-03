@@ -9,7 +9,7 @@
     {% include head.html %}
 
     <meta charset="utf-8">
-    
+
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
@@ -29,6 +29,24 @@
         .marker {
             cursor: pointer;
         }
+
+        .nav {
+            position: absolute;
+            width: 100%;
+        }
+
+        .nav h2 {
+            line-height: 1;
+            margin: 0;
+            text-align: left;
+            font-size: 14px;
+
+            background: black;
+            color: white;
+            font-family: Courier;
+            font-weight: normal;
+            padding: 7px 8px;
+        }
     </style>
 </head>
 
@@ -41,7 +59,13 @@
             font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
         }
     </style>
+
     <div id="map"></div>
+
+    <div class="nav">
+        <h2 id="PlayerCount">Loading....</h2>
+    </div>
+
     <script type="module" src="{{ site.baseurl }}/scripts/Map/map-alpha.js"></script>
 
 </body>

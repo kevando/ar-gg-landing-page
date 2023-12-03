@@ -149,7 +149,7 @@ async function listenForDataFromFirebase() {
     onValue(observersRef, (snapshot) => {
 
         const data = snapshot.val();
-        // console.log(data)
+
 
         snapshot.forEach((childSnapshot) => {
 
@@ -209,6 +209,9 @@ async function listenForDataFromFirebase() {
             }
 
         });
+
+        var playerCount = Object.keys(observerMarkers).length;
+        document.getElementById("PlayerCount").innerHTML = playerCount.toString() + " Players on the map " 
     });
 
 

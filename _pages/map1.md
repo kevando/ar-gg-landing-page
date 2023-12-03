@@ -1,6 +1,6 @@
 ---
 permalink: /
 layout: map
-title: Map
-description: gg
+title: GG
+description: map
 ---

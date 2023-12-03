@@ -60,12 +60,6 @@ const map = new mapboxgl.Map({
 
 map.on('move', onMove);
 
-
-
-/* 
-    LOAD MAP
-*/
-
 async function loadMap() {
 
     isMapLoading = true;
@@ -139,11 +133,6 @@ async function loadMap() {
     console.log("Map done loading")
 
 }
-
-/*
-    LISTEN FOR DATA
-*/
-
 async function listenForDataFromFirebase() {
 
     onValue(observersRef, (snapshot) => {
@@ -211,17 +200,12 @@ async function listenForDataFromFirebase() {
         });
 
         var playerCount = Object.keys(observerMarkers).length;
-        document.getElementById("PlayerCount").innerHTML = playerCount.toString() + " Players on the map " 
+        document.getElementById("PlayerCount").innerHTML = playerCount.toString() + " Players on the map "
     });
 
 
 
 }
-
-/* 
-    FETCH DATA
-*/
-
 async function getDataFromFirebase() {
 
     let pins = []
@@ -274,14 +258,14 @@ async function getDataFromFirebase() {
 
 
 }
-// Get Data from Firebase and Load Map
 async function fetchDataAndLoadMap() {
     await getDataFromFirebase();
     await loadMap();
     listenForDataFromFirebase();
 }
 
-function generateUUID() { // Public Domain/MIT
+
+function generateUUID() {
     var d = new Date().getTime();//Timestamp
     var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -299,3 +283,19 @@ function generateUUID() { // Public Domain/MIT
 
 // Entry point
 fetchDataAndLoadMap();
+
+
+
+const layerList = document.getElementById('menu');
+const inputs = layerList.getElementsByTagName('input');
+
+
+
+for (const input of inputs) {
+    console.log(input)
+    input.onclick = (layer) => {
+        console.log("clicked")
+        const layerId = layer.target.id;
+        map.setStyle('mapbox://styles/mapbox/' + layerId);
+    };
+}

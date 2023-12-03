@@ -56,7 +56,8 @@ map.on('move', () => {
 });
 
 let observerMarkers = {}
-let observerMarkersArray = []
+
+let isLoaded = false;
 
 const observersRef = child(dbRef, `layers/953019908948635708/observers/`)
 
@@ -78,54 +79,43 @@ onValue(observersRef, (snapshot) => {
         }
 
 
+        var size = (1 / childData.zoom) * 1500
+
 
         if (!observerMarkers[childKey]) {
             // initialize a new marker
 
-            // OLD WAY
-            // observerMarkers[childKey] = new mapboxgl.Marker()
-            //     .setLngLat([childData.center.lng, childData.center.lat])
-            //     .addTo(map);
-
-
             // NEW WAY
 
-            const geojson = {
-                'type': 'FeatureCollection',
-                'features': featuresArray
-            };
-
             // Add markers to the map.
-
-
-
-            var size = (1/childData.zoom) *1500
-
-            console.log("Size",size)
-
 
 
             // Create a DOM element for each marker.
             const el = document.createElement('div');
 
             el.className = 'marker';
-            el.style.backgroundColor = "#ff00ff77"
+            // el.style.backgroundColor = "#ff00ff33"
             el.style.borderWidth = "1px"
-            el.style.borderColor = "blue"
+            el.style.borderColor = "#fff00faa"
             el.style.borderStyle = "solid"
-            el.style.width = `${size}px`;
-            el.style.height = `${size}px`;
+            // el.style.width = `${size/20}px`;
+            // el.style.height = `${size/20}px`;
             el.style.borderRadius = "200px"
+            el.style.fontSize = `${size}px`;
+
+            el.innerHTML = "👁️"
+            // el.style.boxShadow = "#fff00faa 0px 0px 100px 60px"
+            el.style.textShadow  ="#000 10px 10px 30px"
 
 
             try {
-      
-                    //  Add markers to the map.
-                    console.log("new")
-                    observerMarkers[childKey] = new mapboxgl.Marker(el)
-                        .setLngLat(lngLat)
-                        .addTo(map);
-                
+
+                //  Add markers to the map.
+                console.log("new")
+                observerMarkers[childKey] = new mapboxgl.Marker(el)
+                    .setLngLat(lngLat)
+                    .addTo(map);
+
 
 
             } catch (e) {
@@ -139,19 +129,15 @@ onValue(observersRef, (snapshot) => {
             // console.log("updated")
             observerMarkers[childKey].setLngLat(lngLat)
 
-
-            var size = (1/childData.zoom) *1500
-
-            console.log("Size",size)
-
-
             let el = observerMarkers[childKey].getElement();
-            el.style.backgroundColor = 'blue';
-            el.style.width = `${size}px`;
-            el.style.height = `${size}px`;
 
-            el.style.backgroundColor = "#ff00ffaa"
-            
+            // el.style.width = `${size}px`;
+            // el.style.height = `${size}px`
+
+            el.innerHTML = "👁️"
+            el.style.fontSize = `${size}px`;;
+
+
         }
 
 

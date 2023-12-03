@@ -12,7 +12,11 @@ const firebaseApp = initializeApp(firebaseConfig);
 const dbRef = ref(getDatabase(firebaseApp));
 const storage = getStorage(firebaseApp);
 
+let observerMarkers = {}
+let featuresArray = [];
 let isMapLoading = false;
+
+const observersRef = child(dbRef, `layers/953019908948635708/observers/`)
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoia2V2YW5kbyIsImEiOiJjaXphYnRnM3owMm1vMnFvOHFiYm5ibm5jIn0.sY29SXbpr7W9eQHiwpqAwg';
 
@@ -27,17 +31,8 @@ if (!userInfo.uuid) {
     userInfo.uuid = generateUUID();
 }
 
-const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/outdoors-v12',
-    center: userInfo.center || LNGLAT_SANTAMONICA,
-    zoom: userInfo.zoom || 11
-});
 
-
-// ON MAP MOVE
-
-map.on('move', () => {
+function onMove() {
     // Code to execute when the map is moved
     userInfo.center = map.getCenter();
     userInfo.zoom = map.getZoom();
@@ -53,101 +48,18 @@ map.on('move', () => {
         center: userInfo.center
     });
 
-});
+}
 
-let observerMarkers = {}
-
-let isLoaded = false;
-
-const observersRef = child(dbRef, `layers/953019908948635708/observers/`)
-
-onValue(observersRef, (snapshot) => {
-
-    const data = snapshot.val();
-    // console.log(data)
-
-    snapshot.forEach((childSnapshot) => {
-
-        const childKey = childSnapshot.key;
-        const childData = childSnapshot.val();
-
-        var lngLat = [childData.center.lng, childData.center.lat]
-
-        if (childKey === userInfo.uuid) {
-            // DO NOT RENDER MAP MARKER FOR SELF
-            return;
-        }
-
-
-        var size = (1 / childData.zoom) * 1500
-
-
-        if (!observerMarkers[childKey]) {
-            // initialize a new marker
-
-            // NEW WAY
-
-            // Add markers to the map.
-
-
-            // Create a DOM element for each marker.
-            const el = document.createElement('div');
-
-            el.className = 'marker';
-            // el.style.backgroundColor = "#ff00ff33"
-            el.style.borderWidth = "1px"
-            el.style.borderColor = "#fff00faa"
-            el.style.borderStyle = "solid"
-            // el.style.width = `${size/20}px`;
-            // el.style.height = `${size/20}px`;
-            el.style.borderRadius = "200px"
-            el.style.fontSize = `${size}px`;
-
-            el.innerHTML = "👁️"
-            // el.style.boxShadow = "#fff00faa 0px 0px 100px 60px"
-            el.style.textShadow  ="#000 10px 10px 30px"
-
-
-            try {
-
-                //  Add markers to the map.
-                console.log("new")
-                observerMarkers[childKey] = new mapboxgl.Marker(el)
-                    .setLngLat(lngLat)
-                    .addTo(map);
-
-
-
-            } catch (e) {
-                console.log("error adding marker")
-                console.log(marker)
-            }
-
-            // console.log("updated")
-
-        } else {
-            // console.log("updated")
-            observerMarkers[childKey].setLngLat(lngLat)
-
-            let el = observerMarkers[childKey].getElement();
-
-            // el.style.width = `${size}px`;
-            // el.style.height = `${size}px`
-
-            el.innerHTML = "👁️"
-            el.style.fontSize = `${size}px`;;
-
-
-        }
-
-
-
-
-    });
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/outdoors-v12',
+    center: userInfo.center || LNGLAT_SANTAMONICA,
+    zoom: userInfo.zoom || 11
 });
 
 
-let featuresArray = [];
+map.on('move', onMove);
+
 
 
 /* 
@@ -234,71 +146,70 @@ async function loadMap() {
 
 async function listenForDataFromFirebase() {
 
-    let pins = []
+    onValue(observersRef, (snapshot) => {
 
-    const pinsRef = child(dbRef, `layers/953019908948635708/pins`)
-
-    featuresArray = [];
-
-    onValue(pinsRef, (snapshot) => {
-        console.log("data changed")
         const data = snapshot.val();
+        // console.log(data)
 
-        console.log('data', data)
+        snapshot.forEach((childSnapshot) => {
 
-        if (snapshot.exists()) {
-            snapshot.forEach((childSnapshot) => {
-                const childKey = childSnapshot.key;
-                const childData = childSnapshot.val();
-                pins.push({ ...childData, firebaseKey: childKey });
-            });
-        } else {
-            throw new Error("No data available");
-        }
+            const childKey = childSnapshot.key;
+            const childData = childSnapshot.val();
 
-        console.log('pins', pins)
+            var lngLat = [childData.center.lng, childData.center.lat]
 
-        async function addFeature(pin) {
+            if (childKey === userInfo.uuid) {
+                // DO NOT RENDER MAP MARKER FOR SELF
+                return;
+            }
 
-            var lng = pin.location.longitude;
-            var lat = pin.location.latitude;
 
-            if (!lng || !lat) return;
+            var size = (1 / childData.zoom) * 1500
 
-            lng = parseFloat(lng)
-            lat = parseFloat(lat)
 
-            var coordinates = [lng, lat];
+            if (!observerMarkers[childKey]) {
+                // Create a DOM element for each marker.
+                const el = document.createElement('div');
 
-            featuresArray.push({
-                'type': 'Feature',
-                'properties': {
-                    'description':
-                        `<strong>${pin.title}</strong><p>${pin.body}</p>`,
-                    'message': 'Foo',
-                    'iconSize': [60, 60],
-                    'assetPath': pin.image,
-                    'firebaseKey': pin.firebaseKey
-                },
-                'geometry': {
-                    'type': 'Point',
-                    'coordinates': coordinates
+                // ----- STYLE MARKER -----
+
+                el.className = 'marker';
+                // el.style.backgroundColor = "#ff00ff33"
+                el.style.borderWidth = "1px"
+                el.style.borderColor = "#fff00faa"
+                el.style.borderStyle = "solid"
+                // el.style.width = `${size/20}px`;
+                // el.style.height = `${size/20}px`;
+                el.style.borderRadius = "200px"
+                el.style.fontSize = `${size}px`;
+
+                el.innerHTML = "👁️"
+                // el.style.boxShadow = "#fff00faa 0px 0px 100px 60px"
+                el.style.textShadow = "#000 10px 10px 30px"
+
+
+                try {
+                    observerMarkers[childKey] = new mapboxgl.Marker(el)
+                        .setLngLat(lngLat)
+                        .addTo(map);
+
+                } catch (e) {
+                    console.log("error adding marker")
+                    console.log(marker)
                 }
-            })
-        }
 
-        pins.forEach(addFeature)
+            } else {
 
-        console.log("pins each");
+                observerMarkers[childKey].setLngLat(lngLat)
 
-        if (isMapLoading) {
-            console.log("map was loading. do nothing")
-        } else {
-            loadMap()
-        }
+                let el = observerMarkers[childKey].getElement();
+
+                el.innerHTML = "👁️"
+                el.style.fontSize = `${size}px`;;
+            }
+
+        });
     });
-
-    console.log("data!");
 
 
 
@@ -364,7 +275,7 @@ async function getDataFromFirebase() {
 async function fetchDataAndLoadMap() {
     await getDataFromFirebase();
     await loadMap();
-    // listenForDataFromFirebase();
+    listenForDataFromFirebase();
 }
 
 function generateUUID() { // Public Domain/MIT

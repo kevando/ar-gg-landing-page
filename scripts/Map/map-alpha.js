@@ -43,9 +43,13 @@ function onMove() {
     // Update SERVER
     const observerRef = child(dbRef, `layers/953019908948635708/observers/${userInfo.uuid}`)
 
+    const now = new Date().getTime();
+
+
     update(observerRef, {
         zoom: userInfo.zoom,
-        center: userInfo.center
+        center: userInfo.center,
+        updatedAt: now,
     });
 
 }
@@ -137,24 +141,43 @@ async function listenForDataFromFirebase() {
 
     onValue(observersRef, (snapshot) => {
 
-        const data = snapshot.val();
-
-
         snapshot.forEach((childSnapshot) => {
 
             const childKey = childSnapshot.key;
             const childData = childSnapshot.val();
 
-            var lngLat = [childData.center.lng, childData.center.lat]
+            var lngLat = [childData.center.lng, childData.center.lat];
 
-            if (childKey === userInfo.uuid) {
-                // DO NOT RENDER MAP MARKER FOR SELF
+            if (!childData.updatedAt) {
+                // DO NOT RENDER OLDER OBSERVERS legacy
                 return;
             }
 
+            const now = new Date().getTime();
 
-            var size = (1 / childData.zoom) * 1500
+            const timeDiff = now - childData.updatedAt;
 
+            // console.log(diff)
+
+            const TIMEOUT_VALUE = 40000;
+
+            if (timeDiff > TIMEOUT_VALUE) {
+                // DO NOT RENDER OLDER OBSERVERS
+                return;
+            }
+
+            if (childKey === userInfo.uuid) {
+                // DO NOT RENDER MAP MARKER FOR SELF
+                // return;
+            }
+
+            // var size = (1 / childData.zoom) * 1500
+            // var size = 50;
+
+
+            var zoomLevelDiff = userInfo.zoom - childData.zoom;
+            var size = range(2, 18, 30, 1500, zoomLevelDiff)
+            size = Math.round(size)
 
             if (!observerMarkers[childKey]) {
                 // Create a DOM element for each marker.
@@ -162,19 +185,32 @@ async function listenForDataFromFirebase() {
 
                 // ----- STYLE MARKER -----
 
+
+                // el.innerHTML = size
+
                 el.className = 'marker';
                 // el.style.backgroundColor = "#ff00ff33"
-                el.style.borderWidth = "1px"
-                el.style.borderColor = "#fff00faa"
-                el.style.borderStyle = "solid"
-                // el.style.width = `${size/20}px`;
-                // el.style.height = `${size/20}px`;
-                el.style.borderRadius = "200px"
+                el.style.backgroundImage = "url('assets/g.png')"
+                el.style.backgroundRepeat = "no-repeat"
+                el.style.backgroundSize = "100%";
+                // el.style.borderWidth = "1px"
+                // el.style.borderColor = "#fff00faa"
+                // el.style.borderStyle = "solid"
+                el.style.width = `${size}px`;
+                el.style.height = `${size}px`;
+                // el.style.borderRadius = "200%"
                 el.style.fontSize = `${size}px`;
 
-                el.innerHTML = "👁️"
+                // el.innerHTML = "👁️"
                 // el.style.boxShadow = "#fff00faa 0px 0px 100px 60px"
-                el.style.textShadow = "#000 10px 10px 30px"
+                // el.style.textShadow = "#000 10px 10px 30px"
+
+                var myOpacity = timeDiff ? range(1000, 100000, 100, 0, timeDiff) : 100
+
+                myOpacity = Math.round(myOpacity)
+
+
+                el.style.opacity = myOpacity
 
 
                 try {
@@ -193,8 +229,17 @@ async function listenForDataFromFirebase() {
 
                 let el = observerMarkers[childKey].getElement();
 
-                el.innerHTML = "👁️"
-                el.style.fontSize = `${size}px`;;
+                var zoomLevelDiff = userInfo.zoom - childData.zoom;
+                var size = range(2, 28, 30, 1500, zoomLevelDiff)
+                size = Math.round(size)
+
+                el.style.width = `${size}px`;
+                el.style.height = `${size}px`;
+
+                // var myOpacity = timeDiff ? range(1000,100000,100,0,timeDiff) : 100
+                // myOpacity = Math.round(myOpacity)
+                // el.style.opacity = myOpacity
+
             }
 
         });
@@ -259,7 +304,7 @@ async function getDataFromFirebase() {
 
 }
 async function fetchDataAndLoadMap() {
-    await getDataFromFirebase();
+    // await getDataFromFirebase();
     await loadMap();
     listenForDataFromFirebase();
 }
@@ -285,17 +330,42 @@ function generateUUID() {
 fetchDataAndLoadMap();
 
 
+// MENU AT TOP
 
 const layerList = document.getElementById('menu');
 const inputs = layerList.getElementsByTagName('input');
 
-
-
 for (const input of inputs) {
-    console.log(input)
     input.onclick = (layer) => {
-        console.log("clicked")
         const layerId = layer.target.id;
         map.setStyle('mapbox://styles/mapbox/' + layerId);
     };
+}
+
+function lerp(x, y, a) {
+    return x * (1 - a) + y * a;
+}
+
+function clamp(a, min, max) {
+    if (!min) {
+        min = 0;
+    }
+    if (!max) {
+        max = 1;
+    }
+    return Math.min(max, Math.max(min, a));
+}
+function invlerp(x, y, a) {
+    return clamp((a - x) / (y - x));
+}
+function range(x1, y1, x2, y2, a) {
+    return lerp(x2, y2, invlerp(x1, y1, a));
+}
+
+
+function radiansToDegrees(rad) {
+    return rad * (180 / Math.PI);
+}
+function degreesToRadians(deg) {
+    return (deg * Math.PI) / 180;
 }

@@ -74,15 +74,15 @@ function onMove() {
 
     var avatarScale = transforms[xDirection];
 
-    var avatarRotation = transforms[yDirection]
+    var avatarRotation = ""//transforms[yDirection]
 
-    if (orientation < 0) {
-        console.log("UP DOWN")
-        // avatarScale = "ScaleX(1)"
-    } else {
-        console.log("LEFT RIGHT")
-        avatarRotation = "RotateZ(0deg)"
-    }
+    // if (orientation < 0) {
+    //     console.log("UP DOWN")
+    //     // avatarScale = "ScaleX(1)"
+    // } else {
+    //     console.log("LEFT RIGHT")
+    //     avatarRotation = "RotateZ(0deg)"
+    // }
 
     var $myAvatarImage = document.getElementById("MyAvatarImage");
 
@@ -110,11 +110,13 @@ async function loadMap() {
         'features': featuresArray
     };
 
+    let itemsLoaded = 0
+
     // Add markers to the map.
     for (const marker of geojson.features) {
 
+        itemsLoaded++;
 
-        // // console.log("Looking for: " + assetPath);
         const storageRef = ref_storage(storage, marker.properties.assetPath);
         const iconUrl = await getDownloadURL(storageRef);
 
@@ -163,6 +165,10 @@ async function loadMap() {
                 .setLngLat(marker.geometry.coordinates)
                 .addTo(map);
 
+                itemsLoaded++ 
+                document.getElementById("LoadingMsg").innerHTML = `${itemsLoaded} items loaded`;
+
+
         } catch (e) {
             console.log("error adding marker")
             console.log(marker)
@@ -173,7 +179,7 @@ async function loadMap() {
     isMapLoading = false;
     console.log("Map done loading")
 
-    document.getElementById("LoadingMsg").innerHTML = `${featuresArray.length} items loaded`
+    
 
 }
 
@@ -351,6 +357,7 @@ async function getDataFromFirebase() {
             })
         }
 
+        console.log("loading 1")
         pins.forEach(addFeature)
     });
 
@@ -380,7 +387,7 @@ function generateUUID() {
 async function fetchDataAndLoadMap() {
     listenForDataFromFirebase();
 
-    // await getDataFromFirebase();
+    await getDataFromFirebase();
     await loadMap();
 }
 

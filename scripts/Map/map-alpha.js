@@ -55,20 +55,32 @@ function onMove() {
     });
 
     // Update MY PLAYER AVATAR
-    var xDirection = previousCenter.lng - userInfo.center.lng;
-    var yDirection = previousCenter.lat - userInfo.center.lat;
-    var orientation = Math.abs(xDirection) - Math.abs(yDirection);
+    var xDelta = previousCenter.lng - userInfo.center.lng;
+    var yDelta = previousCenter.lat - userInfo.center.lat;
+    var orientation = Math.abs(xDelta) - Math.abs(yDelta);
 
-    // console.log(orientation)
+    var xDirection = xDelta >= 0 ? "LEFT" : "RIGHT";
+    var yDirection = yDelta >= 0 ? "DOWN" : "UP";
 
-    var avatarScale = xDirection < 0 ? "ScaleX(1)" : "ScaleX(-1)"
+    console.log(yDirection)
 
-    var avatarRotation = yDirection < 0 ? "RotateZ(-90deg)" : "RotateZ(90deg)"
+    var transforms ={}
+
+    transforms["LEFT"] = "ScaleX(1)"
+    transforms["RIGHT"] = "ScaleX(-1)"
+
+    transforms["UP"] = "RotateZ(90deg)"
+    transforms["DOWN"] = "RotateZ(-90deg)"
+
+    var avatarScale = transforms[xDirection];
+
+    var avatarRotation = transforms[yDirection]
 
     if (orientation < 0) {
         console.log("UP DOWN")
-        avatarScale = "ScaleX(1)"
+        // avatarScale = "ScaleX(1)"
     } else {
+        console.log("LEFT RIGHT")
         avatarRotation = "RotateZ(0deg)"
     }
 
@@ -82,7 +94,8 @@ const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/outdoors-v12',
     center: userInfo.center || LNGLAT_SANTAMONICA,
-    zoom: userInfo.zoom || 11
+    zoom: userInfo.zoom || 11,
+    minzoom: 4
 });
 
 
@@ -367,7 +380,7 @@ function generateUUID() {
 async function fetchDataAndLoadMap() {
     listenForDataFromFirebase();
 
-    await getDataFromFirebase();
+    // await getDataFromFirebase();
     await loadMap();
 }
 

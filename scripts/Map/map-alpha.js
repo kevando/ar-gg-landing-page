@@ -33,7 +33,10 @@ if (!userInfo.uuid) {
 
 
 function onMove() {
-    // Code to execute when the map is moved
+
+    var previousCenter = userInfo.center;
+    var previousZoom = userInfo.zoom
+
     userInfo.center = map.getCenter();
     userInfo.zoom = map.getZoom();
 
@@ -45,12 +48,33 @@ function onMove() {
 
     const now = new Date().getTime();
 
-
     update(observerRef, {
         zoom: userInfo.zoom,
         center: userInfo.center,
         updatedAt: now,
     });
+
+    // Update MY PLAYER AVATAR
+    var xDirection = previousCenter.lng - userInfo.center.lng;
+    var yDirection = previousCenter.lat - userInfo.center.lat;
+    var orientation = Math.abs(xDirection) - Math.abs(yDirection);
+
+    // console.log(orientation)
+
+    var avatarScale = xDirection < 0 ? "ScaleX(1)" : "ScaleX(-1)"
+
+    var avatarRotation = yDirection < 0 ? "RotateZ(-90deg)" : "RotateZ(90deg)"
+
+    if (orientation < 0) {
+        console.log("UP DOWN")
+        avatarScale = "ScaleX(1)"
+    } else {
+        avatarRotation = "RotateZ(0deg)"
+    }
+
+    var $myAvatarImage = document.getElementById("MyAvatarImage");
+
+    $myAvatarImage.style.transform = `${avatarRotation} ${avatarScale}`
 
 }
 
@@ -136,7 +160,12 @@ async function loadMap() {
     isMapLoading = false;
     console.log("Map done loading")
 
+    document.getElementById("LoadingMsg").innerHTML = `${featuresArray.length} items loaded`
+
 }
+
+
+
 async function listenForDataFromFirebase() {
 
     onValue(observersRef, (snapshot) => {
@@ -147,6 +176,8 @@ async function listenForDataFromFirebase() {
             const childData = childSnapshot.val();
 
             var lngLat = [childData.center.lng, childData.center.lat];
+
+
 
             if (!childData.updatedAt) {
                 // DO NOT RENDER OLDER OBSERVERS legacy
@@ -173,21 +204,28 @@ async function listenForDataFromFirebase() {
             if (!observerMarkers[childKey]) {
                 // Create a DOM element for each marker.
                 const el = document.createElement('div');
+                const img = document.createElement('img');
+
+                if (userInfo.uuid === childKey) {
+                    img.id = "MyAvatarImage"
+                }
 
                 // ----- STYLE MARKER -----
 
 
                 // el.innerHTML = size
 
-                const DEFAULT_AVATAR_URL = "assets/g.png"
+                const DEFAULT_AVATAR_URL = "https://maps.argg.gg/assets/g.png"
 
                 var iconImage = childData.avatarUrl || DEFAULT_AVATAR_URL
 
-                console.log(`url('${iconImage}')`)
+                img.src = iconImage;
 
-                el.className = 'marker';
+                el.append(img)
+
+                el.className = 'avatar-marker';
                 // el.style.backgroundColor = "#ff00ff33"
-                el.style.backgroundImage = `url('${iconImage}')`
+                // el.style.backgroundImage = `url('${iconImage}')`
                 el.style.backgroundRepeat = "no-repeat"
                 el.style.backgroundSize = "100%";
                 // el.style.borderWidth = "1px"
@@ -201,6 +239,9 @@ async function listenForDataFromFirebase() {
                 // el.innerHTML = "👁️"
                 // el.style.boxShadow = "#fff00faa 0px 0px 100px 60px"
                 // el.style.textShadow = "#000 10px 10px 30px"
+
+
+                // didnt work. for some reason the opacity of a marker always gets reset to 1
 
                 var myOpacity = timeDiff ? range(1000, 100000, 100, 0, timeDiff) : 100
 
@@ -242,7 +283,7 @@ async function listenForDataFromFirebase() {
         });
 
         var playerCount = Object.keys(observerMarkers).length;
-        document.getElementById("PlayerCount").innerHTML = playerCount.toString() + " Players on the map "
+        document.getElementById("PlayerCount").innerHTML = playerCount.toString() + " Player" + (playerCount > 1 ? "s" : "") + " on the map "
     });
 
 
@@ -302,13 +343,6 @@ async function getDataFromFirebase() {
 
 
 }
-async function fetchDataAndLoadMap() {
-    listenForDataFromFirebase();
-    
-    await getDataFromFirebase();
-    await loadMap();
-    
-}
 
 
 function generateUUID() {
@@ -327,6 +361,16 @@ function generateUUID() {
     });
 }
 
+
+// ----- Initialize ------
+
+async function fetchDataAndLoadMap() {
+    listenForDataFromFirebase();
+
+    await getDataFromFirebase();
+    await loadMap();
+}
+
 // Entry point
 fetchDataAndLoadMap();
 
@@ -342,6 +386,8 @@ for (const input of inputs) {
         map.setStyle('mapbox://styles/mapbox/' + layerId);
     };
 }
+
+// ------ Helper Functions ---------
 
 function lerp(x, y, a) {
     return x * (1 - a) + y * a;

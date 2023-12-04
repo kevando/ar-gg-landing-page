@@ -14,6 +14,11 @@ body {
     cursor: pointer;
 }
 
+
+.avatar-marker img{
+    transition: transform 100ms 100ms;
+}
+
 .nav {
     position: absolute;
     width: 100%;

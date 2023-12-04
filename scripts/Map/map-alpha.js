@@ -159,21 +159,12 @@ async function listenForDataFromFirebase() {
 
             // console.log(diff)
 
-            const TIMEOUT_VALUE = 400000;
+            const TIMEOUT_VALUE = 300000;
 
             if (timeDiff > TIMEOUT_VALUE) {
                 // DO NOT RENDER OLDER OBSERVERS
                 return;
             }
-
-            if (childKey === userInfo.uuid) {
-                // DO NOT RENDER MAP MARKER FOR SELF
-                // return;
-            }
-
-            // var size = (1 / childData.zoom) * 1500
-            // var size = 50;
-
 
             var zoomLevelDiff = userInfo.zoom - childData.zoom;
             var size = range(2, 18, 30, 1500, zoomLevelDiff)
@@ -256,6 +247,8 @@ async function listenForDataFromFirebase() {
 
 
 
+
+
 }
 async function getDataFromFirebase() {
 
@@ -310,9 +303,11 @@ async function getDataFromFirebase() {
 
 }
 async function fetchDataAndLoadMap() {
-    // await getDataFromFirebase();
-    await loadMap();
     listenForDataFromFirebase();
+    
+    await getDataFromFirebase();
+    await loadMap();
+    
 }
 
 

@@ -159,7 +159,7 @@ async function listenForDataFromFirebase() {
 
             // console.log(diff)
 
-            const TIMEOUT_VALUE = 40000;
+            const TIMEOUT_VALUE = 400000;
 
             if (timeDiff > TIMEOUT_VALUE) {
                 // DO NOT RENDER OLDER OBSERVERS
@@ -188,9 +188,15 @@ async function listenForDataFromFirebase() {
 
                 // el.innerHTML = size
 
+                const DEFAULT_AVATAR_URL = "assets/g.png"
+
+                var iconImage = childData.avatarUrl || DEFAULT_AVATAR_URL
+
+                console.log(`url('${iconImage}')`)
+
                 el.className = 'marker';
                 // el.style.backgroundColor = "#ff00ff33"
-                el.style.backgroundImage = "url('assets/g.png')"
+                el.style.backgroundImage = `url('${iconImage}')`
                 el.style.backgroundRepeat = "no-repeat"
                 el.style.backgroundSize = "100%";
                 // el.style.borderWidth = "1px"

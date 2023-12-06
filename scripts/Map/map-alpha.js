@@ -6,6 +6,7 @@ import { getStorage, getDownloadURL, ref as ref_storage } from "https://www.gsta
 import { ref, get, child, getDatabase, onValue, set, update } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
 import { firebaseConfig } from './firebase-config.js';
+import { mapboxToken } from './constants.js'
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -18,12 +19,14 @@ let isMapLoading = false;
 
 const observersRef = child(dbRef, `layers/953019908948635708/observers/`)
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoia2V2YW5kbyIsImEiOiJjaXphYnRnM3owMm1vMnFvOHFiYm5ibm5jIn0.sY29SXbpr7W9eQHiwpqAwg';
+mapboxgl.accessToken = mapboxToken;
 
 const LOGLAT_LILL = [-88.1380655018482, 42.147436111279276]
 const LNGLAT_SANTAMONICA = [-118.52117896492756, 34.01321393735];
 
-// the following code includes saving where the user is on the map
+
+// INITIALIZE USER INFO
+// this object is used to manage state like zoom level, position on map
 
 const userInfo = JSON.parse(localStorage.getItem("userInfo")) || {}
 
@@ -31,8 +34,18 @@ if (!userInfo.uuid) {
     userInfo.uuid = generateUUID();
 }
 
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/outdoors-v12',
+    center: userInfo.center || LNGLAT_SANTAMONICA,
+    zoom: userInfo.zoom || 11,
+    minzoom: 4
+});
 
-function onMove() {
+
+// ----- ON MOVE ---
+
+map.on('move', function onMove() {
 
     var previousCenter = userInfo.center;
     var previousZoom = userInfo.zoom
@@ -62,7 +75,7 @@ function onMove() {
     var xDirection = xDelta >= 0 ? "LEFT" : "RIGHT";
     var yDirection = yDelta >= 0 ? "DOWN" : "UP";
 
-    console.log(yDirection)
+    // console.log(yDirection)
 
     var transforms ={}
 
@@ -88,18 +101,10 @@ function onMove() {
 
     $myAvatarImage.style.transform = `${avatarRotation} ${avatarScale}`
 
-}
-
-const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/outdoors-v12',
-    center: userInfo.center || LNGLAT_SANTAMONICA,
-    zoom: userInfo.zoom || 11,
-    minzoom: 4
 });
 
 
-map.on('move', onMove);
+// ---- LOAD MAP -----
 
 async function loadMap() {
 
@@ -179,11 +184,11 @@ async function loadMap() {
     isMapLoading = false;
     console.log("Map done loading")
 
-    
+    // document.getElementById("LoadingMsg").innerHTML = `${featuresArray.length} items loaded`
 
 }
 
-
+// --- LOAD AVATAR DATA ----
 
 async function listenForDataFromFirebase() {
 
@@ -310,6 +315,9 @@ async function listenForDataFromFirebase() {
 
 
 }
+
+// ---- load POI data ----
+
 async function getDataFromFirebase() {
 
     let pins = []
@@ -403,7 +411,7 @@ const inputs = layerList.getElementsByTagName('input');
 for (const input of inputs) {
     input.onclick = (layer) => {
         const layerId = layer.target.id;
-        map.setStyle('mapbox://styles/mapbox/' + layerId);
+        map.setStyle('mapbox://styles/' + layerId);
     };
 }
 

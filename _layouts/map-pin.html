@@ -8,14 +8,8 @@
 
     <meta charset="utf-8" />
 
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <link
-      href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
-      rel="stylesheet"
-    />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
 
     <link rel="stylesheet" href="{{ "/assets/map.css" | relative_url }}">
@@ -29,21 +23,26 @@
         max-width: 400px;
         font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
       }
+      button {
+        z-index: 999;
+        position: absolute;
+        top: 5%;
+        right: 5%;
+      }
     </style>
 
     <div id="map"></div>
 
     <div class="nav">
-      <h2>
+      <h2 style="display: none">
         <span id="NavTitle"></span>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <span id="LoadingMsg"></span>
       </h2>
     </div>
 
-    <script
-      type="module"
-      src="{{ site.baseurl }}/scripts/Map/map-pin.js?cachedz=1"
-    ></script>
+    <button id="ConfirmButton">CONFIRM LOCATION</button>
+
+    <script type="module" src="{{ site.baseurl }}/scripts/Map/map-pin.js?cachedz=1"></script>
   </body>
 </html>

@@ -3,9 +3,10 @@ import { getDownloadURL, ref } from "https://www.gstatic.com/firebasejs/10.6.0/f
 import { get, child, update } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
 import { dbRef, storage } from "./firebase-config.js";
-// import { mapboxToken } from './constants.js'
 
+import { getImageUrlFromAssetPath } from "./firebase-helpers.js";
 import { getQueryParam } from "../helpers.js";
+import { mapboxToken } from "./constants.js";
 
 var layerId = getQueryParam("layer_id");
 var pinId = getQueryParam("pin_id");
@@ -64,7 +65,6 @@ async function getDataFromFirebase() {
 
     // GET DATA FROM QUEST
   } else if (questId && objectiveId) {
-    console.log("2");
     const snapshot = await get(objectiveRef);
 
     if (!snapshot.exists()) {
@@ -81,7 +81,7 @@ async function getDataFromFirebase() {
       var lng = data.location.longitude;
       var lat = data.location.latitude;
 
-      console.log(data.location);
+      // console.log(data.location);
 
       if (!lng || !lat) return;
 
@@ -93,13 +93,24 @@ async function getDataFromFirebase() {
 
     var navTitle = `<strong>${data.title}</strong> => ${data.body}`;
 
-    // document.getElementById("NavTitle").innerHTML = navTitle;
+    document.getElementById("NavTitle").innerHTML = navTitle;
 
-    // const storageRef = ref(storage, pinData.image);
+    // ------ ICON IMAGE ------
 
-    const iconUrl = "/assets/pin.png";
+    let iconUrl;
 
-    // console.log(iconUrl);
+    if (data.characterId) {
+      const characterRef = child(dbRef, `layers/${layerId}/characters/${data.characterId}`);
+      const snapshot = await get(characterRef);
+      // console.log(snapshot.val())
+      iconUrl = await getImageUrlFromAssetPath(snapshot.val().image);
+    } else if (data.pinIcon) {
+      iconUrl = await getImageUrlFromAssetPath(data.pinIcon);
+    } else {
+      iconUrl = "/assets/pin.png";
+    }
+
+    // ------------------------
 
     pin.iconUrl = iconUrl;
 
@@ -111,8 +122,7 @@ async function getDataFromFirebase() {
 }
 
 async function loadMap() {
-  mapboxgl.accessToken =
-    "pk.eyJ1Ijoia2V2YW5kbyIsImEiOiJjaXphYnRnM3owMm1vMnFvOHFiYm5ibm5jIn0.sY29SXbpr7W9eQHiwpqAwg";
+  mapboxgl.accessToken = mapboxToken;
 
   // the following code includes saving where the user is on the map
 
@@ -143,7 +153,7 @@ async function addDraggableMarkerToMap() {
         properties: {
           description: `<strong>${pin.title}</strong><p>${pin.body}</p>`,
           message: pin.message || "MSg",
-          iconSize: [60, 60],
+          iconSize: [30, 30],
           //   assetPath: assetPath,
         },
         geometry: {
@@ -156,11 +166,8 @@ async function addDraggableMarkerToMap() {
 
   const marker = geojson.features[0];
 
-  //   const storageRef = ref_storage(storage, marker.properties.assetPath);
-  //   const iconUrl = await getDownloadURL(storageRef);
-
   console.log("4");
-  // Create a DOM element for marker.
+  // Create a DOM pinst for marker.
   const el = document.createElement("div");
   const width = marker.properties.iconSize[0];
   const height = marker.properties.iconSize[1];
@@ -170,6 +177,10 @@ async function addDraggableMarkerToMap() {
   el.style.width = `${width}px`;
   el.style.height = `${height}px`;
   el.style.backgroundSize = "100%";
+  el.style.backgroundColor = "white";
+
+  el.style.borderRadius = "100%";
+  el.style.border = "solid 2px white";
 
   // Create a popup, but don't add it to the map yet.
   const popup = new mapboxgl.Popup({
@@ -178,15 +189,16 @@ async function addDraggableMarkerToMap() {
     offset: 35,
   });
 
-  console.log("1");
   updatedLocation = {
+    lastMoved: new Date().getTime(),
     location: {
-      lastMoved: new Date().getTime(),
+      type: "latlng",
       latitude: marker.geometry.coordinates[1],
       longitude: marker.geometry.coordinates[0],
     },
   };
 
+  // HOVER STATES
   el.addEventListener("mouseenter", (e) => {
     // Change the cursor style as a UI indicator.
 
@@ -199,10 +211,14 @@ async function addDraggableMarkerToMap() {
     const description = marker.properties.description;
 
     popup.setLngLat(coordinates).setHTML(description).addTo(map);
+
+    document.getElementById("map").querySelector("canvas").style.opacity = 0.7; // DARKEN MAP
   });
   el.addEventListener("mouseleave", () => {
     map.getCanvas().style.cursor = "";
     popup.remove();
+
+    document.getElementById("map").querySelector("canvas").style.opacity = 1.0; // DARKEN MAP
   });
 
   const markerObj = new mapboxgl.Marker(el, { draggable: true })
@@ -214,8 +230,9 @@ async function addDraggableMarkerToMap() {
     const lngLat = markerObj.getLngLat();
 
     updatedLocation = {
+      lastMoved: new Date().getTime(),
       location: {
-        lastMoved: new Date().getTime(),
+        type: "latlng",
         latitude: lngLat.lat,
         longitude: lngLat.lng,
       },
@@ -244,10 +261,10 @@ async function initialize() {
   await getDataFromFirebase();
   await loadMap();
   await addDraggableMarkerToMap();
+
+  document.getElementById("ConfirmButton").addEventListener("click", onConfirmClick);
 }
 
 // --- Entry Point ----
 
 initialize();
-
-document.getElementById("ConfirmButton").addEventListener("click", onConfirmClick);

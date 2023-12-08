@@ -28,6 +28,18 @@
         position: absolute;
         top: 5%;
         right: 5%;
+        border-radius: 5px;
+        padding: 3px 8px;
+      }
+      .marker {
+        /* transition: all 1s; */
+      }
+
+      body {
+        background-color: black;
+      }
+      #map canvas {
+        transition: opacity 200ms;
       }
     </style>
 
@@ -43,6 +55,6 @@
 
     <button id="ConfirmButton">CONFIRM LOCATION</button>
 
-    <script type="module" src="{{ site.baseurl }}/scripts/Map/map-pin.js?cachedz=1"></script>
+    <script type="module" src="{{ site.baseurl }}/scripts/Map/map-pin.js?cachedz=11"></script>
   </body>
 </html>

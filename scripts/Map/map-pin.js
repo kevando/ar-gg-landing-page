@@ -212,13 +212,13 @@ async function addDraggableMarkerToMap() {
 
     popup.setLngLat(coordinates).setHTML(description).addTo(map);
 
-    document.getElementById("map").querySelector("canvas").style.opacity = 0.7; // DARKEN MAP
+    // document.getElementById("map").querySelector("canvas").style.opacity = 0.7; // DARKEN MAP
   });
   el.addEventListener("mouseleave", () => {
     map.getCanvas().style.cursor = "";
     popup.remove();
 
-    document.getElementById("map").querySelector("canvas").style.opacity = 1.0; // DARKEN MAP
+    // document.getElementById("map").querySelector("canvas").style.opacity = 1.0; // DARKEN MAP
   });
 
   const markerObj = new mapboxgl.Marker(el, { draggable: true })

@@ -41,19 +41,23 @@
       #map canvas {
         transition: opacity 200ms;
       }
+      #ErrorMsg {
+        color: red;
+      }
     </style>
 
     <div id="map"></div>
 
     <div class="nav">
-      <h2 style="display: none">
+      <h2>
         <span id="NavTitle"></span>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <span id="LoadingMsg"></span>
+        <span id="ErrorMsg"></span>
       </h2>
     </div>
 
-    <button id="ConfirmButton">CONFIRM LOCATION</button>
+    <button id="ConfirmButton"  style="display: none">CONFIRM LOCATION</button>
 
     <script type="module" src="{{ site.baseurl }}/scripts/Map/map-pin.js?cachedz=11"></script>
   </body>

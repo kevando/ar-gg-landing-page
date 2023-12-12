@@ -31,6 +31,8 @@ async function getDataFromFirebase() {
     const snapshot = await get(pinRef);
 
     if (!snapshot.exists()) {
+      document.getElementById("ErrorMsg").innerHTML = "No Pin Data";
+
       throw new Error("😫 No Pin Data");
     }
 
@@ -68,6 +70,7 @@ async function getDataFromFirebase() {
     const snapshot = await get(objectiveRef);
 
     if (!snapshot.exists()) {
+    document.getElementById("ErrorMsg").innerHTML = "No Quest Data";
       throw new Error("😫 No Quest Data");
     }
 
@@ -142,6 +145,9 @@ async function loadMap() {
     userInfo.zoom = map.getZoom();
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
   });
+
+  // Show Button
+  document.getElementById("ConfirmButton").style.display = "block";
 }
 
 async function addDraggableMarkerToMap() {

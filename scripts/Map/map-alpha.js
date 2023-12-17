@@ -13,7 +13,7 @@ import {
   onValue,
   set,
   update,
-  push
+  push,
 } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
 import { firebaseConfig } from "./firebase-config.js";
@@ -47,7 +47,7 @@ if (!userInfo.uuid) {
 
 const map = new mapboxgl.Map({
   container: "map",
-  style: "mapbox://styles/mapbox/outdoors-v12",
+  style: "mapbox://styles/kevando/clq7gadbz003601qr84ni5ryz",
   center: userInfo.center || LNGLAT_SANTAMONICA,
   zoom: userInfo.zoom || 11,
   minzoom: 4,
@@ -111,6 +111,53 @@ map.on("move", function onMove() {
   $myAvatarImage.style.transform = `${avatarRotation} ${avatarScale}`;
 });
 
+function addGraticules() {
+  const graticule = {
+    type: "FeatureCollection",
+    features: [],
+  };
+  for (let lng = -170; lng <= 180; lng += 10) {
+    graticule.features.push({
+      type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: [
+          [lng, -90],
+          [lng, 90],
+        ],
+      },
+      properties: { value: lng },
+    });
+  }
+  for (let lat = -80; lat <= 80; lat += 10) {
+    graticule.features.push({
+      type: "Feature",
+      geometry: {
+        type: "LineString",
+        coordinates: [
+          [-180, lat],
+          [180, lat],
+        ],
+      },
+      properties: { value: lat },
+    });
+  }
+
+  map.on("load", () => {
+    map.addSource("graticule", {
+      type: "geojson",
+      data: graticule,
+    });
+    map.addLayer({
+      id: "graticule",
+      type: "line",
+      source: "graticule",
+    });
+  });
+}
+
+addGraticules();
+
 // ---- LOAD MAP -----
 
 async function loadMap() {
@@ -127,20 +174,28 @@ async function loadMap() {
   for (const marker of geojson.features) {
     itemsLoaded++;
 
-    const storageRef = ref_storage(storage, marker.properties.assetPath);
-    const iconUrl = await getDownloadURL(storageRef);
-
     // Create a DOM element for each marker.
     const el = document.createElement("div");
     const width = marker.properties.iconSize[0];
     const height = marker.properties.iconSize[1];
 
     el.className = "marker";
-    el.style.backgroundImage = `url(${iconUrl})`;
+
     el.style.width = `${width}px`;
     el.style.height = `${height}px`;
     el.style.backgroundSize = "100%";
     el.style.backgroundRepeat = "no-repeat";
+
+    try {
+      if (!marker.properties.assetPath) throw new Error("Missing AssestPath");
+
+      const storageRef = ref_storage(storage, marker.properties.assetPath);
+      const iconUrl = await getDownloadURL(storageRef);
+      el.style.backgroundImage = `url(${iconUrl})`;
+    } catch (e) {
+      console.log("ERROR downloading image: " + marker.properties.assetPath);
+      console.log(e.message);
+    }
 
     el.addEventListener("click", () => {
       // window.alert(marker.properties.message);

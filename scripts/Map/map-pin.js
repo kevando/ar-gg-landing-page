@@ -305,7 +305,7 @@ function onConfirmClickOLD() {
   update(objectiveRef, updatedLocation);
 }
 
-async function onConfirmClick() {
+async function onConfirmClickXHR() {
   var apiEndpoint = "https://smileycap-bot.herokuapp.com/api/pin";
 
   var dataToPost = {
@@ -328,6 +328,33 @@ async function onConfirmClick() {
     var data = JSON.parse(this.responseText);
     console.log(data);
   };
+}
+
+function onConfirmClick() {
+  var url = "https://smileycap-bot.herokuapp.com/api/pin";
+
+  var data = {
+    ...paramObj,
+    ...updatedLocation.location,
+  };
+
+  // let headers = new Headers();
+
+  // headers.append("Content-Type", "application/json");
+  // headers.append("Accept", "application/json");
+
+  // headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
+  // headers.append("Access-Control-Allow-Credentials", "true");
+
+  // Call `fetch()`, passing in the URL.
+  fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((json) => console.log(json))
+    .catch((error) => console.log("POST Request failed : " + error.message));
 }
 
 async function initialize() {

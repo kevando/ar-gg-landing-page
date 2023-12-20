@@ -1,0 +1,82 @@
+---
+permalink: /3d
+layout: default
+title: 3D Map
+---
+
+<!-- <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet" /> -->
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  #map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
+</style>
+
+<style>
+  .map-overlay {
+    font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+    position: absolute;
+    width: 200px;
+    top: 0;
+    left: 0;
+    padding: 10px;
+  }
+
+  .map-overlay .map-overlay-inner {
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .map-overlay-inner fieldset {
+    display: flex;
+    justify-content: space-between;
+    border: none;
+  }
+
+  .map-overlay-inner label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .map-overlay-inner .select-fieldset {
+    display: block;
+  }
+
+  .map-overlay-inner .select-fieldset label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .map-overlay-inner .select-fieldset select {
+    width: 100%;
+  }
+</style>
+
+<div id="map"></div>
+
+<script>
+  mapboxgl.accessToken =
+    "pk.eyJ1Ijoia2V2YW5kbyIsImEiOiJjaXphYnRnM3owMm1vMnFvOHFiYm5ibm5jIn0.sY29SXbpr7W9eQHiwpqAwg";
+  const map = new mapboxgl.Map({
+    container: "map", // container ID
+    center: [-122.39, 37.76], // starting position [lng, lat]
+    zoom: 15, // starting zoom
+    pitch: 62, // starting pitch
+    bearing: -20, // starting bearing
+  });
+
+  map.on("style.load", () => {
+
+
+  });
+</script>

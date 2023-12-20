@@ -1,6 +1,11 @@
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 import { getDownloadURL, ref } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
-import { get, child, update } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+import {
+  get,
+  child,
+  update,
+  push,
+} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
 import { dbRef, storage } from "./firebase-config.js";
 
@@ -12,12 +17,32 @@ var layerId = getQueryParam("layer_id");
 var pinId = getQueryParam("pin_id");
 var objectiveId = getQueryParam("objective_id");
 var questId = getQueryParam("quest_id");
+var itemId = getQueryParam("item_id");
 
+const pinsRef = child(dbRef, `layers/${layerId}/pins`);
 const pinRef = child(dbRef, `layers/${layerId}/pins/${pinId}`);
 const questRef = child(dbRef, `layers/${layerId}/quests/${questId}/objectives/${objectiveId}`);
 const objectiveRef = child(dbRef, `layers/${layerId}/quests/${questId}/objectives/${objectiveId}`);
 
+// Get ALL query params
+
+// const search = /*your search query ex:-?author=bloggingdeveloper&a1=hello*/
+// const params = new URLSearchParams(search);
+const params = new URL(window.location).searchParams;
+let paramObj = {};
+for (var value of params.keys()) {
+  paramObj[value] = params.get(value);
+}
+
+// console.log(paramObj)
+
 const LNGLAT_SANTAMONICA = [-118.52117896492756, 34.01321393735];
+const DEFAULT_PIN = {
+  coordinates: [0, 0],
+  title: "No Title",
+  body: "No Body",
+  iconUrl: "/assets/pin.png",
+};
 
 let pin;
 let map;
@@ -32,7 +57,6 @@ async function getDataFromFirebase() {
 
     if (!snapshot.exists()) {
       document.getElementById("ErrorMsg").innerHTML = "No Pin Data";
-
       throw new Error("😫 No Pin Data");
     }
 
@@ -70,7 +94,7 @@ async function getDataFromFirebase() {
     const snapshot = await get(objectiveRef);
 
     if (!snapshot.exists()) {
-    document.getElementById("ErrorMsg").innerHTML = "No Quest Data";
+      document.getElementById("ErrorMsg").innerHTML = "No Quest Data";
       throw new Error("😫 No Quest Data");
     }
 
@@ -118,9 +142,11 @@ async function getDataFromFirebase() {
     pin.iconUrl = iconUrl;
 
     pin.coordinates = pin.coordinates || LNGLAT_SANTAMONICA;
+  } else if (getQueryParam("item_id")) {
+    pin = DEFAULT_PIN;
   } else {
-    console.log("3");
-    pin = {};
+    // console.log("3");
+    pin = DEFAULT_PIN;
   }
 }
 
@@ -131,7 +157,7 @@ async function loadMap() {
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo")) || {};
 
-  console.log(pin);
+  // console.log(pin);
   map = new mapboxgl.Map({
     container: "map",
     style: "mapbox://styles/mapbox/outdoors-v12",
@@ -195,6 +221,9 @@ async function addDraggableMarkerToMap() {
     offset: 35,
   });
 
+  // console.log("geometry");
+  // console.log(marker.geometry);
+
   updatedLocation = {
     lastMoved: new Date().getTime(),
     location: {
@@ -233,6 +262,7 @@ async function addDraggableMarkerToMap() {
 
   // DRAG LISTENER
   markerObj.on("dragend", function onDragEnd(e) {
+    console.log("drag end");
     const lngLat = markerObj.getLngLat();
 
     updatedLocation = {
@@ -249,11 +279,23 @@ async function addDraggableMarkerToMap() {
       .setHTML(marker.properties.description)
       .addTo(map);
 
-    update(pinRef, updatedLocation);
+    // update(pinRef, updatedLocation);
   });
 }
 
-function onConfirmClick() {
+function onConfirmClickOLD() {
+  // this endpoint has two features that should probably get split up
+  // 1 => place item on map     2=> place objective on map
+
+  if (itemId) {
+    // PLACE ITEM ON MAP
+    updatedLocation.itemId = itemId;
+    push(pinsRef, updatedLocation);
+    return;
+  }
+
+  // ADD OBJECTIVE TO MAP
+
   if (!objectiveId || !questId || !layerId) {
     alert("Invalid URL parameters");
     return;
@@ -261,6 +303,31 @@ function onConfirmClick() {
 
   console.log("UPDATE DATABASE", updatedLocation);
   update(objectiveRef, updatedLocation);
+}
+
+async function onConfirmClick() {
+  var apiEndpoint = "https://smileycap-bot.herokuapp.com/api/pin";
+
+  var dataToPost = {
+    ...paramObj,
+    ...updatedLocation.location,
+  };
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", apiEndpoint, true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  // console.log("sending updated location");
+  console.log(dataToPost);
+
+  xhr.send(JSON.stringify(dataToPost));
+
+  xhr.onload = function () {
+    console.log("HELLO");
+    console.log(this.responseText);
+    var data = JSON.parse(this.responseText);
+    console.log(data);
+  };
 }
 
 async function initialize() {

@@ -26,7 +26,6 @@ const storage = getStorage(firebaseApp);
 
 let observerMarkers = {};
 let featuresArray = [];
-let isMapLoading = false;
 
 const observersRef = child(dbRef, `layers/953019908948635708/observers/`);
 const notificationsRef = child(dbRef, `layers/953019908948635708/notifications/`);
@@ -35,6 +34,7 @@ mapboxgl.accessToken = mapboxToken;
 
 const LOGLAT_LILL = [-88.1380655018482, 42.147436111279276];
 const LNGLAT_SANTAMONICA = [-118.52117896492756, 34.01321393735];
+const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/satellite-streets-v12";
 
 // INITIALIZE USER INFO
 // this object is used to manage state like zoom level, position on map
@@ -47,7 +47,7 @@ if (!userInfo.uuid) {
 
 const map = new mapboxgl.Map({
   container: "map",
-  style: "mapbox://styles/kevando/clq7gadbz003601qr84ni5ryz",
+  style: DEFAULT_MAP_STYLE,
   center: userInfo.center || LNGLAT_SANTAMONICA,
   zoom: userInfo.zoom || 11,
   minzoom: 4,
@@ -110,53 +110,6 @@ map.on("move", function onMove() {
 
   $myAvatarImage.style.transform = `${avatarRotation} ${avatarScale}`;
 });
-
-function addGraticules() {
-  const graticule = {
-    type: "FeatureCollection",
-    features: [],
-  };
-  for (let lng = -170; lng <= 180; lng += 10) {
-    graticule.features.push({
-      type: "Feature",
-      geometry: {
-        type: "LineString",
-        coordinates: [
-          [lng, -90],
-          [lng, 90],
-        ],
-      },
-      properties: { value: lng },
-    });
-  }
-  for (let lat = -80; lat <= 80; lat += 10) {
-    graticule.features.push({
-      type: "Feature",
-      geometry: {
-        type: "LineString",
-        coordinates: [
-          [-180, lat],
-          [180, lat],
-        ],
-      },
-      properties: { value: lat },
-    });
-  }
-
-  map.on("load", () => {
-    map.addSource("graticule", {
-      type: "geojson",
-      data: graticule,
-    });
-    map.addLayer({
-      id: "graticule",
-      type: "line",
-      source: "graticule",
-    });
-  });
-}
-
-addGraticules();
 
 // ---- LOAD MAP -----
 

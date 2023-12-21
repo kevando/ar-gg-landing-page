@@ -3,60 +3,67 @@
 <!DOCTYPE html>
 
 <html>
-
-<head>
-
+  <head>
     {% include head.html %}
 
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
 
     <link rel="stylesheet" href="{{ "/assets/map.css" | relative_url }}">
+  </head>
 
-    
-</head>
-
-<body class="{{ page.class_name | default: 'default' }}">
+  <body class="{{ page.class_name | default: 'default' }}">
     {{ content }}
 
     <style>
-        .mapboxgl-popup {
-            max-width: 400px;
-            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-        }
+      .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+      }
     </style>
 
     <div id="map"></div>
 
     <div class="nav">
-        <h2><span id="PlayerCount"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="LoadingMsg">Loading Items....</span></h2>
+      <h2>
+        <span id="PlayerCount"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="LoadingMsg"
+          >Loading Items....</span
+        >
+      </h2>
     </div>
 
     <div id="menu">
-        <input id="kevando/clpr98v7q008001qm23xu0q03" type="radio" name="rtoggle" value="comic" >
-        <label for="kevando/clpr98v7q008001qm23xu0q03">comic</label>
+      <input id="kevando/clpr98v7q008001qm23xu0q03" type="radio" name="rtoggle" value="comic" />
+      <label for="kevando/clpr98v7q008001qm23xu0q03">Comic Book</label>
 
-        <input id="mapbox/satellite-v9" type="radio" name="rtoggle" value="satellite" >
-        <label for="mapbox/satellite-v9">satellite</label>
+      <input id="mapbox/satellite-v9" type="radio" name="rtoggle" value="satellite" />
+      <label for="mapbox/satellite-v9">Satellite</label>
 
-        <input id="mapbox/light-v11" type="radio" name="rtoggle" value="light">
-        <label for="mapbox/light-v11">light</label>
+      <input
+        id="mapbox/satellite-streets-v12"
+        type="radio"
+        name="rtoggle"
+        value="hybrid"
+        checked="checked"
+      />
+      <label for="mapbox/satellite-streets-v12">Hybrid</label>
 
-        <input id="mapbox/dark-v11" type="radio" name="rtoggle" value="dark">
-        <label for="mapbox/dark-v11">dark</label>
+      <input id="mapbox/light-v11" type="radio" name="rtoggle" value="light" />
+      <label for="mapbox/light-v11">light</label>
 
-        <input id="mapbox/outdoors-v12" type="radio" name="rtoggle" value="outdoors" >
-        <label for="mapbox/outdoors-v12">street</label>
+      <input id="mapbox/dark-v11" type="radio" name="rtoggle" value="dark" />
+      <label for="mapbox/dark-v11">Dark</label>
 
-        <input id="kevando/clq7gadbz003601qr84ni5ryz" type="radio" name="rtoggle" value="lego" checked="checked">
-        <label for="kevando/clq7gadbz003601qr84ni5ryz">Lego</label>
+      <input id="mapbox/outdoors-v12" type="radio" name="rtoggle" value="outdoors" />
+      <label for="mapbox/outdoors-v12">Streets</label>
+
+      <input id="kevando/clq7gadbz003601qr84ni5ryz" type="radio" name="rtoggle" value="lego" />
+      <label for="kevando/clq7gadbz003601qr84ni5ryz">Lego</label>
     </div>
 
-    <script type="module" src="{{ site.baseurl }}/scripts/Map/map-alpha.js"></script>
-
-</body>
-
+    <script type="module" src="{{ site.baseurl }}/scripts/Map/map-alpha.js?cachedz=14"></script>
+  </body>
 </html>

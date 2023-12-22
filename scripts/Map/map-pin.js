@@ -359,35 +359,45 @@ function onConfirmClickold2() {
 }
 
 async function onConfirmClick() {
-  console.log("clicked");
+  console.log("clicked cors");
 
-  // fetch("https://smileycap-bot.herokuapp.com/api/pin", {
-  //   method: "POST",
-  //   mode: "no-cors",
-  //   cache: "no-cache",
-  //   headers: {
-  //     "Content-Type": "application/te",
-  //   },
-  //   body: JSON.stringify({
-  //     layerId: "953019908948635708",
-  //     userId: "267806768053092353",
-  //     itemId: "mushroom",
-  //     latitude: 0,
-  //     longitude: 0,
-  //   }),
-  // })
-  //   .then((response) => {
-  //     console.log("then response")
-  //     console.log(response)
-  //     return response.json()
-  //   })
-  //   .then((data) => {
-  //     console.log("Success:", data);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error:");
-  //     console.error(error);
-  //   });
+  const url = "https://smileycap-bot.herokuapp.com/api/pin";
+  const data = {
+    layerId: "953019908948635708",
+    userId: "267806768053092353",
+    itemId: "mushroom",
+    latitude: 0,
+    longitude: 0,
+  };
+
+  fetch(url, {
+    method: "POST", // or 'PUT'
+    mode: 'cors',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      console.log("then response");
+      console.log(response);
+      response.text().then(function (text) {
+        console.log(text)
+        // do something with the text response 
+      });
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+
+async function onConfirmClick2() {
+  console.log("clicked no cors");
 
   const url = "https://smileycap-bot.herokuapp.com/api/pin";
   const data = {
@@ -429,7 +439,7 @@ async function initialize() {
   await addDraggableMarkerToMap();
 
   document.getElementById("ConfirmButton").addEventListener("click", onConfirmClick);
-  // document.getElementById("ConfirmButton2").addEventListener("click", onConfirmClick2);
+  document.getElementById("ConfirmButton2").addEventListener("click", onConfirmClick2);
 }
 
 // --- Entry Point ----

@@ -330,7 +330,7 @@ async function onConfirmClickXHR() {
   };
 }
 
-function onConfirmClick() {
+function onConfirmClick2() {
   var url = "https://smileycap-bot.herokuapp.com/api/pin";
 
   var data = {
@@ -348,7 +348,7 @@ function onConfirmClick() {
 
   // Call `fetch()`, passing in the URL.
   fetch(url, {
-    mode: 'cors',
+    mode: "cors",
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -356,6 +356,31 @@ function onConfirmClick() {
     .then((response) => response.json())
     .then((json) => console.log(json))
     .catch((error) => console.log("POST Request failed : " + error.message));
+}
+
+async function onConfirmClick() {
+  fetch("https://smileycap-bot.herokuapp.com/api/pin", {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      layerId: "953019908948635708",
+      userId: "267806768053092353",
+      itemId: "mushroom",
+      latitude: 0,
+      longitude: 0,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 async function initialize() {

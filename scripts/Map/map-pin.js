@@ -372,7 +372,7 @@ async function onConfirmClick() {
 
   fetch(url, {
     method: "POST", // or 'PUT'
-    mode: 'cors',
+    mode: "cors",
     headers: {
       "Content-Type": "application/json",
     },
@@ -382,8 +382,8 @@ async function onConfirmClick() {
       console.log("then response");
       console.log(response);
       response.text().then(function (text) {
-        console.log(text)
-        // do something with the text response 
+        console.log(text);
+        // do something with the text response
       });
       return response.json();
     })
@@ -394,7 +394,6 @@ async function onConfirmClick() {
       console.error("Error:", error);
     });
 }
-
 
 async function onConfirmClick2() {
   console.log("clicked no cors");
@@ -410,7 +409,7 @@ async function onConfirmClick2() {
 
   fetch(url, {
     method: "POST", // or 'PUT'
-    mode: 'no-cors',
+    mode: "no-cors",
     headers: {
       "Content-Type": "application/json",
     },
@@ -420,8 +419,8 @@ async function onConfirmClick2() {
       console.log("then response");
       console.log(response);
       response.text().then(function (text) {
-        console.log(text)
-        // do something with the text response 
+        console.log(text);
+        // do something with the text response
       });
       return response.json();
     })
@@ -432,6 +431,28 @@ async function onConfirmClick2() {
       console.error("Error:", error);
     });
 }
+async function onConfirmClick3() {
+  console.log("clicked old school");
+  const data = {
+    layerId: "953019908948635708",
+    userId: "267806768053092353",
+    itemId: "mushroom",
+    latitude: 0,
+    longitude: 0,
+  };
+  const url = "https://smileycap-bot.herokuapp.com/api/pin";
+
+  var xmlHttp = new XMLHttpRequest();
+
+  xmlHttp.onload = function () {
+    console.log("ONLOAD");
+    console.log(xmlHttp);
+  };
+
+  xmlHttp.open("POST", url, true); // false for synchronous request
+  xmlHttp.setRequestHeader("Content-type", "application/json");
+  xmlHttp.send(data);
+}
 
 async function initialize() {
   await getDataFromFirebase();
@@ -440,6 +461,7 @@ async function initialize() {
 
   document.getElementById("ConfirmButton").addEventListener("click", onConfirmClick);
   document.getElementById("ConfirmButton2").addEventListener("click", onConfirmClick2);
+  document.getElementById("ConfirmButton3").addEventListener("click", onConfirmClick3);
 }
 
 // --- Entry Point ----

@@ -29,9 +29,9 @@ const objectiveRef = child(dbRef, `layers/${layerId}/quests/${questId}/objective
 // const search = /*your search query ex:-?author=bloggingdeveloper&a1=hello*/
 // const params = new URLSearchParams(search);
 const params = new URL(window.location).searchParams;
-let paramObj = {};
+let queryParams = {};
 for (var value of params.keys()) {
-  paramObj[value] = params.get(value);
+  queryParams[value] = params.get(value);
 }
 
 // console.log(paramObj)
@@ -283,175 +283,40 @@ async function addDraggableMarkerToMap() {
   });
 }
 
-function onConfirmClickOLD() {
-  // this endpoint has two features that should probably get split up
-  // 1 => place item on map     2=> place objective on map
-
-  if (itemId) {
-    // PLACE ITEM ON MAP
-    updatedLocation.itemId = itemId;
-    push(pinsRef, updatedLocation);
-    return;
-  }
-
-  // ADD OBJECTIVE TO MAP
-
-  if (!objectiveId || !questId || !layerId) {
-    alert("Invalid URL parameters");
-    return;
-  }
-
-  console.log("UPDATE DATABASE", updatedLocation);
-  update(objectiveRef, updatedLocation);
-}
-
-async function onConfirmClickXHR() {
-  var apiEndpoint = "https://smileycap-bot.herokuapp.com/api/pin";
-
-  var dataToPost = {
-    ...paramObj,
-    ...updatedLocation.location,
-  };
-
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", apiEndpoint, true);
-  xhr.setRequestHeader("Content-Type", "application/json");
-
-  // console.log("sending updated location");
-  console.log(dataToPost);
-
-  xhr.send(JSON.stringify(dataToPost));
-
-  xhr.onload = function () {
-    console.log("HELLO");
-    console.log(this.responseText);
-    var data = JSON.parse(this.responseText);
-    console.log(data);
-  };
-}
-
-function onConfirmClickold2() {
-  var url = "https://smileycap-bot.herokuapp.com/api/pin";
-
-  var data = {
-    ...paramObj,
-    ...updatedLocation.location,
-  };
-
-  // let headers = new Headers();
-
-  // headers.append("Content-Type", "application/json");
-  // headers.append("Accept", "application/json");
-
-  // headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
-  // headers.append("Access-Control-Allow-Credentials", "true");
-
-  // Call `fetch()`, passing in the URL.
-  fetch(url, {
-    mode: "cors",
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  })
-    .then((response) => response.json())
-    .then((json) => console.log(json))
-    .catch((error) => console.log("POST Request failed : " + error.message));
-}
-
 async function onConfirmClick() {
   console.log("clicked cors");
 
-  const url = "https://smileycap-bot.herokuapp.com/api/pin";
-  const data = {
-    layerId: "953019908948635708",
-    userId: "267806768053092353",
-    itemId: "mushroom",
-    latitude: 0,
-    longitude: 0,
-  };
+  var queryParamsString = window.location.search;
 
-  fetch(url, {
-    method: "POST", // or 'PUT'
+  console.log(queryParamsString);
+
+  const BASE_URL = "https://smileycap-bot.herokuapp.com/api/pin"; //?questId=test_id&layerId=953019908948635708&objectiveId=-Nl1Vyrl3uqSs68rXn2L";
+
+  var lat = updatedLocation.location.latitude;
+  var lng = updatedLocation.location.longitude;
+
+  var queryParamsToSend = `${queryParamsString}&latitude=${lat}&longitude=${lng}`;
+
+  
+
+  var apiEndpoint = BASE_URL + queryParamsToSend;
+
+  console.log(apiEndpoint);
+
+  let headers = new Headers();
+
+  fetch(apiEndpoint, {
+    method: "GET", // or 'PUT'
     mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+    headers: headers,
   })
-    .then((response) => {
-      console.log("then response");
-      console.log(response);
-      response.text().then(function (text) {
-        console.log(text);
-        // do something with the text response
-      });
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
       console.log("Success:", data);
     })
     .catch((error) => {
       console.error("Error:", error);
     });
-}
-
-async function onConfirmClick2() {
-  console.log("clicked no cors");
-
-  const url = "https://smileycap-bot.herokuapp.com/api/pin";
-  const data = {
-    layerId: "953019908948635708",
-    userId: "267806768053092353",
-    itemId: "mushroom",
-    latitude: 0,
-    longitude: 0,
-  };
-
-  fetch(url, {
-    method: "POST", // or 'PUT'
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      console.log("then response");
-      console.log(response);
-      response.text().then(function (text) {
-        console.log(text);
-        // do something with the text response
-      });
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Success:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-async function onConfirmClick3() {
-  console.log("clicked old school");
-  const data = {
-    layerId: "953019908948635708",
-    userId: "267806768053092353",
-    itemId: "mushroom",
-    latitude: 0,
-    longitude: 0,
-  };
-  const url = "https://smileycap-bot.herokuapp.com/api/pin";
-
-  var xmlHttp = new XMLHttpRequest();
-
-  xmlHttp.onload = function () {
-    console.log("ONLOAD");
-    console.log(xmlHttp);
-  };
-
-  xmlHttp.open("POST", url, true); // false for synchronous request
-  xmlHttp.setRequestHeader("Content-type", "application/json");
-  xmlHttp.send(data);
 }
 
 async function initialize() {
@@ -460,8 +325,8 @@ async function initialize() {
   await addDraggableMarkerToMap();
 
   document.getElementById("ConfirmButton").addEventListener("click", onConfirmClick);
-  document.getElementById("ConfirmButton2").addEventListener("click", onConfirmClick2);
-  document.getElementById("ConfirmButton3").addEventListener("click", onConfirmClick3);
+  // document.getElementById("ConfirmButton2").addEventListener("click", onConfirmClick2);
+  // document.getElementById("ConfirmButton3").addEventListener("click", onConfirmClick3);
 }
 
 // --- Entry Point ----

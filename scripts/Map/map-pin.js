@@ -330,7 +330,7 @@ async function onConfirmClickXHR() {
   };
 }
 
-function onConfirmClick2() {
+function onConfirmClickold2() {
   var url = "https://smileycap-bot.herokuapp.com/api/pin";
 
   var data = {
@@ -358,11 +358,72 @@ function onConfirmClick2() {
     .catch((error) => console.log("POST Request failed : " + error.message));
 }
 
-async function onConfirmClick() {
+var policies = [
+  // Referer will never be set.
+  "no-referrer",
+
+  // Referer will not be set when navigating from HTTPS to HTTP.
+  "no-referrer-when-downgrade",
+
+  // Full Referer for same-origin requests, and no Referer for cross-origin requests.
+  "same-origin",
+
+  // Referer will be set to just the origin, omitting the URL's path and search.
+  "origin",
+
+  // Referer will be set to just the origin except when navigating from HTTPS to HTTP,
+  // in which case no Referer is sent.
+  "strict-origin",
+
+  // Full Referer for same-origin requests, and bare origin for cross-origin requests.
+  "origin-when-cross-origin",
+
+  // Full Referer for same-origin requests, and bare origin for cross-origin requests
+  // except when navigating from HTTPS to HTTP, in which case no Referer is sent.
+  "strict-origin-when-cross-origin",
+
+  // Full Referer for all requests, whether same- or cross-origin.
+  "unsafe-url",
+];
+
+let policyIndex = 0;
+
+async function onConfirmClick2() {
+
+  console.log(policies[policyIndex])
   fetch("https://smileycap-bot.herokuapp.com/api/pin", {
     method: "POST",
     mode: "cors",
     cache: "no-cache",
+    referrerPolicy: policies[policyIndex],
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      layerId: "953019908948635708",
+      userId: "267806768053092353",
+      itemId: "mushroom",
+      latitude: 0,
+      longitude: 0,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
+  policyIndex++;
+}
+
+async function onConfirmClick() {
+  fetch("https://smileycap-bot.herokuapp.com/api/pin", {
+    method: "POST",
+    mode: "no-cors",
+    cache: "no-cache",
+    // referrerPolicy
     headers: {
       "Content-Type": "application/json",
     },
@@ -389,6 +450,7 @@ async function initialize() {
   await addDraggableMarkerToMap();
 
   document.getElementById("ConfirmButton").addEventListener("click", onConfirmClick);
+  document.getElementById("ConfirmButton2").addEventListener("click", onConfirmClick2);
 }
 
 // --- Entry Point ----

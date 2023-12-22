@@ -13,11 +13,11 @@ import { getImageUrlFromAssetPath } from "./firebase-helpers.js";
 import { getQueryParam } from "../helpers.js";
 import { mapboxToken } from "./constants.js";
 
-var layerId = getQueryParam("layer_id");
-var pinId = getQueryParam("pin_id");
-var objectiveId = getQueryParam("objective_id");
-var questId = getQueryParam("quest_id");
-var itemId = getQueryParam("item_id");
+var layerId = getQueryParam("layerId");
+var pinId = getQueryParam("pinId");
+var objectiveId = getQueryParam("objectiveId");
+var questId = getQueryParam("questId");
+var itemId = getQueryParam("itemId");
 
 const pinsRef = child(dbRef, `layers/${layerId}/pins`);
 const pinRef = child(dbRef, `layers/${layerId}/pins/${pinId}`);
@@ -34,9 +34,8 @@ for (var value of params.keys()) {
   queryParams[value] = params.get(value);
 }
 
-// console.log(paramObj)
-
 const LNGLAT_SANTAMONICA = [-118.52117896492756, 34.01321393735];
+const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/satellite-streets-v12";
 const DEFAULT_ZOOM = 10;
 const DEFAULT_PIN = {
   coordinates: LNGLAT_SANTAMONICA,
@@ -53,7 +52,43 @@ let coordinates;
 async function getDataFromFirebase() {
   // GET DATA FROM PIN
 
-  if (pinId) {
+  async function getItemData() {
+    var itemRef = child(dbRef, `collectibles/${itemId}`);
+
+    var snapshot = await get(itemRef);
+
+    if (!snapshot.exists()) {
+      document.getElementById("ErrorMsg").innerHTML = "Item Not Found";
+      throw new Error("Item Not Found");
+    }
+
+    const data = snapshot.val();
+
+    const { image, body, title, owners } = snapshot.val();
+
+    document.getElementById("NavTitle").innerHTML = `<strong>${title}</strong> => ${body}`;
+
+    var assetPath =image;
+
+    console.log("item data loaded");
+
+    const storageRef = ref(storage, assetPath);
+    const iconUrl = await getDownloadURL(storageRef);
+
+    console.log(iconUrl);
+
+
+    pin = data;
+    pin.coordinates = LNGLAT_SANTAMONICA; // only handles creating a NEW pin. 
+    pin.iconUrl = iconUrl;
+
+  }
+
+  if(itemId) {
+    await getItemData();
+  }
+
+  else if (pinId) {
     const snapshot = await get(pinRef);
 
     if (!snapshot.exists()) {
@@ -161,7 +196,7 @@ async function loadMap() {
   // console.log(pin);
   map = new mapboxgl.Map({
     container: "map",
-    style: "mapbox://styles/mapbox/outdoors-v12",
+    style: DEFAULT_MAP_STYLE,
     center: pin.coordinates,
     zoom: userInfo.zoom || DEFAULT_ZOOM,
   });

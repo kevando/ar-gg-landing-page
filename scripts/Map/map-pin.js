@@ -347,6 +347,8 @@ async function onConfirmClick() {
     .then((response) => response.json())
     .then((data) => {
       console.log("Success:", data);
+      alert(pin.title + " is on the map!");
+      document.getElementById("ConfirmButton").style.display = "none";
     })
     .catch((error) => {
       console.error("Error:", error);

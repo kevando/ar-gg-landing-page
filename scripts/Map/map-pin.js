@@ -37,8 +37,9 @@ for (var value of params.keys()) {
 // console.log(paramObj)
 
 const LNGLAT_SANTAMONICA = [-118.52117896492756, 34.01321393735];
+const DEFAULT_ZOOM = 10;
 const DEFAULT_PIN = {
-  coordinates: [0, 0],
+  coordinates: LNGLAT_SANTAMONICA,
   title: "No Title",
   body: "No Body",
   iconUrl: "/assets/pin.png",
@@ -162,7 +163,7 @@ async function loadMap() {
     container: "map",
     style: "mapbox://styles/mapbox/outdoors-v12",
     center: pin.coordinates,
-    zoom: userInfo.zoom || 11,
+    zoom: userInfo.zoom || DEFAULT_ZOOM,
   });
 
   map.on("move", () => {
@@ -296,8 +297,6 @@ async function onConfirmClick() {
   var lng = updatedLocation.location.longitude;
 
   var queryParamsToSend = `${queryParamsString}&latitude=${lat}&longitude=${lng}`;
-
-  
 
   var apiEndpoint = BASE_URL + queryParamsToSend;
 

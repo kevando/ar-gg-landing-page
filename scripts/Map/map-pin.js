@@ -68,7 +68,7 @@ async function getDataFromFirebase() {
 
     document.getElementById("NavTitle").innerHTML = `<strong>${title}</strong> => ${body}`;
 
-    var assetPath =image;
+    var assetPath = image;
 
     console.log("item data loaded");
 
@@ -77,18 +77,14 @@ async function getDataFromFirebase() {
 
     console.log(iconUrl);
 
-
     pin = data;
-    pin.coordinates = LNGLAT_SANTAMONICA; // only handles creating a NEW pin. 
+    pin.coordinates = LNGLAT_SANTAMONICA; // only handles creating a NEW pin.
     pin.iconUrl = iconUrl;
-
   }
 
-  if(itemId) {
+  if (itemId) {
     await getItemData();
-  }
-
-  else if (pinId) {
+  } else if (pinId) {
     const snapshot = await get(pinRef);
 
     if (!snapshot.exists()) {
@@ -138,15 +134,21 @@ async function getDataFromFirebase() {
 
     pin = data;
 
+    console.log(pin);
+
     // Get Coordinates
 
     if (data.location) {
-      var lng = data.location.longitude;
-      var lat = data.location.latitude;
+      var lng = data.location.longitude || LNGLAT_SANTAMONICA[0];
+      var lat = data.location.latitude || LNGLAT_SANTAMONICA[1];
 
       // console.log(data.location);
 
+      console.log("A");
+
       if (!lng || !lat) return;
+
+      console.log("B");
 
       lng = parseFloat(lng);
       lat = parseFloat(lat);
@@ -326,7 +328,7 @@ async function onConfirmClick() {
 
   console.log(queryParamsString);
 
-  const BASE_URL = "https://smileycap-bot.herokuapp.com/api/pin"; //?questId=test_id&layerId=953019908948635708&objectiveId=-Nl1Vyrl3uqSs68rXn2L";
+  const BASE_URL = "https://smileycap-bot.herokuapp.com/api/pin";
 
   var lat = updatedLocation.location.latitude;
   var lng = updatedLocation.location.longitude;

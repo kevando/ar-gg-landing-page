@@ -114,7 +114,6 @@ map.on("move", function onMove() {
 // ---- LOAD MAP -----
 
 async function loadMap() {
-  isMapLoading = true;
 
   const geojson = {
     type: "FeatureCollection",
@@ -188,7 +187,7 @@ async function loadMap() {
     }
   }
 
-  isMapLoading = false;
+
   console.log("Map done loading");
 
   // document.getElementById("LoadingMsg").innerHTML = `${featuresArray.length} items loaded`

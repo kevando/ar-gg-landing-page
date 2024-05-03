@@ -1,0 +1,401 @@
+$base: -40;
+$l: 67%;
+// There's something funky with Chrome and using Font Awesome - the font goes slightly above their bounding boxes and it can't be fixed with line height alone
+@mixin chrome {
+  &:not(*:root) {
+    @content;
+  }
+}
+@mixin debug($width: 1px, $border-color: cyan, $color: red) {
+  border: $width solid $border-color;
+  color: $color;
+  z-index: 1000;
+}
+
+// ~* Setup *~ //
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+.bg {
+  height: 100%;
+}
+html {
+  background-color: white;
+  padding: 1vmin;
+}
+body {
+  border: 2vmin solid black;
+  border-radius: 5vmin;
+  padding: calc(2vmin + 10px);
+  margin: 0;
+}
+
+// ~* Chrome FA adjustments *~ //
+.fal.fa-hand-paper {
+  @include chrome {
+    padding-top: 0.051em;
+  }
+}
+.far.fa-dot-circle {
+  @include chrome {
+    padding-top: 0.060625em;
+  }
+}
+.fas.fa-circle {
+  @include chrome {
+    padding-top: 0.0675em;
+  }
+}
+.fas.fa-eye {
+  @include chrome {
+    padding-top: 0.05em;
+  }
+}
+.fas.fa-map-marker {
+  @include chrome {
+    padding-top: 0.055em;
+  }
+}
+
+// ~* Page Elements *~ //
+.bg {
+  background-color: black;
+  background-image: radial-gradient(circle, white 1vmin, transparent 1.1vmin, transparent 8vmin),
+    radial-gradient(circle, white 0.8vmin, transparent 0.9vmin, transparent 10vmin),
+    radial-gradient(circle, white 0.5vmin, transparent 0.51vmin, transparent 3vmin);
+  background-position: 20px 50px, -10px -10px, 50px -55px;
+  background-size: 150px 200px;
+  display: flex;
+  position: relative;
+}
+.border {
+  &-bottom {
+    bottom: -10px;
+    transform: rotate(180deg);
+  }
+  &-left {
+    bottom: -20px;
+    left: -10px;
+    transform: rotate(-90deg);
+    transform-origin: top left;
+  }
+  // This is creating an artifact and I don't know what to do 😭
+  &-right {
+    bottom: 0;
+    right: 10.1px;
+    transform: rotate(90deg);
+    transform-origin: bottom right;
+  }
+  &-top {
+    top: -10px;
+  }
+  &-bottom,
+  &-top {
+    width: calc(100vw - 10vmin - 20px);
+  }
+  &-left,
+  &-right {
+    width: calc(100vh - 10vmin - 20px);
+  }
+  &-bottom,
+  &-left,
+  &-right,
+  &-top {
+    &::before {
+      background-color: black;
+      border-radius: 15px;
+      content: "";
+      height: 30px;
+      left: -10px;
+      position: absolute;
+      top: 0;
+      width: 30px;
+    }
+    animation: wavy 0.5s linear infinite;
+    background-repeat: repeat-x;
+    background-size: 20px 20px, 40px 20px;
+    background-image: radial-gradient(circle at center -5px, transparent 12px, black 13.5px),
+      radial-gradient(circle at 10px 15px, black 15px, transparent 16.5px);
+    height: 20px;
+    position: absolute;
+  }
+}
+.drop {
+  $shape: scale(0.75) scaleY(1.33);
+  color: red;
+  font-size: 20vmin;
+  height: 20.4vmin;
+  position: absolute;
+  -webkit-text-stroke: 2px black;
+  transform: $shape;
+  width: 15.3vmin;
+  &:first-child {
+    right: 2vmin;
+    top: 0;
+    transform: rotate(45deg) $shape;
+  }
+  &:nth-child(2) {
+    right: 3vmin;
+    top: 50%;
+    transform: rotate(90deg) translateX(-50%) $shape;
+  }
+  &:nth-child(3) {
+    right: 0;
+    top: 100%;
+    transform: rotate(135deg) translateX(-82%) translateY(82%) $shape;
+  }
+  &:nth-child(4) {
+    left: 0;
+    top: 100%;
+    transform: rotate(-135deg) translateX(82%) translateY(82%) $shape;
+  }
+  &:nth-child(5) {
+    left: 3vmin;
+    top: 50%;
+    transform: rotate(-90deg) translateX(50%) $shape;
+  }
+  &:last-child {
+    left: 2vmin;
+    top: 0;
+    transform: rotate(-45deg) $shape;
+  }
+  @for $i from 1 through 6 {
+    $s: hsl($base + (60 * $i), 100%, $l);
+    &:nth-child(#{$i}) {
+      color: $s;
+    }
+  }
+}
+.eye {
+  background-position: 0.2vmin 0;
+  bottom: 6vmin;
+  font-size: 20vmin;
+  height: 15.35vmin;
+  position: absolute;
+  right: 7vmin;
+  text-align: center;
+  width: 23vmin;
+  &::before {
+    position: relative;
+    top: -2.5vmin;
+  }
+  @include chrome {
+    &::before {
+      display: block;
+      margin-top: -2.5vmin;
+      position: static;
+    }
+  }
+} // fixed
+.eye-fill {
+  bottom: 7vmin;
+  color: white;
+  font-size: 14vmin;
+  height: 14vmin;
+  position: absolute;
+  right: 11vmin;
+  width: 14vmin;
+  @include chrome {
+    padding-top: 0.8vmin;
+  }
+} // ok for now
+.hamsa {
+  animation: bounce 1s infinite linear alternate;
+  height: 51vmin;
+  margin: auto;
+  position: relative;
+  width: 45vmin;
+}
+.hand {
+  font-size: 50vmin;
+  height: 1.008em;
+  left: 0.014em;
+  position: relative;
+  transform: scale(0.9);
+  width: 0.884em;
+}
+.hand-outline {
+  animation: scroll 30s linear infinite;
+  bottom: 0;
+  font-size: 51vmin;
+  height: 1.0058823529em;
+  line-height: 1;
+  position: absolute;
+  right: 0;
+  width: 0.8823529412em;
+} // fixed
+.iris {
+  animation: iris 5s linear infinite;
+  bottom: 9.6vmin;
+  font-size: 8vmin;
+  height: 8.07vmin;
+  position: absolute;
+  right: 14.1vmin;
+  width: 8.07vmin;
+  &::before {
+    position: relative;
+    left: -0.12vmin;
+    top: -0.14vmin;
+  }
+} // fixed
+.nail {
+  color: white;
+  position: absolute;
+  font-size: 3vmin;
+  &-middle {
+    left: 22vmin;
+    top: 4.7vmin;
+  }
+  &-pinky {
+    right: 4.25vmin;
+    top: 16.2vmin;
+  }
+  &-pointer {
+    left: 14.2vmin;
+    top: 8.4vmin;
+  }
+  &-ring {
+    left: 29.75vmin;
+    top: 8.2vmin;
+  }
+  &-thumb {
+    left: 5vmin;
+    top: 27vmin;
+  }
+} // good
+.pupil-outline {
+  bottom: 5.7vmin;
+  font-size: 16vmin;
+  height: 15.8vmin;
+  position: absolute;
+  right: 10.2vmin;
+  width: 15.8vmin;
+  &::before {
+    left: -0.25vmin;
+    position: relative;
+    top: -0.25vmin;
+  }
+} // fixed
+.sparkle {
+  // we're going to cut off the aditional sparkles!
+  $shadow: drop-shadow(0 0 1vmin #000);
+  color: #fff;
+  filter: $shadow $shadow $shadow;
+  font-size: 15vmin;
+  height: 6vmin;
+  left: 25%;
+  line-height: 0.9;
+  overflow: hidden;
+  position: absolute;
+  -webkit-text-stroke: 1px #000;
+  text-indent: 0.67em;
+  top: 25%;
+  transform: scaleX(-1) scale(2);
+  width: 6vmin;
+  & + &:not(&-sm) {
+    left: auto;
+    right: 20%;
+    top: 75%;
+  }
+  &-sm {
+    left: 30%;
+    top: 70%;
+    transform: scaleX(-1);
+    & + & {
+      left: auto;
+      right: 27%;
+      top: 25%;
+    }
+  }
+  &::before {
+    position: relative;
+    right: 9.4vmin;
+  }
+}
+
+// ~* Utilities *~ //
+@function gradient($h: -40, $stripe: false, $w: 50%) {
+  $g: ();
+  $r: ();
+  $stripe-width: $w / 6;
+  @for $i from 0 through 6 {
+    $s: hsl($h + (60 * $i), 100%, $l);
+    $g: join($g, $s, comma);
+  }
+  @if $stripe {
+    @for $i from 1 through 6 {
+      $item: nth($g, $i);
+      $s: $item $stripe-width * ($i - 1), $item $stripe-width * $i;
+      $r: join($r, $s, comma);
+    }
+    @return $r;
+  }
+  @return $g;
+}
+body {
+  background-image: linear-gradient(gradient(), gradient());
+  background-image: conic-gradient(gradient(), gradient());
+}
+.cutout {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.gradient {
+  background-image: linear-gradient(to top, gradient());
+  background-size: 100% 600%;
+  background-position: 0 0;
+  &-radial {
+    animation: radial 1s linear infinite;
+    background-image: repeating-radial-gradient(circle at center 8.9vmin, gradient($base, true));
+  }
+}
+
+// ~* Animations *~ //
+@keyframes bounce {
+  from {
+    transform: translateY(-2.5vmin);
+  }
+  to {
+    transform: translateY(2.5vmin);
+  }
+}
+@keyframes iris {
+  $g: ();
+  @for $i from 0 through 6 {
+    $s: hsl($base + (60 * $i), 100%, $l);
+    $g: join($g, $s);
+  }
+  @for $i from 1 through length($g) {
+    $stop: 100% / (length($g) - 1);
+    #{$stop * ($i - 1)} {
+      color: nth($g, (length($g) + 1 - $i));
+    }
+  }
+}
+@keyframes radial {
+  @for $i from 0 through length(gradient($base, true))-3 {
+    $stop: 100% / (length(gradient($base, true))-3);
+    #{$stop*$i} {
+      background-image: repeating-radial-gradient(circle, gradient($base * $i, true));
+    }
+  }
+}
+@keyframes scroll {
+  @for $i from 0 through length(gradient($base)) {
+    $stop: 100% / length(gradient($base));
+    #{$stop*$i} {
+      background-position: 0 100% * $i;
+    }
+  }
+}
+@keyframes wavy {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 0;
+  }
+}

@@ -23,26 +23,26 @@ const scoresRef = child(dbRef, `scores/`);
 
 let list = document.querySelector("#LeaderboardList");
 
-(function () {
-  onValue(scoresRef, (snapshot) => {
-    var scores = [];
+// (function () {
+//   onValue(scoresRef, (snapshot) => {
+//     var scores = [];
 
-    snapshot.forEach((childSnapshot) => {
-      const childKey = childSnapshot.key;
-      const childData = childSnapshot.val();
-      scores.push(childData);
-    });
+//     snapshot.forEach((childSnapshot) => {
+//       const childKey = childSnapshot.key;
+//       const childData = childSnapshot.val();
+//       scores.push(childData);
+//     });
 
-    // sort
+//     // sort
 
-    scores.sort((a, b) => b - a);
+//     scores.sort((a, b) => b - a);
 
-    // display
-    list.innerHTML = "";
-    scores.forEach((score, index) => {
-      const listItem = document.createElement("li");
-      listItem.innerHTML = `<span>${score}</span>`;
-      list.appendChild(listItem);
-    });
-  });
-})();
+//     // display
+//     list.innerHTML = "";
+//     scores.forEach((score, index) => {
+//       const listItem = document.createElement("li");
+//       listItem.innerHTML = `<span>${score}</span>`;
+//       list.appendChild(listItem);
+//     });
+//   });
+// })();

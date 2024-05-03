@@ -1,18 +1,80 @@
 <!-- Generate a unique number to append to the js URLs so they dont get cached during development -->
-{% assign cachedz = site.time | date: '%M%S' %} {% assign a = page.name | split: '.' %} {% assign page_name = a[0] %}
+{% assign cachedz = site.time | date: '%M%S' %} {% assign a = page.name | split: '.' %} {% assign
+page_name = a[0] %}
 
 <!DOCTYPE html>
 <html>
   <head>
-    {% include head.html %}
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+   
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css"
+      integrity="sha512-P9vJUXK+LyvAzj8otTOKzdfF1F3UYVl13+F8Fof8/2QNb8Twd6Vb+VD52I7+87tex9UXxnzPgWA3rH96RExA7A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/regular.min.css"
+      integrity="sha512-d2x1oQUT6HACW9UlXxWI6XrIBDrEE5z2tit/+kWEdXdVYuift7sm+Q6ucfGWQr1F0+GD9/6eYoYDegw2nm05Vw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css"
+      integrity="sha512-tk4nGrLxft4l30r9ETuejLU0a3d7LwMzj0eXjzc16JQj+5U1IeVoCuGLObRDc3+eQMUcEQY1RIDPGvuA7SNQ2w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    
   </head>
-  <body class="waitlist">
+  <body class="leaderboard">
+    <div class="bg">
+      <div class="borders">
+        <div class="border-top"></div>
+        <div class="border-right"></div>
+        <div class="border-bottom"></div>
+        <div class="border-left"></div>
+      </div>
+      <div class="sparkles">
+        <i class="fas fa-hand-sparkles sparkle"></i><i class="fas fa-hand-sparkles sparkle"></i
+        ><i class="fas fa-hand-sparkles sparkle sparkle-sm"></i
+        ><i class="fas fa-hand-sparkles sparkle sparkle-sm"></i>
+      </div>
+      <div class="drops">
+        <i class="fas fa-map-marker drop"></i><i class="fas fa-map-marker drop"></i
+        ><i class="fas fa-map-marker drop"></i><i class="fas fa-map-marker drop"></i
+        ><i class="fas fa-map-marker drop"></i><i class="fas fa-map-marker drop"></i>
+      </div>
+      <div class="hamsa">
+        <div class="h">
+          <i class="far fa-hand-paper hand-outline gradient cutout"></i
+          ><i class="fas fa-hand-paper hand"></i>
+        </div>
+        <div class="evil-eye">
+          <i class="fas fa-eye eye gradient-radial cutout"></i><i class="fas fa-circle eye-fill"></i
+          ><i class="fas fa-circle iris"></i><i class="far fa-dot-circle pupil-outline"></i>
+        </div>
+        <div class="nails">
+          <i class="fas fa-circle nail nail-thumb"></i
+          ><i class="fas fa-circle nail nail-pointer"></i
+          ><i class="fas fa-circle nail nail-middle"></i><i class="fas fa-circle nail nail-ring"></i
+          ><i class="fas fa-circle nail nail-pinky"></i>
+        </div>
+      </div>
+    </div>
 
-    <div id="Leaderboard">
-      <h2>Leaderboard</h2>
-      <ul id="LeaderboardList">
-      </ul>
+    <script src="https://leaverou.github.io/conic-gradient/conic-gradient.js"></script>
+    <link rel="stylesheet" href="{{ "/assets/leaderboard.css" | relative_url }}">
 
-    <script type="module" src="{{site.baseurl}}/scripts/Frontend/leaderboard.js?cachedz={{ cachedz }}"></script>
+    <script
+      type="module"
+      src="{{site.baseurl}}/scripts/frontend/leaderboard.js?cachedz={{ cachedz }}"
+    ></script>
   </body>
 </html>

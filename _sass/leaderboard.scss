@@ -353,15 +353,34 @@ body {
   }
 }
 
+.score {
+      /* text-align: center; */
+      color: #00ff9a;
+      font-size: 9vw;
+    //   width: 100%;
+      position: absolute;
+      bottom: -5%;
+      left: 14vmin;
+      text-wrap: nowrap;
+}
+
 // ~* Animations *~ //
 @keyframes bounce {
   from {
-    transform: translateY(-2.5vmin);
+    transform: translateY(-15vmin);
   }
   to {
-    transform: translateY(2.5vmin);
+    transform: translateY(-10vmin);
   }
 }
+@keyframes bounceOG {
+    from {
+      transform: translateY(-2.5vmin);
+    }
+    to {
+      transform: translateY(2.5vmin);
+    }
+  }
 @keyframes iris {
   $g: ();
   @for $i from 0 through 6 {

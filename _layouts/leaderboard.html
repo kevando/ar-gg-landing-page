@@ -1,0 +1,18 @@
+<!-- Generate a unique number to append to the js URLs so they dont get cached during development -->
+{% assign cachedz = site.time | date: '%M%S' %} {% assign a = page.name | split: '.' %} {% assign page_name = a[0] %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include head.html %}
+  </head>
+  <body class="waitlist">
+
+    <div id="Leaderboard">
+      <h2>Leaderboard</h2>
+      <ul id="LeaderboardList">
+      </ul>
+
+    <script type="module" src="{{site.baseurl}}/scripts/frontend/leaderboard.js?cachedz={{ cachedz }}"></script>
+  </body>
+</html>

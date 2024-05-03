@@ -1,3 +1,5 @@
+@import "https://fonts.googleapis.com/css?family=Press+Start+2P";
+
 $base: -40;
 $l: 67%;
 // There's something funky with Chrome and using Font Awesome - the font goes slightly above their bounding boxes and it can't be fixed with line height alone
@@ -30,6 +32,7 @@ body {
   border-radius: 5vmin;
   padding: calc(2vmin + 10px);
   margin: 0;
+  font-family: "Press Start 2P", sans-serif;
 }
 
 // ~* Chrome FA adjustments *~ //
@@ -62,9 +65,9 @@ body {
 // ~* Page Elements *~ //
 .bg {
   background-color: black;
-  background-image: radial-gradient(circle, white 1vmin, transparent 1.1vmin, transparent 8vmin),
-    radial-gradient(circle, white 0.8vmin, transparent 0.9vmin, transparent 10vmin),
-    radial-gradient(circle, white 0.5vmin, transparent 0.51vmin, transparent 3vmin);
+//   background-image: radial-gradient(circle, white 0.1vmin, transparent 0.1vmin, transparent 8vmin),
+//     radial-gradient(circle, white 0.8vmin, transparent 0.9vmin, transparent 10vmin),
+//     radial-gradient(circle, white 0.5vmin, transparent 0.51vmin, transparent 3vmin);
   background-position: 20px 50px, -10px -10px, 50px -55px;
   background-size: 150px 200px;
   display: flex;
@@ -353,18 +356,78 @@ body {
   }
 }
 
+.scrolling {
+
+// border: solid 10px red;
+  position: absolute;
+  bottom: 5%;
+  //   left: 14vmin;
+
+    width: 90vw;
+  //   text-align: center;
+    margin-left: -45vw;
+    left: 50%;
+
+  animation: rainbow 7s ease-in-out;
+  animation-iteration-count: infinite;
+}
+
 .score {
-      /* text-align: center; */
-      color: #00ff9a;
-      font-size: 9vw;
-    //   width: 100%;
-      position: absolute;
-      bottom: -5%;
-      left: 14vmin;
-      text-wrap: nowrap;
+  color: #00ff9a;
+  font-size: 5vw;
+    text-align: center;
+
+  text-wrap: nowrap;
+  text-shadow: 4px 4px 0px #ffffff, -4px -4px 0px #ffffff, -4px 4px 0px #ffffff,
+    4px -4px 0px #ffffff;
+  letter-spacing: 0.5vw;
+
+  animation: rainbow 7s ease-in-out;
+  animation-iteration-count: infinite;
 }
 
 // ~* Animations *~ //
+
+@keyframes rainbow {
+  100%,
+  0% {
+    color: #2b729e;
+  }
+  8% {
+    color: #659dfe;
+  }
+  16% {
+    color: #8458fd;
+  }
+  25% {
+    color: #dc4dd0;
+  }
+  33% {
+    color: #fd4eb9;
+  }
+  41% {
+    color: #fc7070;
+  }
+  50% {
+    color: #f49251;
+  }
+  58% {
+    color: #d6ce52;
+  }
+  66% {
+    color: #c2f854;
+  }
+  75% {
+    color: #96fe67;
+  }
+  83% {
+    color: #62ff81;
+  }
+  91% {
+    color: #21ce71;
+  }
+}
+
 @keyframes bounce {
   from {
     transform: translateY(-15vmin);
@@ -374,13 +437,13 @@ body {
   }
 }
 @keyframes bounceOG {
-    from {
-      transform: translateY(-2.5vmin);
-    }
-    to {
-      transform: translateY(2.5vmin);
-    }
+  from {
+    transform: translateY(-2.5vmin);
   }
+  to {
+    transform: translateY(2.5vmin);
+  }
+}
 @keyframes iris {
   $g: ();
   @for $i from 0 through 6 {

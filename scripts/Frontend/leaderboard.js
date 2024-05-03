@@ -7,17 +7,18 @@ import {
   onValue,
 } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
-var firebaseConfig = {
-  apiKey: "AIzaSyDjhqfSDix_SRJhByCqjRTWHC8iH5j-5Q0",
-  authDomain: "ar-gg-af27b.firebaseapp.com",
-  databaseURL: "https://ar-gg-af27b-default-rtdb.firebaseio.com",
-  projectId: "ar-gg-af27b",
-  storageBucket: "ar-gg-af27b.appspot.com",
-};
+export const encodedKey = "QUl6YVN5RGJJMUFJUERETFdhY0tvbGFFZlRKWkJKbi1sdkhnYVdn";
+
+export const firebaseConfig = {
+    apiKey: atob(encodedKey),
+    databaseURL: "https://gotcha-9fa1d-default-rtdb.firebaseio.com",
+    projectId: "gotcha-9fa1d",
+    storageBucket: "gotcha-9fa1d.appspot.com",
+  };
 
 const firebaseApp = initializeApp(firebaseConfig);
 const dbRef = ref(getDatabase(firebaseApp));
-const scoresRef = child(dbRef, `scores/`);
+const scoresRef = child(dbRef, `scores/lasertag`);
 
 // On Page Load...
 

@@ -65,9 +65,9 @@ body {
 // ~* Page Elements *~ //
 .bg {
   background-color: black;
-//   background-image: radial-gradient(circle, white 0.1vmin, transparent 0.1vmin, transparent 8vmin),
-//     radial-gradient(circle, white 0.8vmin, transparent 0.9vmin, transparent 10vmin),
-//     radial-gradient(circle, white 0.5vmin, transparent 0.51vmin, transparent 3vmin);
+  //   background-image: radial-gradient(circle, white 0.1vmin, transparent 0.1vmin, transparent 8vmin),
+  //     radial-gradient(circle, white 0.8vmin, transparent 0.9vmin, transparent 10vmin),
+  //     radial-gradient(circle, white 0.5vmin, transparent 0.51vmin, transparent 3vmin);
   background-position: 20px 50px, -10px -10px, 50px -55px;
   background-size: 150px 200px;
   display: flex;
@@ -357,25 +357,17 @@ body {
 }
 
 .scrolling {
-
-// border: solid 10px red;
   position: absolute;
   bottom: 5%;
-  //   left: 14vmin;
-
-    width: 90vw;
-  //   text-align: center;
-    margin-left: -45vw;
-    left: 50%;
-
-  animation: rainbow 7s ease-in-out;
-  animation-iteration-count: infinite;
+  width: 90vw;
+  margin-left: -45vw;
+  left: 50%;
 }
 
 .score {
   color: #00ff9a;
-  font-size: 5vw;
-    text-align: center;
+  font-size: 4.7vw;
+  text-align: center;
 
   text-wrap: nowrap;
   text-shadow: 0.3vw 0.3vw 0px #ffffff, -0.3vw -0.3vw 0px #ffffff, -0.3vw 0.3vw 0px #ffffff,

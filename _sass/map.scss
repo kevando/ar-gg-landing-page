@@ -45,6 +45,39 @@ body {
   font-size: 13px;
 }
 
+.email-capture {
+  z-index: 999;
+  position: absolute;
+  bottom: 0;
+  background: #54677b;
+  width: 100%;
+  font-family: Arial;
+  color: white;
+  /* font-size: 0.9em; */
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0px -1px 1px 0px #ffffff96, 0px -1px 1px 0px #0d00686e;
+  border-top: solid 1px #7777778c;
+  text-align: center;
+
+  transition: all 1s 0.3s ease-in-out;
+  max-height: 900px;
+}
+.email-input {
+  padding: 10px;
+  width: 80%;
+  border-radius: 22px;
+  border: none;
+  background: #4b5e6f;
+  margin: 10px;
+  font-size: 1em;
+  color: #ffffff;
+  box-shadow: 0px 0px 2px 0px #292929a1;
+  
+  &::placeholder {
+    color: #979da3;
+  }
+}
+
 @media screen and (min-width: 0px) and (max-width: 640px) {
   #menu {
     /* hide it on small screens */

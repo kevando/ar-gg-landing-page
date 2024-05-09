@@ -1,0 +1,49 @@
+{% assign a = page.name | split: '.' %} {% assign page_name = a[0] %}
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    {% include head.html %}
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+
+    <link rel="stylesheet" href="{{ "/assets/map.css" | relative_url }}">
+  </head>
+
+  <body class="{{ page.class_name | default: 'default' }}">
+    {{ content }}
+
+    <style>
+      .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+      }
+    </style>
+
+    <div id="map"></div>
+
+    <div class="nav" style="display:none">
+      <h2>
+        <span id="PlayerCount"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="LoadingMsg"
+          >Loading Items....</span
+        >
+      </h2>
+    </div>
+
+    <div class="email-capture" id="EmailCapture">
+      <h2 id="EmailCaptureTitle">📨 GG in your inbox</h2>
+      <p>join 93 others for first access to the latest headset-enabled experiences in your city</p>
+      <form id="EmailCapture">
+        <input  name="fields[email]" placeholder="epicgamer@argg.com" id="EmailInput" class="email-input"/>
+        <input type="submit" value="Subscribe" />
+      </form>
+    </div>
+
+    <script type="module" src="{{ site.baseurl }}/scripts/Map/map-obvious.js?cachedz=1"></script>
+  </body>
+</html>

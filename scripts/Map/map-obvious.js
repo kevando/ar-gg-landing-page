@@ -34,13 +34,14 @@ mapboxgl.accessToken = mapboxToken;
 
 const LOGLAT_LILL = [-88.1380655018482, 42.147436111279276];
 const LNGLAT_SANTAMONICA = [-118.52117896492756, 34.01321393735];
+const LNGLAT_TWOBIT = [-118.231783289062, 34.037582786829816];
 const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/satellite-streets-v12";
 // const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
 
 // INITIALIZE USER INFO
 // this object is used to manage state like zoom level, position on map
 
-const userInfo = JSON.parse(localStorage.getItem("userInfo")) || {};
+const userInfo = {}//JSON.parse(localStorage.getItem("userInfo")) || {};
 
 if (!userInfo.uuid) {
   userInfo.uuid = generateUUID();
@@ -49,8 +50,8 @@ if (!userInfo.uuid) {
 const map = new mapboxgl.Map({
   container: "map",
   style: DEFAULT_MAP_STYLE,
-  center: userInfo.center || LNGLAT_SANTAMONICA,
-  zoom: userInfo.zoom || 11,
+  center: userInfo.center || LNGLAT_TWOBIT,
+  zoom: userInfo.zoom || 16,
   minzoom: 4,
 });
 
@@ -284,7 +285,7 @@ async function listenForDataFromFirebase() {
 async function getDataFromFirebase() {
   let pins = [];
 
-  const pinsRef = child(dbRef, `layers/a953019908948635708/pins`);
+  const pinsRef = child(dbRef, `layers/obvious/pins`);
 
   return get(pinsRef).then((snapshot) => {
     if (snapshot.exists()) {
@@ -430,8 +431,12 @@ emailForm.addEventListener("submit", function (e) {
 
   setTimeout(() => {
     document.getElementById("EmailCapture").style.opacity = "0";
-
     hideKeyboard();
+
+    setTimeout(() => {
+      document.getElementById("EmailCapture").style.display = "none";
+    },500);
+
   }, 800);
 
   return false;

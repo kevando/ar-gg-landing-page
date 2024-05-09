@@ -53,14 +53,14 @@ body {
   width: 100%;
   font-family: Arial;
   color: white;
-  /* font-size: 0.9em; */
   border-radius: 22px 22px 0 0;
   box-shadow: 0px -1px 1px 0px #ffffff96, 0px -1px 1px 0px #0d00686e;
   border-top: solid 1px #7777778c;
   text-align: center;
 
-  transition: max-height 0.9s ease-in-out;
-  max-height: 900px;
+  opacity: 1;
+
+  transition: opacity 0.4s ease-in-out;
 
   h2 {
     font-size: 1.5em;
@@ -81,9 +81,7 @@ body {
   font-size: 1.2em;
   color: #ffffff;
   box-shadow: 0px 0px 2px 0px #292929a1;
-  
-  
-  
+
   &::placeholder {
     color: #979da3;
     text-align: center;

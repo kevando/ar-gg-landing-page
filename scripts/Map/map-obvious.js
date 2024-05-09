@@ -67,41 +67,41 @@ map.on("move", function onMove() {
   localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
   // Update SERVER
-  const observerRef = child(dbRef, `layers/a953019908948635708/observers/${userInfo.uuid}`);
+  //   const observerRef = child(dbRef, `layers/a953019908948635708/observers/${userInfo.uuid}`);
 
-  const now = new Date().getTime();
+  //   const now = new Date().getTime();
 
-  update(observerRef, {
-    zoom: userInfo.zoom,
-    center: userInfo.center,
-    updatedAt: now,
-  });
+  //   update(observerRef, {
+  //     zoom: userInfo.zoom,
+  //     center: userInfo.center,
+  //     updatedAt: now,
+  //   });
 
-  // Update MY PLAYER AVATAR
-  var xDelta = previousCenter.lng - userInfo.center.lng;
-  var yDelta = previousCenter.lat - userInfo.center.lat;
-  var orientation = Math.abs(xDelta) - Math.abs(yDelta);
+  //   // Update MY PLAYER AVATAR
+  //   var xDelta = previousCenter.lng - userInfo.center.lng;
+  //   var yDelta = previousCenter.lat - userInfo.center.lat;
+  //   var orientation = Math.abs(xDelta) - Math.abs(yDelta);
 
-  var xDirection = xDelta >= 0 ? "LEFT" : "RIGHT";
-  var yDirection = yDelta >= 0 ? "DOWN" : "UP";
+  //   var xDirection = xDelta >= 0 ? "LEFT" : "RIGHT";
+  //   var yDirection = yDelta >= 0 ? "DOWN" : "UP";
 
-  // console.log(yDirection)
+  //   // console.log(yDirection)
 
-  var transforms = {};
+  //   var transforms = {};
 
-  transforms["LEFT"] = "ScaleX(1)";
-  transforms["RIGHT"] = "ScaleX(-1)";
+  //   transforms["LEFT"] = "ScaleX(1)";
+  //   transforms["RIGHT"] = "ScaleX(-1)";
 
-  transforms["UP"] = "RotateZ(90deg)";
-  transforms["DOWN"] = "RotateZ(-90deg)";
+  //   transforms["UP"] = "RotateZ(90deg)";
+  //   transforms["DOWN"] = "RotateZ(-90deg)";
 
-  var avatarScale = transforms[xDirection];
+  //   var avatarScale = transforms[xDirection];
 
-  var avatarRotation = ""; //transforms[yDirection]
+  //   var avatarRotation = ""; //transforms[yDirection]
 
-  var $myAvatarImage = document.getElementById("MyAvatarImage");
+  //   var $myAvatarImage = document.getElementById("MyAvatarImage");
 
-  $myAvatarImage.style.transform = `${avatarRotation} ${avatarScale}`;
+  //   $myAvatarImage.style.transform = `${avatarRotation} ${avatarScale}`;
 });
 
 // ---- LOAD MAP -----
@@ -348,12 +348,11 @@ function generateUUID() {
 }
 
 function notifyPlayerJoinedMap() {
-  const obj = {
-    createdAt: new Date().getTime(),
-    ...userInfo,
-  };
-
-  push(notificationsRef, obj);
+  //   const obj = {
+  //     createdAt: new Date().getTime(),
+  //     ...userInfo,
+  //   };
+  //   push(notificationsRef, obj);
 }
 
 // ----- Initialize ------
@@ -418,35 +417,36 @@ emailForm.addEventListener("submit", function (e) {
 
   // RECORD EMAIL TO DATABASE
 
-//   var email = document.getElementById("EmailInput").value;
+  const emailsRef = child(dbRef, `emails`);
 
-//   console.log("form submitted: " + email);
+  const obj = {
+    createdAt: new Date().getTime(),
+    email: document.getElementById("EmailInput").value,
+  };
+
+  push(emailsRef, obj);
 
   document.getElementById("EmailCaptureTitle").innerHTML = "✅ GG in your inbox";
 
-
-  document.getElementById("EmailCapture").style.maxHeight = "0px";
-
-
   setTimeout(() => {
+    document.getElementById("EmailCapture").style.opacity = "0";
+
     hideKeyboard();
-  },500)
-    
+  }, 800);
+
   return false;
 });
 
 function hideKeyboard() {
-
   // Check if any element is actively focused
   if (document.activeElement) {
     document.activeElement.blur();
   }
 }
 
-
 emailInput.addEventListener("focus", function (e) {
-    emailInput.placeholder = "";
+  emailInput.placeholder = "";
 });
 emailInput.addEventListener("blur", function (e) {
-    emailInput.placeholder = "n00b@argg.gg";
+  emailInput.placeholder = "n00b@argg.gg";
 });

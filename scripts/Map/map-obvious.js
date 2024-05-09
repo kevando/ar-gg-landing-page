@@ -239,7 +239,7 @@ async function listenForDataFromFirebase() {
         el.style.width = `${size}px`;
         el.style.height = `${size}px`;
         el.style.fontSize = `${size}px`;
-        el.style.display = "none"
+        el.style.display = "none";
 
         // didnt work. for some reason the opacity of a marker always gets reset to 1
 
@@ -411,16 +411,42 @@ function degreesToRadians(deg) {
 }
 
 var emailForm = document.getElementById("EmailCapture");
+var emailInput = document.getElementById("EmailInput");
 
 emailForm.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  var email = document.getElementById("EmailInput").value;
+  // RECORD EMAIL TO DATABASE
 
-  console.log("form submitted: " + email);
+//   var email = document.getElementById("EmailInput").value;
+
+//   console.log("form submitted: " + email);
 
   document.getElementById("EmailCaptureTitle").innerHTML = "✅ GG in your inbox";
+
+
   document.getElementById("EmailCapture").style.maxHeight = "0px";
 
+
+  setTimeout(() => {
+    hideKeyboard();
+  },500)
+    
   return false;
+});
+
+function hideKeyboard() {
+
+  // Check if any element is actively focused
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
+}
+
+
+emailInput.addEventListener("focus", function (e) {
+    emailInput.placeholder = "";
+});
+emailInput.addEventListener("blur", function (e) {
+    emailInput.placeholder = "n00b@argg.gg";
 });

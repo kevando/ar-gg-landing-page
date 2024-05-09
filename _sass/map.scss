@@ -59,22 +59,34 @@ body {
   border-top: solid 1px #7777778c;
   text-align: center;
 
-  transition: all 1s 0.3s ease-in-out;
+  transition: max-height 0.9s ease-in-out;
   max-height: 900px;
+
+  h2 {
+    font-size: 1.5em;
+    margin: 10px 0 5px 0;
+  }
+  p {
+    font-size: 1.1em;
+    margin: 5px 0 10px 0;
+  }
 }
 .email-input {
-  padding: 10px;
-  width: 80%;
-  border-radius: 22px;
+  padding: 13px 30px;
+  width: 85%;
+  border-radius: 122px;
   border: none;
   background: #4b5e6f;
-  margin: 10px;
-  font-size: 1em;
+  margin: 0 0 20px 0;
+  font-size: 1.2em;
   color: #ffffff;
   box-shadow: 0px 0px 2px 0px #292929a1;
   
+  
+  
   &::placeholder {
     color: #979da3;
+    text-align: center;
   }
 }
 

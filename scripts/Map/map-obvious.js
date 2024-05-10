@@ -33,15 +33,16 @@ const notificationsRef = child(dbRef, `layers/a953019908948635708/notifications/
 mapboxgl.accessToken = mapboxToken;
 
 const LOGLAT_LILL = [-88.1380655018482, 42.147436111279276];
-const LNGLAT_SANTAMONICA = [-118.52117896492756, 34.01321393735];
+const LNGLAT_SANFRAN = [-122.41422638286896, 37.773267497804596];
 const LNGLAT_TWOBIT = [-118.231783289062, 34.037582786829816];
 const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/satellite-streets-v12";
 // const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
 
 // INITIALIZE USER INFO
 // this object is used to manage state like zoom level, position on map
+// so when a user returns to the map, they are in the same place
 
-const userInfo = {}//JSON.parse(localStorage.getItem("userInfo")) || {};
+const userInfo = {}; //JSON.parse(localStorage.getItem("userInfo")) || {};
 
 if (!userInfo.uuid) {
   userInfo.uuid = generateUUID();
@@ -50,8 +51,8 @@ if (!userInfo.uuid) {
 const map = new mapboxgl.Map({
   container: "map",
   style: DEFAULT_MAP_STYLE,
-  center: userInfo.center || LNGLAT_TWOBIT,
-  zoom: userInfo.zoom || 16,
+  center: userInfo.center || LNGLAT_SANFRAN,
+  zoom: userInfo.zoom || 18,
   minzoom: 4,
 });
 
@@ -152,6 +153,10 @@ async function loadMap() {
       closeOnClick: false,
       offset: 35,
     });
+
+    // mouse click event
+    // el.addEventListener("click", () => {
+    // });
 
     el.addEventListener("mouseenter", (e) => {
       // Change the cursor style as a UI indicator.
@@ -410,15 +415,17 @@ function degreesToRadians(deg) {
   return (deg * Math.PI) / 180;
 }
 
-var emailForm = document.getElementById("EmailCapture");
+const emailsRef = child(dbRef, `emails`);
+
+var emailForm = document.getElementById("EmailCaptureForm");
 var emailInput = document.getElementById("EmailInput");
+
+let formSubmitted = false;
 
 emailForm.addEventListener("submit", function (e) {
   e.preventDefault();
 
   // RECORD EMAIL TO DATABASE
-
-  const emailsRef = child(dbRef, `emails`);
 
   const obj = {
     createdAt: new Date().getTime(),
@@ -435,9 +442,10 @@ emailForm.addEventListener("submit", function (e) {
 
     setTimeout(() => {
       document.getElementById("EmailCapture").style.display = "none";
-    },500);
-
+    }, 500);
   }, 800);
+
+  formSubmitted = true;
 
   return false;
 });
@@ -453,5 +461,20 @@ emailInput.addEventListener("focus", function (e) {
   emailInput.placeholder = "";
 });
 emailInput.addEventListener("blur", function (e) {
-  emailInput.placeholder = "n00b@argg.gg";
+  if (!formSubmitted) {
+    emailInput.placeholder = "n00b@argg.gg";
+  }
+});
+
+// on page load event
+document.addEventListener("DOMContentLoaded", function () {
+  onValue(emailsRef, (snapshot) => {
+    var emails = [];
+    snapshot.forEach((childSnapshot) => {
+      emails.push(childSnapshot.val().email);
+    });
+    var emailCount = emails.length + 85;
+    document.getElementById("EmailCount").innerHTML = emailCount.toString();
+    document.getElementById("EmailCapture").style.opacity = 1.0;
+  });
 });

@@ -145,7 +145,7 @@ async function loadMap() {
 
     // Create a popup, but don't add it to the map yet.
     const popup = new mapboxgl.Popup({
-      closeButton: false,
+      closeButton: true,
       closeOnClick: false,
       offset: 30,
       className: "map-pin"
@@ -171,7 +171,12 @@ async function loadMap() {
     });
     el.addEventListener("mouseleave", () => {
       map.getCanvas().style.cursor = "";
-      popup.remove();
+
+      // delay this so users can click links in the popup
+      // setTimeout(() => {
+      //   popup.remove();
+      // }, 800);
+      
     });
 
     try {

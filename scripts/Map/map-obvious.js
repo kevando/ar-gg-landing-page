@@ -51,7 +51,7 @@ if (!userInfo.uuid) {
 const map = new mapboxgl.Map({
   container: "map",
   style: DEFAULT_MAP_STYLE,
-  center: userInfo.center || LNGLAT_SANFRAN,
+  center: userInfo.center || LNGLAT_TWOBIT,
   zoom: userInfo.zoom || 18,
   minzoom: 4,
 });
@@ -143,15 +143,12 @@ async function loadMap() {
       console.log(e.message);
     }
 
-    el.addEventListener("click", () => {
-      // window.alert(marker.properties.message);
-    });
-
     // Create a popup, but don't add it to the map yet.
     const popup = new mapboxgl.Popup({
       closeButton: false,
       closeOnClick: false,
-      offset: 35,
+      offset: 30,
+      className: "map-pin"
     });
 
     // mouse click event
@@ -167,6 +164,10 @@ async function loadMap() {
       const description = marker.properties.description;
 
       popup.setLngLat(coordinates).setHTML(description).addTo(map);
+
+      // ANIMATE ON LOAD
+      
+      
     });
     el.addEventListener("mouseleave", () => {
       map.getCanvas().style.cursor = "";
@@ -317,7 +318,7 @@ async function getDataFromFirebase() {
       featuresArray.push({
         type: "Feature",
         properties: {
-          description: `<strong>${pin.title}</strong><p>${pin.body}</p>`,
+          description: `<h2>${pin.title}</h2><p>${pin.body}</p><p><strong>Directions:</strong>&nbsp;&nbsp;&nbsp;<a href='${pin.appleMapsUrl}'>Apple</a>&nbsp;&nbsp;<a href='${pin.googleMapsUrl}'>Google</a></p>`,
           message: "Foo",
           iconSize: [60, 60],
           assetPath: pin.image,

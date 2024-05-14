@@ -12,6 +12,9 @@ body {
 
 .marker {
   cursor: pointer;
+  // background: white;
+  // border-radius: 100%;
+  // border: solid red 4px;
 }
 
 .avatar-marker img {
@@ -91,13 +94,16 @@ body {
 .mapboxgl-popup-content {
   border-radius: 7px;
 
-  strong {
+  h2 {
     font-family: Arial;
-    font-size: 1.2em;
+    font-size: 1.5em;
+    margin: 0.4em 0;
   }
   p {
     font-family: Arial;
-    margin-bottom: 0px;
+    margin-bottom: 4px;
+    line-height: 1.3em;
+    margin-top: 9px;
   }
 }
 

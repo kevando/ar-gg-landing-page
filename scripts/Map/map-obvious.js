@@ -296,7 +296,7 @@ async function listenForDataFromFirebase() {
 async function getDataFromFirebase() {
   let pins = [];
 
-  const pinsRef = child(dbRef, `layers/obvious/pins`);
+  const pinsRef = child(dbRef, `maps/obvious/pins`);
 
   return get(pinsRef).then((snapshot) => {
     if (snapshot.exists()) {

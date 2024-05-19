@@ -34,7 +34,7 @@ mapboxgl.accessToken = mapboxToken;
 
 const LOGLAT_LILL = [-88.1380655018482, 42.147436111279276];
 const LNGLAT_SANFRAN = [-122.41422638286896, 37.773267497804596];
-const LNGLAT_TWOBIT = [-118.231783289062, 34.037582786829816];
+const LNGLAT_TWOBIT = [-118.23178, 34.0375];
 const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/satellite-streets-v12";
 // const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
 
@@ -52,7 +52,7 @@ const map = new mapboxgl.Map({
   container: "map",
   style: DEFAULT_MAP_STYLE,
   center: userInfo.center || LNGLAT_TWOBIT,
-  zoom: userInfo.zoom || 18,
+  zoom: userInfo.zoom || 18.5,
   minzoom: 4,
 });
 

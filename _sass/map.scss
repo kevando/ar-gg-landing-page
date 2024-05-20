@@ -98,7 +98,7 @@ body {
 
   font-family: Arial;
   border-radius: 22px;
-  box-shadow: 0px -1px 1px 0px #ffffff96, -2px -1px 1px 0px #0d00686e,0px 1px 2px 0px #ffffff16;
+  box-shadow: 0px -1px 1px 0px #ffffff96, -2px -1px 1px 0px #0d00686e, 0px 1px 2px 0px #ffffff16;
   border-top: solid 1px #7777778c;
   text-align: center;
 
@@ -162,6 +162,80 @@ body {
     width: 40px;
     height: 40px;
   }
+}
+
+.tether-headset {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 999;
+  background-color: black;
+  color: white;
+  font-family: Arial;
+  border-radius: 30px;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2em;
+  // border: solid 1px white;
+  box-shadow: 0px -1px 1px 0px #ffffff71, -1px -1px 1px 0px #0e00683e, 0px 1px 2px 0px #ffffff16;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 35% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+  p:nth-child(1) {
+    margin: 1em 0 1.7em 0;
+  }
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.bordered {
+  border-radius: 7px;
+  background-color: #4b5e6f;
+  color: white;
+
+  font-family: Arial;
+  border-radius: 22px;
+  box-shadow: 0px -1px 1px 0px #ffffff96, -2px -1px 1px 0px #0d00686e, 0px 1px 2px 0px #ffffff16;
+  border-top: solid 1px #7777778c;
+  text-align: center;
+}
+
+.digit {
+  font-size: 24px;
+  margin: 0 2px;
+  margin: 0 2px;
+  font-family: Courier;
+  background: #00000073;
+  padding: 4px 11px;
+  border-radius: 6px;
 }
 
 @media screen and (min-width: 0px) and (max-width: 640px) {

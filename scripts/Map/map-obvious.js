@@ -291,8 +291,6 @@ async function listenForDataFromFirebase() {
         el.style.fontSize = `${size}px`;
         // el.style.display = "none";
 
-        
-
         // didnt work. for some reason the opacity of a marker always gets reset to 1
 
         var myOpacity = timeDiff ? range(1000, 100000, 100, 0, timeDiff) : 100;
@@ -536,3 +534,41 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("EmailCapture").style.opacity = 1.0;
   });
 });
+
+// ------------------------------------------
+// Tether Headset
+// ------------------------------------------
+
+function openModal() {
+  var modal = document.getElementById("myModal");
+  var randomCode = Math.floor(10000 + Math.random() * 90000);
+  // document.getElementById("randomCode").innerText = "Random Code: " + randomCode;
+
+  var codeDisplay = document.getElementById("randomCode");
+  codeDisplay.innerHTML = "";
+
+
+  for (var i = 0; i < randomCode.toString().length; i++) {
+    var span = document.createElement("span");
+    span.className = "digit";
+    span.innerText = randomCode.toString()[i];
+    codeDisplay.appendChild(span);
+  }
+
+  modal.style.display = "block";
+}
+document.getElementById("openModalBtn").onclick = openModal;
+
+// document.querySelector(".close").onclick = function () {
+//   var modal = document.getElementById("myModal");
+//   modal.style.display = "none";
+// };
+
+window.onclick = function (event) {
+  var modal = document.getElementById("myModal");
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+// openModal();

@@ -25,11 +25,21 @@
       }
     </style>
 
-    <a href="#" class="logo" ><img src="/assets/logo_argg.webp" /></a>
+    <a href="#" class="logo"><img src="/assets/logo_argg.webp" /></a>
+
+    <a href="#" class="tether-headset" id="openModalBtn">tether headset</a>
+
+    <div id="myModal" class="modal">
+      <div class="modal-content bordered">
+        <!-- <span class="close">&times;</span> -->
+        <p>Enter this code on your headset</p>
+        <p id="randomCode"></p>
+      </div>
+    </div>
 
     <div id="map"></div>
 
-    <div class="nav" style="display:none">
+    <div class="nav" style="display: none">
       <h2>
         <span id="PlayerCount"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="LoadingMsg"
           >Loading Items....</span
@@ -37,14 +47,18 @@
       </h2>
     </div>
 
-    <div class="email-capture" id="EmailCapture" style="opacity:0">
+    <div class="email-capture" id="EmailCapture" style="opacity: 0">
       <h2 id="EmailCaptureTitle">📨 GG in your inbox</h2>
-      <p>join <span id="EmailCount">92</span> others for first access to the latest headset-enabled experiences in your city</p>
+      <p>
+        join <span id="EmailCount">92</span> others for first access to the latest headset-enabled
+        experiences in your city
+      </p>
       <form id="EmailCaptureForm">
-        <input name="email" placeholder="epicgamer@argg.gg" id="EmailInput" class="email-input"/>
+        <input name="email" placeholder="epicgamer@argg.gg" id="EmailInput" class="email-input" />
       </form>
     </div>
 
-    <script type="module" src="{{ site.baseurl }}/scripts/Map/map-obvious.js?cachedz=5"></script>
+    <script type="module" src="{{ site.baseurl }}/scripts/Map/map-obvious.js?cachedz=6"></script>
+
   </body>
 </html>

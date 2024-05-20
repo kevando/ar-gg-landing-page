@@ -122,20 +122,20 @@ body {
 .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip {
   border-top-color: #4b5e6f;
+  margin-top: -1px;
 }
 .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
   border-right-color: #4b5e6f;
 }
-
 .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
   border-bottom-color: #4b5e6f;
+  margin-bottom: -1px;
 }
 .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
   border-right-color: #4b5e6f;
 }
-
 .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
   border-left-color: #4b5e6f;
 }

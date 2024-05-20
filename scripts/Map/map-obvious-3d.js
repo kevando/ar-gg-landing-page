@@ -442,12 +442,12 @@ function generateUUID() {
 
 function notifyPlayerJoinedMap() {
   // do not run for local server
-  if (window.location.hostname !== "127.0.0.1") {
-    push(eventsRef, {
-      resource: "doorbell.mp3",
-      type: "sfx",
-    });
-  }
+//   if (window.location.hostname !== "127.0.0.1") {
+//     push(eventsRef, {
+//       resource: "doorbell.mp3",
+//       type: "sfx",
+//     });
+//   }
 }
 
 // ----- Initialize ------

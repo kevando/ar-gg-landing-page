@@ -569,4 +569,4 @@ window.onclick = function (event) {
   }
 };
 
-// openModal();
+openModal();

@@ -1,0 +1,69 @@
+{% assign a = page.name | split: '.' %} {% assign page_name = a[0] %}
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    {% include head.html %}
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <!-- <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" /> -->
+    <!-- <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script> -->
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="{{ "/assets/map.css" | relative_url }}">
+  </head>
+
+  <body class="{{ page.class_name | default: 'default' }}">
+    {{ content }}
+
+    <style>
+      .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+      }
+    </style>
+
+    <a href="javascript:void(0)" class="logo"><img src="/assets/logo_argg.webp" /></a>
+
+    <a href="javascript:void(0)" class="tether-headset bordered" id="openModalBtn"
+      >tether headset</a
+    >
+
+    <div id="myModal" class="modal">
+      <div class="modal-content bordered">
+        <!-- <span class="close">&times;</span> -->
+        <p>enter this code in your headset</p>
+        <p id="randomCode"></p>
+      </div>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="nav" style="display: none">
+      <h2>
+        <span id="PlayerCount"></span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="LoadingMsg"
+          >Loading Items....</span
+        >
+      </h2>
+    </div>
+
+    <div class="email-capture" id="EmailCapture" style="opacity: 0">
+      <h2 id="EmailCaptureTitle">📨 GG in your inbox</h2>
+      <p>
+        join <span id="EmailCount">92</span> others for first access to the latest headset-enabled
+        experiences in your city
+      </p>
+      <form id="EmailCaptureForm">
+        <input name="email" placeholder="epicgamer@argg.gg" id="EmailInput" class="email-input" />
+      </form>
+    </div>
+
+    <script type="module" src="{{ site.baseurl }}/scripts/Map/map-obvious-3d.js?cachedz=8"></script>
+  </body>
+</html>

@@ -255,8 +255,10 @@ async function listenForDataFromFirebase() {
       }
 
       var zoomLevelDiff = userInfo.zoom - childData.zoom;
-      var size = range(2, 18, 30, 1500, zoomLevelDiff);
+      var size = range(2, 18, 60, 1500, zoomLevelDiff);
       size = Math.round(size);
+
+      // console.log("size: " + size);
 
       if (!observerMarkers[childKey]) {
         // Create a DOM element for each marker.
@@ -271,9 +273,10 @@ async function listenForDataFromFirebase() {
 
         // el.innerHTML = size
 
-        const DEFAULT_AVATAR_URL = "/assets/avatars/g.png";
+        const DEFAULT_AVATAR_URL = "/assets/avatars/levitating-man-emoji.png";
 
-        var iconImage = childData.avatarUrl || DEFAULT_AVATAR_URL;
+        // var iconImage = childData.avatarUrl || DEFAULT_AVATAR_URL;
+        var iconImage = DEFAULT_AVATAR_URL;
 
         img.src = iconImage;
         userInfo.avatarUrl = iconImage;
@@ -287,6 +290,8 @@ async function listenForDataFromFirebase() {
         el.style.height = `${size}px`;
         el.style.fontSize = `${size}px`;
         // el.style.display = "none";
+
+        
 
         // didnt work. for some reason the opacity of a marker always gets reset to 1
 
@@ -308,7 +313,7 @@ async function listenForDataFromFirebase() {
         let el = observerMarkers[childKey].getElement();
 
         var zoomLevelDiff = userInfo.zoom - childData.zoom;
-        var size = range(2, 28, 30, 1500, zoomLevelDiff);
+        var size = range(2, 28, 60, 1500, zoomLevelDiff);
         size = Math.round(size);
 
         el.style.width = `${size}px`;

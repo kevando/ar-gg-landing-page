@@ -238,6 +238,24 @@ body {
   border-radius: 6px;
 }
 
+#fly {
+  display: block;
+  position: absolute;
+  // margin: 0px auto;
+  // width: 50%;
+  height: 40px;
+  // padding: 10px;
+  border: none;
+  border-radius: 300px;
+  font-size: 1em;
+  text-align: center;
+  color: #fff;
+  background: #ee8a65;
+  z-index: 1000;
+  bottom: 11em;
+  left: 1em;
+}
+
 @media screen and (min-width: 0px) and (max-width: 640px) {
   #menu {
     /* hide it on small screens */

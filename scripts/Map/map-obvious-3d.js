@@ -609,3 +609,25 @@ window.onclick = function (event) {
     modal.style.display = "none";
   }
 };
+
+document.getElementById("fly").addEventListener("click", () => {
+    // Fly to a random location
+  
+    navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {
+      enableHighAccuracy: true,
+    });
+  
+    function successLocation(position) {
+      console.log("success");
+  
+      map.flyTo({
+        center: [position.coords.longitude, position.coords.latitude],
+        essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+      });
+    }
+  
+    function errorLocation() {
+      console.log("error");
+    }
+  });
+  

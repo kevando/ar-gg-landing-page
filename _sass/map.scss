@@ -128,6 +128,11 @@ body {
   color: black;
   z-index: 999;
 
+  img {
+    width: 80px;
+    height: 80px;
+  }
+
 }
 
 @media screen and (min-width: 0px) and (max-width: 640px) {

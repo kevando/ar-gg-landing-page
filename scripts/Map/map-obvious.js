@@ -27,85 +27,122 @@ const storage = getStorage(firebaseApp);
 let observerMarkers = {};
 let featuresArray = [];
 
-const observersRef = child(dbRef, `layers/a953019908948635708/observers/`);
-const notificationsRef = child(dbRef, `layers/a953019908948635708/notifications/`);
+const observersRef = child(dbRef, `maps/obvious/observers/`);
+const notificationsRef = child(dbRef, `maps/obvious/notifications/`);
+const pinsRef = child(dbRef, `maps/obvious/pins`);
+const emailsRef = child(dbRef, `emails`);
+const eventsRef = child(dbRef, `events`);
 
 mapboxgl.accessToken = mapboxToken;
 
-const LOGLAT_LILL = [-88.1380655018482, 42.147436111279276];
+const LOGLAT_BARRINGTON = [-88.1380655018482, 42.147436111279276];
 const LNGLAT_SANFRAN = [-122.41422638286896, 37.773267497804596];
-const LNGLAT_TWOBIT = [-118.23178, 34.0375];
+const LNGLAT_TWOBIT = [-118.231853, 34.0375];
+const LNGLAT_TWOBIT_RANDOMIZED = [
+  -118.231853 + 0.00013 * Math.random(),
+  34.0375 + 0.00013 * Math.random(),
+];
+
 const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/satellite-streets-v12";
-// const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
 
-// INITIALIZE USER INFO
-// this object is used to manage state like zoom level, position on map
-// so when a user returns to the map, they are in the same place
+const DEFAULT_ZOOM = 18.5;
 
-const userInfo = {}; //JSON.parse(localStorage.getItem("userInfo")) || {};
+const AVATAR_URLS = [
+  "/assets/avatars/dude_GG.webp",
+  "/assets/avatars/pyrogard_GG.webp",
+  "/assets/avatars/tidalwave_GG.webp",
+  "/assets/avatars/pyrogard_GG.webp",
+  "/assets/avatars/tidalwave_GG.webp",
+  "/assets/avatars/pyrogard_GG.webp",
+  "/assets/avatars/tidalwave_GG.webp",
+];
+
+// ------------------------------------------------------------------------
+// INITIALIZE userInfo object
+// ------------------------------------------------------------------------
+
+// localStorage.clear();
+
+const DATA_VERSION = "2";
+const localStorageKey = `userInfo_${DATA_VERSION}`;
+
+const userInfo = JSON.parse(localStorage.getItem(localStorageKey)) || {};
 
 if (!userInfo.uuid) {
   userInfo.uuid = generateUUID();
+  userInfo.avatarUrl = AVATAR_URLS[randomInt(0, AVATAR_URLS.length - 1)];
 }
+
+// this object is used to manage state like zoom level, position on map
+// so when a user returns to the map, they are in the same place
+// also sent to firebase for multiplayer feature on map
+
+// ------------------------------------------------------------------------
+// INITIALIZE Map
+// ------------------------------------------------------------------------
 
 const map = new mapboxgl.Map({
   container: "map",
   style: DEFAULT_MAP_STYLE,
-  center: userInfo.center || LNGLAT_TWOBIT,
-  zoom: userInfo.zoom || 18.5,
+  // center: userInfo.center || LNGLAT_TWOBIT,
+  // zoom: userInfo.zoom || DEFAULT_ZOOM,
+  center: LNGLAT_TWOBIT_RANDOMIZED,
+  zoom: DEFAULT_ZOOM,
   minzoom: 4,
 });
 
 // ----- ON MOVE ---
 
-map.on("move", function onMove() {
-  var previousCenter = userInfo.center;
-  var previousZoom = userInfo.zoom;
+map.on("move", onMove);
+
+function onMove() {
+  var previousCenter = userInfo.center || { lat: 0, lgn: 0 };
+  var previousZoom = userInfo.zoom || 20;
 
   userInfo.center = map.getCenter();
   userInfo.zoom = map.getZoom();
 
   // Update LOCAL
-  localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  localStorage.setItem(localStorageKey, JSON.stringify(userInfo));
 
   // Update SERVER
-  //   const observerRef = child(dbRef, `layers/a953019908948635708/observers/${userInfo.uuid}`);
+  const observerRef = child(dbRef, `maps/obvious/observers/${userInfo.uuid}`);
 
-  //   const now = new Date().getTime();
+  const now = new Date().getTime();
 
-  //   update(observerRef, {
-  //     zoom: userInfo.zoom,
-  //     center: userInfo.center,
-  //     updatedAt: now,
-  //   });
+  update(observerRef, {
+    zoom: userInfo.zoom,
+    center: userInfo.center,
+    avatarUrl: userInfo.avatarUrl,
+    updatedAt: now,
+  });
 
-  //   // Update MY PLAYER AVATAR
-  //   var xDelta = previousCenter.lng - userInfo.center.lng;
-  //   var yDelta = previousCenter.lat - userInfo.center.lat;
-  //   var orientation = Math.abs(xDelta) - Math.abs(yDelta);
+  // Update MY PLAYER AVATAR
+  var xDelta = previousCenter.lng - userInfo.center.lng;
+  var yDelta = previousCenter.lat - userInfo.center.lat;
+  var orientation = Math.abs(xDelta) - Math.abs(yDelta);
 
-  //   var xDirection = xDelta >= 0 ? "LEFT" : "RIGHT";
-  //   var yDirection = yDelta >= 0 ? "DOWN" : "UP";
+  var xDirection = xDelta >= 0 ? "LEFT" : "RIGHT";
+  var yDirection = yDelta >= 0 ? "DOWN" : "UP";
 
-  //   // console.log(yDirection)
+  // console.log(yDirection)
 
-  //   var transforms = {};
+  var transforms = {};
 
-  //   transforms["LEFT"] = "ScaleX(1)";
-  //   transforms["RIGHT"] = "ScaleX(-1)";
+  transforms["LEFT"] = "ScaleX(1)";
+  transforms["RIGHT"] = "ScaleX(-1)";
 
-  //   transforms["UP"] = "RotateZ(90deg)";
-  //   transforms["DOWN"] = "RotateZ(-90deg)";
+  transforms["UP"] = "RotateZ(90deg)";
+  transforms["DOWN"] = "RotateZ(-90deg)";
 
-  //   var avatarScale = transforms[xDirection];
+  var avatarScale = transforms[xDirection];
 
-  //   var avatarRotation = ""; //transforms[yDirection]
+  var avatarRotation = ""; //transforms[yDirection]
 
-  //   var $myAvatarImage = document.getElementById("MyAvatarImage");
+  var $myAvatarImage = document.getElementById("MyAvatarImage");
 
-  //   $myAvatarImage.style.transform = `${avatarRotation} ${avatarScale}`;
-});
-
+  $myAvatarImage.style.transform = `${avatarRotation} ${avatarScale}`;
+}
 // ---- LOAD MAP -----
 
 async function loadMap() {
@@ -148,7 +185,7 @@ async function loadMap() {
       closeButton: true,
       closeOnClick: false,
       offset: 30,
-      className: "map-pin"
+      className: "map-pin",
     });
 
     // mouse click event
@@ -166,8 +203,6 @@ async function loadMap() {
       popup.setLngLat(coordinates).setHTML(description).addTo(map);
 
       // ANIMATE ON LOAD
-      
-      
     });
     el.addEventListener("mouseleave", () => {
       map.getCanvas().style.cursor = "";
@@ -176,7 +211,6 @@ async function loadMap() {
       // setTimeout(() => {
       //   popup.remove();
       // }, 800);
-      
     });
 
     try {
@@ -237,11 +271,12 @@ async function listenForDataFromFirebase() {
 
         // el.innerHTML = size
 
-        const DEFAULT_AVATAR_URL = "https://maps.argg.gg/assets/g.png";
+        const DEFAULT_AVATAR_URL = "/assets/avatars/g.png";
 
         var iconImage = childData.avatarUrl || DEFAULT_AVATAR_URL;
 
         img.src = iconImage;
+        userInfo.avatarUrl = iconImage;
 
         el.append(img);
 
@@ -251,7 +286,7 @@ async function listenForDataFromFirebase() {
         el.style.width = `${size}px`;
         el.style.height = `${size}px`;
         el.style.fontSize = `${size}px`;
-        el.style.display = "none";
+        // el.style.display = "none";
 
         // didnt work. for some reason the opacity of a marker always gets reset to 1
 
@@ -295,8 +330,6 @@ async function listenForDataFromFirebase() {
 
 async function getDataFromFirebase() {
   let pins = [];
-
-  const pinsRef = child(dbRef, `maps/obvious/pins`);
 
   return get(pinsRef).then((snapshot) => {
     if (snapshot.exists()) {
@@ -360,11 +393,13 @@ function generateUUID() {
 }
 
 function notifyPlayerJoinedMap() {
-  //   const obj = {
-  //     createdAt: new Date().getTime(),
-  //     ...userInfo,
-  //   };
-  //   push(notificationsRef, obj);
+  // do not run for local server
+  if (window.location.hostname !== "127.0.0.1") {
+    push(eventsRef, {
+      resource: "doorbell.mp3",
+      type: "sfx",
+    });
+  }
 }
 
 // ----- Initialize ------
@@ -375,6 +410,7 @@ async function fetchDataAndLoadMap() {
 
   await getDataFromFirebase();
   await loadMap();
+  onMove(); // show MY avatar when map loads
 }
 
 // Entry point
@@ -421,7 +457,13 @@ function degreesToRadians(deg) {
   return (deg * Math.PI) / 180;
 }
 
-const emailsRef = child(dbRef, `emails`);
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// ------------------------------------------
+//  EMAIL CAPTURE
+// ------------------------------------------
 
 var emailForm = document.getElementById("EmailCaptureForm");
 var emailInput = document.getElementById("EmailInput");
@@ -452,6 +494,11 @@ emailForm.addEventListener("submit", function (e) {
   }, 800);
 
   formSubmitted = true;
+
+  push(eventsRef, {
+    resource: "email.mp3",
+    type: "sfx",
+  });
 
   return false;
 });

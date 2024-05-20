@@ -18,6 +18,7 @@ import {
 
 import { firebaseConfig } from "./firebase-config.js";
 import { mapboxToken } from "./constants.js";
+import { generateHeadsetCode } from "../Backend/firebase-db.js";
 
 // // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -541,17 +542,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function openModal() {
   var modal = document.getElementById("myModal");
-  var randomCode = Math.floor(10000 + Math.random() * 90000);
-  // document.getElementById("randomCode").innerText = "Random Code: " + randomCode;
-
+  var headsetCode = generateHeadsetCode();
   var codeDisplay = document.getElementById("randomCode");
   codeDisplay.innerHTML = "";
 
-
-  for (var i = 0; i < randomCode.toString().length; i++) {
+  for (var i = 0; i < headsetCode.toString().length; i++) {
     var span = document.createElement("span");
     span.className = "digit";
-    span.innerText = randomCode.toString()[i];
+    span.innerText = headsetCode.toString()[i];
     codeDisplay.appendChild(span);
   }
 

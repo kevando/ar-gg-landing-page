@@ -1,4 +1,9 @@
-import { ref, get, child, getDatabase } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+import {
+  ref,
+  get,
+  child,
+  getDatabase,
+} from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
 
 import firebaseApp from "./firebase-init.js";
 import { getAssetURLFromFirebase } from "./firebase-storage.js";
@@ -47,6 +52,8 @@ const getInviteData = async (inviteId) => {
   };
 };
 
-// Add email address to the waitist
+const generateHeadsetCode = () => {
+  return Math.floor(10000 + Math.random() * 90000);
+};
 
-export { getInviteData, getItemDataFromFirebase };
+export { getInviteData, getItemDataFromFirebase, generateHeadsetCode };

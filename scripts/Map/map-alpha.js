@@ -234,7 +234,7 @@ async function listenForDataFromFirebase() {
 
         // el.innerHTML = size
 
-        const DEFAULT_AVATAR_URL = "https://maps.argg.gg/assets/g.png";
+        const DEFAULT_AVATAR_URL = "/assets/g.png";
 
         var iconImage = childData.avatarUrl || DEFAULT_AVATAR_URL;
 

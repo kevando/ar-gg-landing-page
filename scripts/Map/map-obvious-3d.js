@@ -39,10 +39,7 @@ mapboxgl.accessToken = mapboxToken;
 const LOGLAT_BARRINGTON = [-88.1380655018482, 42.147436111279276];
 const LNGLAT_SANFRAN = [-122.41422638286896, 37.773267497804596];
 const LNGLAT_TWOBIT = [-118.231853, 34.0375];
-const LNGLAT_TWOBIT_RANDOMIZED = [
-  -118.231853 + 0.00013 * Math.random(),
-  34.0375 + 0.00013 * Math.random(),
-];
+const LNGLAT_TWOBIT_SIDEWALK = [-118.23164, 34.03749];
 
 // const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/satellite-streets-v12";
 const DEFAULT_MAP_STYLE = "mapbox://styles/mapbox/standard";
@@ -89,13 +86,13 @@ const map = new mapboxgl.Map({
   // center: userInfo.center || LNGLAT_TWOBIT,
   // zoom: userInfo.zoom || DEFAULT_ZOOM,
 
-  center: LNGLAT_TWOBIT_RANDOMIZED,
+  center: LNGLAT_TWOBIT_SIDEWALK,
   zoom: DEFAULT_ZOOM,
 
   minzoom: 4,
 
-  pitch: 60, // pitch in degrees
-  bearing: -60, // bearing in degrees
+  //   pitch: 60,
+  bearing: -95,
 });
 
 const timesOfDay = [
@@ -442,12 +439,12 @@ function generateUUID() {
 
 function notifyPlayerJoinedMap() {
   // do not run for local server
-//   if (window.location.hostname !== "127.0.0.1") {
-//     push(eventsRef, {
-//       resource: "doorbell.mp3",
-//       type: "sfx",
-//     });
-//   }
+  //   if (window.location.hostname !== "127.0.0.1") {
+  //     push(eventsRef, {
+  //       resource: "doorbell.mp3",
+  //       type: "sfx",
+  //     });
+  //   }
 }
 
 // ----- Initialize ------

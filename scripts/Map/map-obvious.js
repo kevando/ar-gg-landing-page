@@ -207,7 +207,7 @@ async function loadMap() {
     });
     el.addEventListener("mouseleave", () => {
       map.getCanvas().style.cursor = "";
-      
+
       // delay this so users can click links in the popup
       // setTimeout(() => {
       //   popup.remove();
@@ -361,7 +361,7 @@ async function getDataFromFirebase() {
       featuresArray.push({
         type: "Feature",
         properties: {
-          description: `<h2>${pin.title}</h2><p>${pin.body}</p><p><strong>Directions:</strong>&nbsp;&nbsp;&nbsp;<a href='${pin.appleMapsUrl}'>Apple</a>&nbsp;&nbsp;<a href='${pin.googleMapsUrl}'>Google</a></p>`,
+          description: `<h2>${pin.title}</h2><p>${pin.body}</p><p><strong>Directions:</strong>&nbsp;&nbsp;&nbsp;<a href='http://maps.apple.com/?daddr=${pin.directions}&dirflg=d"'>Apple</a>&nbsp;&nbsp;<a href='https://www.google.com/maps/dir/?api=1&destination=${pin.directions}&travelmode=driving'>Google</a></p>`,
           message: "Foo",
           iconSize: [60, 60],
           assetPath: pin.image,

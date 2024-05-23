@@ -169,7 +169,6 @@ async function loadMap() {
     el.style.height = `${height}px`;
     el.style.backgroundSize = "100%";
     el.style.backgroundRepeat = "no-repeat";
-    
 
     try {
       if (!marker.properties.assetPath) throw new Error("Missing AssestPath");
@@ -208,7 +207,7 @@ async function loadMap() {
     });
     el.addEventListener("mouseleave", () => {
       map.getCanvas().style.cursor = "";
-
+      
       // delay this so users can click links in the popup
       // setTimeout(() => {
       //   popup.remove();
@@ -291,7 +290,7 @@ async function listenForDataFromFirebase() {
         el.style.width = `${size}px`;
         el.style.height = `${size}px`;
         el.style.fontSize = `${size}px`;
-        el.style.zIndex = 1000;
+        el.style.zIndex = 900;
         // el.style.display = "none";
 
         // didnt work. for some reason the opacity of a marker always gets reset to 1
@@ -375,7 +374,6 @@ async function getDataFromFirebase() {
       });
     }
 
-    console.log("loading 1");
     pins.forEach(addFeature);
   });
 }
@@ -570,3 +568,10 @@ window.onclick = function (event) {
     modal.style.display = "none";
   }
 };
+
+function isMobile() {
+  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+  // Checks for typical mobile devices
+  return /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+}

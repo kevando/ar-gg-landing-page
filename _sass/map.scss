@@ -91,6 +91,9 @@ body {
   }
 }
 
+.mapboxgl-popup {
+  z-index: 1000;
+}
 .mapboxgl-popup-content {
   border-radius: 7px;
   background-color: #4b5e6f;

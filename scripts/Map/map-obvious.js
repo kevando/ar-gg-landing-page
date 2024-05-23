@@ -169,6 +169,7 @@ async function loadMap() {
     el.style.height = `${height}px`;
     el.style.backgroundSize = "100%";
     el.style.backgroundRepeat = "no-repeat";
+    
 
     try {
       if (!marker.properties.assetPath) throw new Error("Missing AssestPath");
@@ -290,6 +291,7 @@ async function listenForDataFromFirebase() {
         el.style.width = `${size}px`;
         el.style.height = `${size}px`;
         el.style.fontSize = `${size}px`;
+        el.style.zIndex = 1000;
         // el.style.display = "none";
 
         // didnt work. for some reason the opacity of a marker always gets reset to 1

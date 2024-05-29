@@ -402,6 +402,7 @@ function notifyPlayerJoinedMap() {
     push(eventsRef, {
       resource: "doorbell.mp3",
       type: "sfx",
+      volume: 0.6
     });
   }
 }
@@ -502,6 +503,7 @@ emailForm.addEventListener("submit", function (e) {
   push(eventsRef, {
     resource: "email.mp3",
     type: "sfx",
+    volume: 0.5,
   });
 
   return false;

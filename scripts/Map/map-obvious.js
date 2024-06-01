@@ -402,7 +402,7 @@ function notifyPlayerJoinedMap() {
     push(eventsRef, {
       resource: "doorbell.mp3",
       type: "sfx",
-      volume: 0.6
+      volume: 0.4,
     });
   }
 }
@@ -500,11 +500,15 @@ emailForm.addEventListener("submit", function (e) {
 
   formSubmitted = true;
 
-  push(eventsRef, {
-    resource: "email.mp3",
-    type: "sfx",
-    volume: 0.5,
-  });
+  if (window.location.hostname !== "127.0.0.1") {
+    push(eventsRef, {
+      resource: "email.mp3",
+      type: "sfx",
+      volume: 0.4,
+    });
+  }
+
+  mixpanel.track("Email Capture Success");
 
   return false;
 });
@@ -518,6 +522,7 @@ function hideKeyboard() {
 
 emailInput.addEventListener("focus", function (e) {
   emailInput.placeholder = "";
+  mixpanel.track("Email Capture Focus");
 });
 emailInput.addEventListener("blur", function (e) {
   if (!formSubmitted) {

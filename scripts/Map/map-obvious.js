@@ -532,7 +532,7 @@ document.addEventListener("DOMContentLoaded", function () {
     snapshot.forEach((childSnapshot) => {
       emails.push(childSnapshot.val().email);
     });
-    var emailCount = emails.length + 85;
+    var emailCount = emails.length;
     document.getElementById("EmailCount").innerHTML = emailCount.toString();
     document.getElementById("EmailCapture").style.opacity = 1.0;
   });

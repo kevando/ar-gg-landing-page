@@ -127,7 +127,7 @@ map.on("style.load", () => {
 
   map.setConfigProperty("basemap", "lightPreset", timesOfDay[currentHour]);
 
-  map.setConfigProperty("basemap", "showPointOfInterestLabels", false);
+  // map.setConfigProperty("basemap", "showPointOfInterestLabels", false);
   map.setConfigProperty("basemap", "showPlaceLabels", false);
   map.setConfigProperty("basemap", "showTransitLabels", false);
 });
@@ -623,6 +623,8 @@ document.getElementById("fly").addEventListener("click", () => {
       map.flyTo({
         center: [position.coords.longitude, position.coords.latitude],
         essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+        // bearing: 0,
+        // pitch: 0,
       });
     }
   

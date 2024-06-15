@@ -99,9 +99,9 @@ function addButtonListeners() {
 
 			console.log("change music");
 
-			update(soundboxRef, {
-				music_resource: resource,
-			});
+			// update(soundboxRef, {
+			// 	music_resource: resource,
+			// });
 		});
 	});
 }
@@ -140,14 +140,19 @@ document.addEventListener("gesturestart", function (e) {
 });
 
 async function listAllAudioFiles() {
-	const fileListElement = document.getElementById("fileList");
+	// const fileListElement = document.getElementById("fileList");
+	const soundEffectsButtonsElement = document.getElementById("SoundEffectsButtons");
+	const musicButtonsElement = document.getElementById("MusicButtons");
+	const voiceButtonsElement = document.getElementById("VoiceButtons");
 
 	console.log("get audio files");
 
 	try {
 		onValue(soundboxFilesRef, (snapshot) => {
 			console.log("data?");
-			fileListElement.innerHTML = "";
+			soundEffectsButtonsElement.innerHTML = "";
+			musicButtonsElement.innerHTML = "";
+			voiceButtonsElement.innerHTML = "";
 			snapshot.forEach((childSnapshot) => {
 				const key = childSnapshot.key;
 				const childData = childSnapshot.val();
@@ -161,7 +166,15 @@ async function listAllAudioFiles() {
 				buttonItem.setAttribute("data-type", childData.type);
 				buttonItem.classList.add(childData.type);
 
-				fileListElement.appendChild(buttonItem);
+				// fileListElement.appendChild(buttonItem);
+
+				if(childData.type === "sfx") {
+					soundEffectsButtonsElement.appendChild(buttonItem);
+				} else if(childData.type === "music") {
+					musicButtonsElement.appendChild(buttonItem);
+				} else if(childData.type === "voice") {
+					voiceButtonsElement.appendChild(buttonItem);
+				}
 			});
 
 			console.log("add button listeners");

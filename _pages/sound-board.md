@@ -43,6 +43,9 @@ body {
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
+.content.buttons {
+    justify-content: space-between;
+}
 
 label {
     font-size: 1.2em;
@@ -94,18 +97,19 @@ li {
 
 <div class="container">
     <h2>Sound Effects</h2>
-    <div class="content">
-        <button class="sfx voice" data-resource="james_achallengerhasenteredthewandduelarena.mp3" data-volume="0.9" data-type="voice">Wizard James</button>
-        <button class="sfx voice" data-resource="joseph_achallengerhasenteredthewandduelarena.mp3" data-volume="0.9" data-type="voice">Wizard Joe</button>
-        <button class="sfx" data-resource="simplelaser.wav" data-volume="0.9" data-type="sfx">Laser</button>
+    <div class="content buttons" id="SoundEffectsButtons">
+    </div>
+</div>
+
+<div class="container">
+    <h2>Announcements</h2>
+    <div class="content buttons" id="VoiceButtons">
     </div>
 </div>
 
 <div class="container">
     <h2>Music Options</h2>
-    <div class="content">
-        <button class="music" data-type="music" data-resource="tetrinet.mp3" >Tetrinet</button>
-        <button class="music" data-type="music" data-resource="floorbabalivingmaximumfantasy_audio_20231128T001137500Z.mp3" >Floor Baba</button>
+    <div class="content buttons" id="MusicButtons">
     </div>
 </div>
 
@@ -154,4 +158,4 @@ li {
 </div>
 
 
-<script type="module" src="{{ site.baseurl }}/scripts/sound-board.js?cachedz=3"></script>
+<script type="module" src="{{ site.baseurl }}/scripts/sound-board.js?cachedz=4"></script>
